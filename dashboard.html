@@ -24,6 +24,55 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
         }
 
+        @media (max-width: 768px) {
+            .navbar .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+                display: none;
+                z-index: 999;
+                border-top: 2px solid rgba(212, 165, 116, 0.2);
+            }
+
+            .navbar .nav-menu.active {
+                display: flex;
+            }
+
+            .navbar .nav-menu li {
+                width: 100%;
+            }
+
+            .navbar .nav-menu a {
+                display: block;
+                padding: 1rem 0;
+                border-bottom: 1px solid rgba(212, 165, 116, 0.1);
+                width: 100%;
+            }
+
+            .navbar .mobile-menu-toggle {
+                display: flex !important;
+                flex-direction: column;
+                gap: 4px;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                padding: 0.5rem;
+            }
+
+            .navbar .mobile-menu-toggle span {
+                width: 25px;
+                height: 3px;
+                background: var(--secondary-color);
+                border-radius: 2px;
+                transition: all 0.3s ease;
+            }
+        }
+
         .nav-brand h1 {
             background: linear-gradient(135deg, #13501b 0%, #4a7c59 100%);
             -webkit-background-clip: text;
@@ -516,14 +565,21 @@
     <nav class="navbar">
         <div class="container">
             <div class="nav-brand">
-                <h1>Il Ngwesi</h1>
-                <span class="tagline">Revenue Dashboard</span>
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    <h1>Il Ngwesi</h1>
+                    <span class="tagline">Revenue Dashboard</span>
+                </a>
             </div>
             <ul class="nav-menu">
                 <li><a href="community.html">Community Portal</a></li>
                 <li><a href="index.html">Back to Website</a></li>
                 <li><a href="#" id="logoutBtn" style="color: #dc2626;">Logout</a></li>
             </ul>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu" style="display: none;">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </nav>
 
@@ -1477,6 +1533,45 @@
                 }
             });
         }); // End of DOMContentLoaded
+        
+        // Initialize mobile menu toggle for dashboard
+        (function() {
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            if (mobileToggle && navMenu) {
+                mobileToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    navMenu.classList.toggle('active');
+                    
+                    // Animate hamburger icon
+                    const spans = mobileToggle.querySelectorAll('span');
+                    if (navMenu.classList.contains('active')) {
+                        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                        spans[1].style.opacity = '0';
+                        spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                        document.body.style.overflow = '';
+                    }
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('active')) {
+                        navMenu.classList.remove('active');
+                        const spans = mobileToggle.querySelectorAll('span');
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+        })();
         
         // Set copyright year dynamically
         const copyrightYear = document.getElementById('copyrightYear');

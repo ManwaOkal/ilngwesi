@@ -421,10 +421,12 @@
                 top: 70px;
                 left: 0;
                 right: 0;
-                background: white;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
                 flex-direction: column;
                 padding: 1rem;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
                 display: none;
                 z-index: 999;
                 border-top: 2px solid rgba(212, 165, 116, 0.2);
@@ -463,6 +465,32 @@
                 transition: all 0.3s ease;
             }
         }
+
+        /* Merchant footer styling - white text */
+        .marketplace-footer {
+            background: var(--secondary-color) !important;
+        }
+
+        .marketplace-footer .footer-section p,
+        .marketplace-footer .footer-section a {
+            color: white !important;
+            opacity: 0.9;
+        }
+
+        .marketplace-footer .footer-section a:hover {
+            opacity: 1;
+            color: var(--primary-light) !important;
+        }
+
+        .marketplace-footer .footer-section h3,
+        .marketplace-footer .footer-section h4 {
+            color: white !important;
+        }
+
+        .marketplace-footer .footer-bottom p {
+            color: white !important;
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
@@ -470,8 +498,10 @@
     <nav class="navbar marketplace-nav">
         <div class="container">
             <div class="nav-brand">
-                <h1>Maasai Marketplace</h1>
-                <span class="tagline">Authentic Handmade Products</span>
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    <h1>Maasai Marketplace</h1>
+                    <span class="tagline">Authentic Handmade Products</span>
+                </a>
             </div>
             <ul class="nav-menu">
                 <li><a href="index.html">Home</a></li>
@@ -509,8 +539,8 @@
             </div>
 
             <div class="merchant-tabs">
-                <button class="merchant-tab active" onclick="switchTab('add')">Add Product</button>
-                <button class="merchant-tab" onclick="switchTab('manage')">Manage Products</button>
+                <button class="merchant-tab active" onclick="switchTab('add', this)">Add Product</button>
+                <button class="merchant-tab" onclick="switchTab('manage', this)">Manage Products</button>
             </div>
 
             <div id="addProductTab" class="merchant-tab-content active">
@@ -587,10 +617,10 @@
                 </div>
                 <div class="footer-section">
                     <h4>Shop</h4>
-                    <p><a href="marketplace.html" style="color: var(--text-light); text-decoration: none;">All Products</a></p>
-                    <p><a href="marketplace.html#jewelry" style="color: var(--text-light); text-decoration: none;">Jewelry</a></p>
-                    <p><a href="marketplace.html#clothing" style="color: var(--text-light); text-decoration: none;">Clothing</a></p>
-                    <p><a href="marketplace.html#home" style="color: var(--text-light); text-decoration: none;">Home Decor</a></p>
+                    <p><a href="marketplace.html" style="text-decoration: none;">All Products</a></p>
+                    <p><a href="marketplace.html#jewelry" style="text-decoration: none;">Jewelry</a></p>
+                    <p><a href="marketplace.html#clothing" style="text-decoration: none;">Clothing</a></p>
+                    <p><a href="marketplace.html#home" style="text-decoration: none;">Home Decor</a></p>
                 </div>
                 <div class="footer-section">
                     <h4>Customer Service</h4>
@@ -600,7 +630,7 @@
                 </div>
                 <div class="footer-section">
                     <h4>About</h4>
-                    <p><a href="index.html" style="color: var(--text-light); text-decoration: none;">Il Ngwesi Conservancy</a></p>
+                    <p><a href="index.html" style="text-decoration: none;">Il Ngwesi Conservancy</a></p>
                     <p>Community-owned marketplace</p>
                     <p>Every purchase supports conservation</p>
                 </div>
@@ -612,23 +642,31 @@
     </footer>
 
     <script>
-        // Check authentication
-        if (sessionStorage.getItem('merchantLoggedIn') !== 'true') {
-            window.location.href = 'merchant-login.html';
-        }
-
+        // No authentication required - merchant dashboard is open access
         function handleLogout() {
             sessionStorage.removeItem('merchantLoggedIn');
             sessionStorage.removeItem('merchantName');
-            window.location.href = 'merchant-login.html';
+            window.location.href = 'community.html';
         }
 
-        function switchTab(tabName) {
+        function switchTab(tabName, buttonElement) {
             // Update tab buttons
             document.querySelectorAll('.merchant-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
-            event.target.classList.add('active');
+            
+            // Activate the clicked button
+            if (buttonElement) {
+                buttonElement.classList.add('active');
+            } else {
+                // Fallback: find button by tab name
+                document.querySelectorAll('.merchant-tab').forEach(tab => {
+                    if ((tabName === 'add' && tab.textContent.trim().includes('Add Product')) ||
+                        (tabName === 'manage' && tab.textContent.trim().includes('Manage Products'))) {
+                        tab.classList.add('active');
+                    }
+                });
+            }
 
             // Update tab content
             document.querySelectorAll('.merchant-tab-content').forEach(content => {
@@ -637,9 +675,11 @@
 
             if (tabName === 'add') {
                 document.getElementById('addProductTab').classList.add('active');
-            } else {
+            } else if (tabName === 'manage') {
                 document.getElementById('manageProductsTab').classList.add('active');
-                loadProducts();
+                if (typeof loadProducts === 'function') {
+                    loadProducts();
+                }
             }
         }
 
@@ -784,6 +824,7 @@
                 e.stopPropagation();
                 navMenu.classList.toggle('active');
                 
+                // Animate hamburger icon
                 const spans = mobileToggle.querySelectorAll('span');
                 if (navMenu.classList.contains('active')) {
                     spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';

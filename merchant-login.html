@@ -164,10 +164,12 @@
                 top: 70px;
                 left: 0;
                 right: 0;
-                background: white;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
                 flex-direction: column;
                 padding: 1rem;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
                 display: none;
                 z-index: 999;
                 border-top: 2px solid rgba(212, 165, 116, 0.2);
@@ -206,6 +208,32 @@
                 transition: all 0.3s ease;
             }
         }
+
+        /* Merchant footer styling - white text */
+        .marketplace-footer {
+            background: var(--secondary-color) !important;
+        }
+
+        .marketplace-footer .footer-section p,
+        .marketplace-footer .footer-section a {
+            color: white !important;
+            opacity: 0.9;
+        }
+
+        .marketplace-footer .footer-section a:hover {
+            opacity: 1;
+            color: var(--primary-light) !important;
+        }
+
+        .marketplace-footer .footer-section h3,
+        .marketplace-footer .footer-section h4 {
+            color: white !important;
+        }
+
+        .marketplace-footer .footer-bottom p {
+            color: white !important;
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
@@ -213,8 +241,10 @@
     <nav class="navbar marketplace-nav">
         <div class="container">
             <div class="nav-brand">
-                <h1>Maasai Marketplace</h1>
-                <span class="tagline">Authentic Handmade Products</span>
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    <h1>Maasai Marketplace</h1>
+                    <span class="tagline">Authentic Handmade Products</span>
+                </a>
             </div>
             <ul class="nav-menu">
                 <li><a href="index.html">Home</a></li>
@@ -276,10 +306,10 @@
                 </div>
                 <div class="footer-section">
                     <h4>Shop</h4>
-                    <p><a href="marketplace.html" style="color: var(--text-light); text-decoration: none;">All Products</a></p>
-                    <p><a href="marketplace.html#jewelry" style="color: var(--text-light); text-decoration: none;">Jewelry</a></p>
-                    <p><a href="marketplace.html#clothing" style="color: var(--text-light); text-decoration: none;">Clothing</a></p>
-                    <p><a href="marketplace.html#home" style="color: var(--text-light); text-decoration: none;">Home Decor</a></p>
+                    <p><a href="marketplace.html" style="text-decoration: none;">All Products</a></p>
+                    <p><a href="marketplace.html#jewelry" style="text-decoration: none;">Jewelry</a></p>
+                    <p><a href="marketplace.html#clothing" style="text-decoration: none;">Clothing</a></p>
+                    <p><a href="marketplace.html#home" style="text-decoration: none;">Home Decor</a></p>
                 </div>
                 <div class="footer-section">
                     <h4>Customer Service</h4>
@@ -289,7 +319,7 @@
                 </div>
                 <div class="footer-section">
                     <h4>About</h4>
-                    <p><a href="index.html" style="color: var(--text-light); text-decoration: none;">Il Ngwesi Conservancy</a></p>
+                    <p><a href="index.html" style="text-decoration: none;">Il Ngwesi Conservancy</a></p>
                     <p>Community-owned marketplace</p>
                     <p>Every purchase supports conservation</p>
                 </div>
@@ -301,68 +331,8 @@
     </footer>
 
     <script>
-        function handleMerchantLogin(event) {
-            event.preventDefault();
-            
-            const name = document.getElementById('merchantName').value.trim();
-            const errorDiv = document.getElementById('loginError');
-            
-            // Any name will log in - no access code needed
-            if (name && name !== '') {
-                // Store merchant session
-                sessionStorage.setItem('merchantLoggedIn', 'true');
-                sessionStorage.setItem('merchantName', name);
-                
-                // Redirect to merchant dashboard
-                window.location.href = 'merchant-dashboard.html';
-            } else {
-                errorDiv.textContent = 'Please enter your name.';
-                errorDiv.classList.add('show');
-                setTimeout(() => {
-                    errorDiv.classList.remove('show');
-                }, 3000);
-            }
-        }
-
-        // Check if already logged in
-        if (sessionStorage.getItem('merchantLoggedIn') === 'true') {
-            window.location.href = 'merchant-dashboard.html';
-        }
-
-        // Initialize mobile menu toggle
-        const mobileToggle = document.querySelector('.mobile-menu-toggle');
-        const navMenu = document.querySelector('.nav-menu');
-        
-        if (mobileToggle && navMenu) {
-            mobileToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                navMenu.classList.toggle('active');
-                
-                const spans = mobileToggle.querySelectorAll('span');
-                if (navMenu.classList.contains('active')) {
-                    spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                    spans[1].style.opacity = '0';
-                    spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    spans[0].style.transform = 'none';
-                    spans[1].style.opacity = '1';
-                    spans[2].style.transform = 'none';
-                    document.body.style.overflow = '';
-                }
-            });
-            
-            document.addEventListener('click', function(e) {
-                if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('active')) {
-                    navMenu.classList.remove('active');
-                    const spans = mobileToggle.querySelectorAll('span');
-                    spans[0].style.transform = 'none';
-                    spans[1].style.opacity = '1';
-                    spans[2].style.transform = 'none';
-                    document.body.style.overflow = '';
-                }
-            });
-        }
+        // Automatically redirect to merchant dashboard - no login required
+        window.location.href = 'merchant-dashboard.html';
     </script>
     <script src="cart.js"></script>
     <script src="script.js"></script>
