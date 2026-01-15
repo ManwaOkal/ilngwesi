@@ -107,64 +107,51 @@
         }
 
         .marketplace-filters {
-            background: white;
-            padding: 1rem;
-            border-radius: 12px;
-            margin: 1rem;
+            background: transparent;
+            padding: 1.5rem 1rem;
+            margin: 2rem 1rem 1rem;
             max-width: 1200px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-            border: 1px solid rgba(212, 165, 116, 0.15);
         }
 
         .filter-section {
-            margin-bottom: 1.5rem;
-        }
-
-        .filter-section:last-child {
             margin-bottom: 0;
-        }
-
-        .filter-label {
-            font-weight: 700;
-            color: var(--secondary-color);
-            margin-bottom: 0.75rem;
-            font-size: 0.9375rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .filter-buttons {
             display: flex;
-            gap: 0.75rem;
+            gap: 0.5rem;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         .filter-btn {
-            padding: 0.625rem 1.5rem;
-            border: 2px solid rgba(212, 165, 116, 0.3);
-            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
-            border-radius: 25px;
+            padding: 0.75rem 1.75rem;
+            border: 2px solid rgba(212, 165, 116, 0.2);
+            background: white;
+            border-radius: 30px;
             cursor: pointer;
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             font-weight: 600;
-            color: #4b5563;
+            color: var(--text-dark);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             white-space: nowrap;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
 
         .filter-btn:hover {
             border-color: var(--primary-color);
             color: var(--primary-color);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.25);
+            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.2);
+            background: rgba(212, 165, 116, 0.05);
         }
 
         .filter-btn.active {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            background: var(--gradient-primary);
             color: white;
             border-color: var(--primary-color);
             box-shadow: 0 4px 16px rgba(212, 165, 116, 0.4);
+            transform: translateY(-2px);
         }
 
         .products-grid {
@@ -740,14 +727,13 @@
     <div class="container">
         <div class="marketplace-filters">
             <div class="filter-section">
-                <div class="filter-label">Category</div>
                 <div class="filter-buttons">
-                    <button class="filter-btn active" data-category="all">All Products</button>
+                    <button class="filter-btn active" data-category="all">All</button>
                     <button class="filter-btn" data-category="jewelry">Jewelry</button>
                     <button class="filter-btn" data-category="bags">Bags</button>
                     <button class="filter-btn" data-category="clothing">Clothing</button>
-                    <button class="filter-btn" data-category="home">Home Decor</button>
-                    <button class="filter-btn" data-category="art">Art & Collectibles</button>
+                    <button class="filter-btn" data-category="home">Decor</button>
+                    <button class="filter-btn" data-category="art">Art</button>
                 </div>
             </div>
         </div>
