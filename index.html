@@ -18,7 +18,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Navigation styles handled in styles.css - visible on large screens, hamburger on mobile */
+        /* Mobile login link instead of hamburger menu */
+        .mobile-login-link {
+            display: none;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.9375rem;
+            padding: 0.625rem 1.25rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none !important;
+            }
+            
+            .mobile-login-link {
+                display: block;
+            }
+            
+            .mobile-menu-toggle {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -38,11 +62,7 @@
                 <li><a href="marketplace.html">Marketplace</a></li>
                 <li><a href="community.html">Login</a></li>
             </ul>
-            <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+            <a href="community.html" class="mobile-login-link">Login</a>
         </div>
     </nav>
 
