@@ -3230,23 +3230,21 @@ textarea::placeholder {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 0.5rem 1rem;
+        padding: 0.75rem 0.5rem;
         text-decoration: none;
         color: var(--text-light);
-        font-size: 0.75rem;
-        font-weight: 500;
         transition: all 0.2s ease;
-        min-width: 60px;
-        gap: 0.25rem;
+        min-width: 50px;
+        flex: 1;
+        position: relative;
     }
 
     .app-bottom-nav-item svg {
-        width: 22px;
-        height: 22px;
+        width: 26px;
+        height: 26px;
         stroke: currentColor;
         fill: none;
         transition: all 0.2s ease;
-        margin-bottom: 0.25rem;
     }
 
     .app-bottom-nav-item.active {
@@ -3256,6 +3254,20 @@ textarea::placeholder {
     .app-bottom-nav-item.active svg {
         stroke: var(--primary-color);
         stroke-width: 2.5;
+    }
+
+    /* Hide text spans in marketplace bottom nav - icons only */
+    .marketplace-bottom-nav .app-bottom-nav-item span {
+        display: none !important;
+    }
+    
+    .marketplace-bottom-nav .app-bottom-nav-item {
+        padding: 0.875rem 0.5rem;
+    }
+    
+    .marketplace-bottom-nav .app-bottom-nav-item svg {
+        width: 28px;
+        height: 28px;
     }
 
     .app-bottom-nav-item span:last-child {
