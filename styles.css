@@ -9,8 +9,8 @@
     --primary-color: #d4a574;
     --primary-dark: #b8935f;
     --primary-light: #e8d4b8;
-    --secondary-color: #2c5530;
-    --secondary-dark: #1e3a21;
+    --secondary-color: #13501b;
+    --secondary-dark: #0d3a12;
     --accent-color: #8b4513;
     --text-dark: #2c2c2c;
     --text-light: #666;
@@ -26,7 +26,7 @@
     --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
     --shadow-xl: 0 20px 40px rgba(0,0,0,0.2);
     --gradient-primary: linear-gradient(135deg, #d4a574 0%, #b8935f 100%);
-    --gradient-secondary: linear-gradient(135deg, #2c5530 0%, #1e3a21 100%);
+    --gradient-secondary: linear-gradient(135deg, #13501b 0%, #0d3a12 100%);
 }
 
 html {
