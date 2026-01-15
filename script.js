@@ -160,52 +160,146 @@ function initializeGallery() {
     const galleryGrid = document.getElementById('galleryGrid');
     if (!galleryGrid) return;
 
-    // List of image files (you can expand this list)
-    const imageFiles = [
-        'content_visit_cropped-Sundowner-9.jpg',
-        'content_visit_2016_04_04_staying-at-il-ngwesi_Elephants-at-waterhole.jpg',
-        'content_visit_2016_04_04_staying-at-il-ngwesi_Manyatta-Dancing-7c.jpg',
-        'content_visit_2016_04_04_staying-at-il-ngwesi_Pool-Jan-2016-8.jpg',
-        'content_visit_2016_04_04_staying-at-il-ngwesi_Main-House-Night-9.jpg',
-        'content_visit_2016_04_04_staying-at-il-ngwesi_Bush-Breakfast-Brooke-and-Kirstin-7b.jpg',
-        'content_visit_2016_04_04_staying-at-il-ngwesi_Camera-Kenya-2-336.jpg',
-        'content_visit_2016_04_04_staying-at-il-ngwesi_Manyatta-Hunting-8.jpg',
-        'content_visit_2016_04_04_staying-at-il-ngwesi_Beading-3.jpg',
-        'content_visit_2016_04_04_staying-at-il-ngwesi_Camera-Kenya-2-516.jpg',
-        'content_visit_2016_04_04_staying-at-il-ngwesi_Manyatta-Donkey-8.jpg',
-        'content_visit_2016_04_04_staying-at-il-ngwesi_Beef-and-Wine-10.jpg',
-        'content_visit_Il-Ngwesi-Elephant.jpg',
-        'content_visit_Mukogodo-Escarpment.jpg',
-        'content_visit_Dancing-at-the-Manyatta.jpg',
-        'content_visit_Manyatta-Dancing-7b.jpg',
-        'content_visit_Pool-Air-9.jpg',
-        'content_visit_Il-Ngwesi-Board-Directors-.jpg'
+    // List of image files with titles
+    const imageData = [
+        { file: 'content_visit_cropped-Sundowner-9.jpg', title: 'Sundowner Experience' },
+        { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Elephants-at-waterhole.jpg', title: 'Elephants at Waterhole' },
+        { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Manyatta-Dancing-7c.jpg', title: 'Traditional Maasai Dancing' },
+        { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Pool-Jan-2016-8.jpg', title: 'Infinity Pool' },
+        { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Main-House-Night-9.jpg', title: 'Main House at Night' },
+        { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Bush-Breakfast-Brooke-and-Kirstin-7b.jpg', title: 'Bush Breakfast' },
+        { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Camera-Kenya-2-336.jpg', title: 'Wildlife Photography' },
+        { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Manyatta-Hunting-8.jpg', title: 'Cultural Experience' },
+        { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Beading-3.jpg', title: 'Beading Workshop' },
+        { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Camera-Kenya-2-516.jpg', title: 'Conservancy Views' },
+        { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Manyatta-Donkey-8.jpg', title: 'Community Life' },
+        { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Beef-and-Wine-10.jpg', title: 'Dining Experience' },
+        { file: 'content_visit_Il-Ngwesi-Elephant.jpg', title: 'Elephant Encounter' },
+        { file: 'content_visit_Mukogodo-Escarpment.jpg', title: 'Mukogodo Escarpment' },
+        { file: 'content_visit_Dancing-at-the-Manyatta.jpg', title: 'Manyatta Dancing' },
+        { file: 'content_visit_Manyatta-Dancing-7b.jpg', title: 'Cultural Celebration' },
+        { file: 'content_visit_Pool-Air-9.jpg', title: 'Pool & Views' },
+        { file: 'content_visit_Il-Ngwesi-Board-Directors-.jpg', title: 'Community Leadership' }
     ];
 
     // Filter to get only full-size images (not thumbnails)
-    const fullSizeImages = imageFiles.filter(img => 
-        !img.includes('-300x') && 
-        !img.includes('-768x') && 
-        !img.includes('-1024x') &&
-        !img.includes('-200x') &&
-        !img.includes('-682x') &&
-        !img.includes('-683x') &&
-        !img.includes('-512x') &&
-        !img.includes('-1152x') &&
-        !img.includes('-1153x')
+    const fullSizeImages = imageData.filter(item => 
+        !item.file.includes('-300x') && 
+        !item.file.includes('-768x') && 
+        !item.file.includes('-1024x') &&
+        !item.file.includes('-200x') &&
+        !item.file.includes('-682x') &&
+        !item.file.includes('-683x') &&
+        !item.file.includes('-512x') &&
+        !item.file.includes('-1152x') &&
+        !item.file.includes('-1153x')
     );
 
-    fullSizeImages.forEach(imageFile => {
+    // Create lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'gallery-lightbox';
+    lightbox.innerHTML = `
+        <div class="gallery-lightbox-close">×</div>
+        <div class="gallery-lightbox-nav gallery-lightbox-prev">‹</div>
+        <div class="gallery-lightbox-nav gallery-lightbox-next">›</div>
+        <div class="gallery-lightbox-content">
+            <img src="" alt="">
+            <div class="gallery-lightbox-info"></div>
+        </div>
+    `;
+    document.body.appendChild(lightbox);
+
+    let currentImageIndex = 0;
+    const images = [];
+
+    fullSizeImages.forEach((item, index) => {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
+        galleryItem.dataset.index = index;
         
         const img = document.createElement('img');
-        img.src = `images/${imageFile}`;
-        img.alt = imageFile.replace(/\.jpg$/, '').replace(/-/g, ' ');
+        img.src = `images/${item.file}`;
+        img.alt = item.title;
         img.loading = 'lazy';
         
+        const title = document.createElement('div');
+        title.className = 'gallery-item-title';
+        title.textContent = item.title;
+        
         galleryItem.appendChild(img);
+        galleryItem.appendChild(title);
         galleryGrid.appendChild(galleryItem);
+        
+        images.push({
+            src: `images/${item.file}`,
+            title: item.title
+        });
+
+        // Add click handler
+        galleryItem.addEventListener('click', function() {
+            currentImageIndex = index;
+            showLightbox();
+        });
+    });
+
+    function showLightbox() {
+        const lightboxImg = lightbox.querySelector('img');
+        const lightboxInfo = lightbox.querySelector('.gallery-lightbox-info');
+        
+        lightboxImg.src = images[currentImageIndex].src;
+        lightboxInfo.textContent = `${currentImageIndex + 1} / ${images.length} - ${images[currentImageIndex].title}`;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function hideLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function nextImage() {
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        showLightbox();
+    }
+
+    function prevImage() {
+        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+        showLightbox();
+    }
+
+    // Lightbox event handlers
+    lightbox.querySelector('.gallery-lightbox-close').addEventListener('click', function(e) {
+        e.stopPropagation();
+        hideLightbox();
+    });
+
+    lightbox.querySelector('.gallery-lightbox-next').addEventListener('click', function(e) {
+        e.stopPropagation();
+        nextImage();
+    });
+
+    lightbox.querySelector('.gallery-lightbox-prev').addEventListener('click', function(e) {
+        e.stopPropagation();
+        prevImage();
+    });
+
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) {
+            hideLightbox();
+        }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (lightbox.classList.contains('active')) {
+            if (e.key === 'Escape') {
+                hideLightbox();
+            } else if (e.key === 'ArrowRight') {
+                nextImage();
+            } else if (e.key === 'ArrowLeft') {
+                prevImage();
+            }
+        }
     });
 }
 
