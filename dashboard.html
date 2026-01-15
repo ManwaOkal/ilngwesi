@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description" content="Revenue Dashboard - Il Ngwesi Conservancy">
+    <meta name="theme-color" content="#d4a574">
+    <title>Revenue Dashboard - Il Ngwesi Conservancy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        .dashboard {
+            padding: 2.5rem 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #f1f3f5 50%, #e9ecef 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .dashboard::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 300px;
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.08) 0%, rgba(44, 85, 48, 0.05) 100%);
+            pointer-events: none;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            padding: 3rem 2.5rem;
+            border-radius: 16px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid rgba(212, 165, 116, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-dark) 50%, var(--secondary-color) 100%);
+        }
+
+        .dashboard-header h1 {
+            color: var(--secondary-color);
+            margin-bottom: 0.75rem;
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .dashboard-header p {
+            color: #6b7280;
+            font-size: 1.05rem;
+            margin: 0;
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.75rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            padding: 2rem 1.75rem;
+            border-radius: 16px;
+            border: 1px solid rgba(212, 165, 116, 0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+            border-color: var(--primary-color);
+        }
+
+        .stat-box:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-box-label {
+            font-size: 0.8125rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .stat-box-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-box-change {
+            font-size: 0.875rem;
+            margin-top: 0.75rem;
+            color: #10b981;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .revenue-breakdown {
+            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 165, 116, 0.15);
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .revenue-breakdown::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-dark) 50%, var(--secondary-color) 100%);
+        }
+
+        .revenue-breakdown:hover {
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+
+        .revenue-breakdown h2 {
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .revenue-breakdown h2::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border-radius: 2px;
+        }
+
+
+        .chart-container {
+            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 165, 116, 0.15);
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-dark) 50%, var(--secondary-color) 100%);
+        }
+
+        .chart-container:hover {
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            transform: translateY(-4px);
+        }
+
+        .chart-container h2 {
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .chart-container h2::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border-radius: 2px;
+        }
+
+        .chart-container canvas {
+            max-height: 450px;
+        }
+
+        .chart-container h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Revenue Table Styles - Card Based */
+        .revenue-table {
+            width: 100%;
+        }
+
+        .revenue-table-header {
+            display: none;
+        }
+
+        .revenue-table-body {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .revenue-row {
+            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            border: 1px solid rgba(212, 165, 116, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+
+        .revenue-row::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            transform: scaleY(0);
+            transition: transform 0.4s ease;
+        }
+
+        .revenue-row::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(212, 165, 116, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .revenue-row:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+            border-color: var(--primary-color);
+        }
+
+        .revenue-row:hover::before {
+            transform: scaleY(1);
+        }
+
+        .revenue-row:hover::after {
+            opacity: 1;
+        }
+
+        .revenue-row.hidden {
+            display: none;
+        }
+
+        .revenue-col-name {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .revenue-col-category {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .revenue-col-amount {
+            font-weight: 700;
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .revenue-col-percentage {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .revenue-col-chart {
+            display: flex;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 1rem;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 0.375rem 0.875rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .category-badge.accommodation {
+            background: linear-gradient(135deg, #d4a574 0%, #b8935f 100%);
+            color: white;
+        }
+
+        .category-badge.marketplace {
+            background: linear-gradient(135deg, #2c5530 0%, #1e3a21 100%);
+            color: white;
+        }
+
+        .category-badge.tourism {
+            background: linear-gradient(135deg, #8b4513 0%, #6b3410 100%);
+            color: white;
+        }
+
+        .category-badge.cultural {
+            background: linear-gradient(135deg, #b8935f 0%, #9a7a4f 100%);
+            color: white;
+        }
+
+        .category-badge.miscellaneous {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
+        }
+
+        .percentage-badge {
+            display: inline-block;
+            padding: 0.375rem 0.875rem;
+            background: #f3f4f6;
+            border-radius: 6px;
+            font-weight: 700;
+            color: var(--secondary-color);
+            font-size: 0.875rem;
+        }
+
+        .revenue-bar {
+            width: 100%;
+            height: 24px;
+            background: #f3f4f6;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .revenue-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border-radius: 12px;
+            transition: width 1s ease;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(212, 165, 116, 0.4);
+        }
+
+        .revenue-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.75rem;
+            border: 2px solid rgba(212, 165, 116, 0.3);
+            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #4b5563;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(212, 165, 116, 0.15);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(212, 165, 116, 0.3);
+        }
+
+        .filter-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 6px 24px rgba(212, 165, 116, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .filter-btn.active::before {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .time-period-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .category-filters-section {
+            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            padding: 2.5rem 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 165, 116, 0.15);
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-filters-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-dark) 50%, var(--secondary-color) 100%);
+        }
+
+        .category-filters-label {
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 1.25rem;
+            font-size: 0.9375rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .time-period-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .time-period-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .insights-section {
+            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 165, 116, 0.15);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insights-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-dark) 50%, var(--secondary-color) 100%);
+        }
+
+        .insights-section h2 {
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .insights-section h2::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border-radius: 2px;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .insight-item {
+            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            padding: 2rem;
+            border: 1px solid rgba(212, 165, 116, 0.2);
+            border-radius: 16px;
+            border-left: 5px solid var(--primary-color);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+
+        .insight-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(212, 165, 116, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .insight-item:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+            border-left-color: var(--primary-dark);
+            border-color: var(--primary-color);
+        }
+
+        .insight-item:hover::before {
+            opacity: 1;
+        }
+
+        .insight-item-title {
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .insight-item-text {
+            color: #4b5563;
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .revenue-table-body {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .revenue-row {
+                padding: 1.25rem;
+            }
+
+            .revenue-col-name {
+                font-size: 1rem;
+            }
+
+            .revenue-col-amount {
+                font-size: 1.25rem;
+            }
+
+            .category-filters-section {
+                padding: 1.5rem 1.25rem;
+            }
+
+            .category-filters-section h2 {
+                font-size: 1.25rem !important;
+                margin-bottom: 1rem !important;
+            }
+
+            .category-filters-label {
+                font-size: 0.8125rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .filter-buttons {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .filter-btn {
+                font-size: 0.75rem;
+                padding: 0.5rem 1rem;
+                flex: 0 0 auto;
+            }
+
+            .chart-container {
+                padding: 1.5rem;
+            }
+
+            .chart-container > div[style*="grid"] {
+                grid-template-columns: 1fr !important;
+            }
+
+            .chart-container canvas {
+                max-height: 300px;
+            }
+
+            .insights-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .insight-item {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>Il Ngwesi</h1>
+                <span class="tagline">Revenue Dashboard</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Back to Website</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard -->
+    <section class="dashboard" style="margin-top: 80px;">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1>Revenue Dashboard</h1>
+                <p>Transparent tracking of revenue sources and performance metrics</p>
+            </div>
+
+            <!-- Time Period Selector -->
+            <div class="time-period-selector">
+                <button class="time-period-btn active" data-period="month">This Month</button>
+                <button class="time-period-btn" data-period="quarter">This Quarter</button>
+                <button class="time-period-btn" data-period="year">This Year</button>
+                <button class="time-period-btn" data-period="all">All Time</button>
+            </div>
+
+            <!-- Category Filters -->
+            <div class="category-filters-section">
+                <h2 style="margin: 0 0 1.5rem 0; color: var(--secondary-color); font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.75rem;">
+                    <span style="width: 4px; height: 24px; background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%); border-radius: 2px;"></span>
+                    Revenue by Product/Service
+                </h2>
+                <div class="category-filters-label">Filter by Category:</div>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="Accommodation">Accommodation</button>
+                    <button class="filter-btn" data-filter="Marketplace">Marketplace</button>
+                    <button class="filter-btn" data-filter="Tourism">Tourism</button>
+                    <button class="filter-btn" data-filter="Cultural">Cultural</button>
+                </div>
+            </div>
+
+            <!-- Summary Stats -->
+            <div class="dashboard-stats">
+                <div class="stat-box">
+                    <div class="stat-box-label">Total Revenue</div>
+                    <div class="stat-box-value">KES 2,450,000</div>
+                    <div class="stat-box-change">↑ 12% vs last period</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-label">Total Bookings</div>
+                    <div class="stat-box-value">127</div>
+                    <div class="stat-box-change">↑ 8% vs last period</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-label">Products Sold</div>
+                    <div class="stat-box-value">342</div>
+                    <div class="stat-box-change">↑ 15% vs last period</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-label">Avg. Revenue/Booking</div>
+                    <div class="stat-box-value">KES 19,291</div>
+                    <div class="stat-box-change">↑ 4% vs last period</div>
+                </div>
+            </div>
+
+            <!-- Revenue Breakdown by Product/Service -->
+            <div class="revenue-breakdown">
+                <div class="revenue-table">
+                    <div class="revenue-table-body">
+                        <div class="revenue-row" data-category="Accommodation">
+                            <div class="revenue-col-name">Il Ngwesi Ecolodge</div>
+                            <div class="revenue-col-category">
+                                <span class="category-badge accommodation">Accommodation</span>
+                            </div>
+                            <div class="revenue-col-amount">KES 1,102,500</div>
+                            <div class="revenue-col-percentage">
+                                <span class="percentage-badge">45.0%</span>
+                            </div>
+                            <div class="revenue-col-chart">
+                                <div class="revenue-bar">
+                                    <div class="revenue-bar-fill" data-percentage="45" style="width: 45%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="revenue-row" data-category="Accommodation">
+                            <div class="revenue-col-name">Community Homestays</div>
+                            <div class="revenue-col-category">
+                                <span class="category-badge accommodation">Accommodation</span>
+                            </div>
+                            <div class="revenue-col-amount">KES 441,000</div>
+                            <div class="revenue-col-percentage">
+                                <span class="percentage-badge">18.0%</span>
+                            </div>
+                            <div class="revenue-col-chart">
+                                <div class="revenue-bar">
+                                    <div class="revenue-bar-fill" data-percentage="18" style="width: 18%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="revenue-row" data-category="Marketplace">
+                            <div class="revenue-col-name">Beaded Jewelry</div>
+                            <div class="revenue-col-category">
+                                <span class="category-badge marketplace">Marketplace Products</span>
+                            </div>
+                            <div class="revenue-col-amount">KES 294,000</div>
+                            <div class="revenue-col-percentage">
+                                <span class="percentage-badge">12.0%</span>
+                            </div>
+                            <div class="revenue-col-chart">
+                                <div class="revenue-bar">
+                                    <div class="revenue-bar-fill" data-percentage="12" style="width: 12%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="revenue-row" data-category="Tourism">
+                            <div class="revenue-col-name">Guided Wildlife Walks</div>
+                            <div class="revenue-col-category">
+                                <span class="category-badge tourism">Tourism Experiences</span>
+                            </div>
+                            <div class="revenue-col-amount">KES 196,000</div>
+                            <div class="revenue-col-percentage">
+                                <span class="percentage-badge">8.0%</span>
+                            </div>
+                            <div class="revenue-col-chart">
+                                <div class="revenue-bar">
+                                    <div class="revenue-bar-fill" data-percentage="8" style="width: 8%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="revenue-row" data-category="Marketplace">
+                            <div class="revenue-col-name">Traditional Bags</div>
+                            <div class="revenue-col-category">
+                                <span class="category-badge marketplace">Marketplace Products</span>
+                            </div>
+                            <div class="revenue-col-amount">KES 147,000</div>
+                            <div class="revenue-col-percentage">
+                                <span class="percentage-badge">6.0%</span>
+                            </div>
+                            <div class="revenue-col-chart">
+                                <div class="revenue-bar">
+                                    <div class="revenue-bar-fill" data-percentage="6" style="width: 6%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="revenue-row" data-category="Tourism">
+                            <div class="revenue-col-name">Cultural Evenings</div>
+                            <div class="revenue-col-category">
+                                <span class="category-badge tourism">Tourism Experiences</span>
+                            </div>
+                            <div class="revenue-col-amount">KES 98,000</div>
+                            <div class="revenue-col-percentage">
+                                <span class="percentage-badge">4.0%</span>
+                            </div>
+                            <div class="revenue-col-chart">
+                                <div class="revenue-bar">
+                                    <div class="revenue-bar-fill" data-percentage="4" style="width: 4%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="revenue-row" data-category="Tourism">
+                            <div class="revenue-col-name">Bush Breakfasts</div>
+                            <div class="revenue-col-category">
+                                <span class="category-badge tourism">Tourism Experiences</span>
+                            </div>
+                            <div class="revenue-col-amount">KES 73,500</div>
+                            <div class="revenue-col-percentage">
+                                <span class="percentage-badge">3.0%</span>
+                            </div>
+                            <div class="revenue-col-chart">
+                                <div class="revenue-bar">
+                                    <div class="revenue-bar-fill" data-percentage="3" style="width: 3%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="revenue-row" data-category="Cultural">
+                            <div class="revenue-col-name">Manyatta Experiences</div>
+                            <div class="revenue-col-category">
+                                <span class="category-badge cultural">Cultural Experiences</span>
+                            </div>
+                            <div class="revenue-col-amount">KES 49,000</div>
+                            <div class="revenue-col-percentage">
+                                <span class="percentage-badge">2.0%</span>
+                            </div>
+                            <div class="revenue-col-chart">
+                                <div class="revenue-bar">
+                                    <div class="revenue-bar-fill" data-percentage="2" style="width: 2%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="revenue-row" data-category="Miscellaneous">
+                            <div class="revenue-col-name">Other Services</div>
+                            <div class="revenue-col-category">
+                                <span class="category-badge miscellaneous">Miscellaneous</span>
+                            </div>
+                            <div class="revenue-col-amount">KES 49,000</div>
+                            <div class="revenue-col-percentage">
+                                <span class="percentage-badge">2.0%</span>
+                            </div>
+                            <div class="revenue-col-chart">
+                                <div class="revenue-bar">
+                                    <div class="revenue-bar-fill" data-percentage="2" style="width: 2%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Revenue Trends Chart -->
+            <div class="chart-container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+                    <h2 style="margin: 0;">Revenue Trends Over Time</h2>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <div style="background: linear-gradient(135deg, #fef3e7 0%, #fde68a 100%); padding: 0.75rem 1.25rem; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                            <div style="font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Peak Month</div>
+                            <div style="font-size: 1.1rem; font-weight: 700; color: var(--secondary-color);">Nov: KES 330K</div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 0.75rem 1.25rem; border-radius: 8px; border-left: 4px solid #10b981;">
+                            <div style="font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Growth</div>
+                            <div style="font-size: 1.1rem; font-weight: 700; color: #10b981;">↑ 36.1%</div>
+                        </div>
+                    </div>
+                </div>
+                <canvas id="revenueTrendChart"></canvas>
+            </div>
+
+            <!-- Revenue by Category Chart -->
+            <div class="chart-container">
+                <h2>Revenue by Category</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <canvas id="categoryPieChart"></canvas>
+                    </div>
+                    <div>
+                        <canvas id="categoryBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Comparison Chart -->
+            <div class="chart-container">
+                <h2>Monthly Revenue Comparison</h2>
+                <canvas id="monthlyComparisonChart"></canvas>
+            </div>
+
+            <!-- Product Performance Chart -->
+            <div class="chart-container">
+                <h2>Top Products Performance</h2>
+                <canvas id="productPerformanceChart"></canvas>
+            </div>
+
+            <!-- Booking Trends Chart -->
+            <div class="chart-container">
+                <h2>Booking Trends vs Revenue</h2>
+                <canvas id="bookingTrendsChart"></canvas>
+            </div>
+
+            <!-- Insights -->
+            <div class="insights-section">
+                <h2>Key Insights & Recommendations</h2>
+                <div class="insights-grid">
+                    <div class="insight-item">
+                        <div class="insight-item-title">🏆 Top Revenue Generator</div>
+                        <div class="insight-item-text">Il Ngwesi Ecolodge accounts for 45% of total revenue. Consider investing in additional bandas or enhancing existing facilities to capitalize on this high-performing offering.</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-item-title">📈 Growing Market</div>
+                        <div class="insight-item-text">Marketplace products (beading, bags) show strong growth at 18% combined. Consider expanding product range and marketing efforts in this category.</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-item-title">💡 Opportunity</div>
+                        <div class="insight-item-text">Cultural experiences (Manyatta, workshops) represent only 2% of revenue but have high potential. Increased marketing and package deals could boost this category.</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-item-title">🎯 Marketing Focus</div>
+                        <div class="insight-item-text">Based on click-through rates, wildlife experiences receive the most interest. Consider creating bundled packages combining accommodation with guided walks and cultural experiences.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Chart.js configuration
+        Chart.defaults.font.family = 'Inter, sans-serif';
+        Chart.defaults.font.size = 12;
+        Chart.defaults.color = '#4b5563';
+
+        // Create gradient for chart
+        function createGradient(ctx, color1, color2) {
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, color1);
+            gradient.addColorStop(1, color2);
+            return gradient;
+        }
+
+        // Revenue data with enhanced styling
+        const revenueTrendCtx = document.getElementById('revenueTrendChart').getContext('2d');
+        const revenueGradient = createGradient(revenueTrendCtx, 'rgba(212, 165, 116, 0.4)', 'rgba(212, 165, 116, 0.05)');
+        const revenueBorderGradient = createGradient(revenueTrendCtx, '#d4a574', '#b8935f');
+
+        const revenueData = {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+                label: 'Revenue (KES)',
+                data: [180000, 195000, 210000, 225000, 240000, 255000, 270000, 285000, 300000, 315000, 330000, 245000],
+                borderColor: '#d4a574',
+                backgroundColor: revenueGradient,
+                borderWidth: 4,
+                fill: true,
+                tension: 0.5,
+                pointRadius: 6,
+                pointHoverRadius: 10,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#d4a574',
+                pointBorderWidth: 3,
+                pointHoverBackgroundColor: '#d4a574',
+                pointHoverBorderColor: '#ffffff',
+                pointHoverBorderWidth: 3,
+                shadowOffsetX: 0,
+                shadowOffsetY: 4,
+                shadowBlur: 10,
+                shadowColor: 'rgba(212, 165, 116, 0.3)'
+            }]
+        };
+
+        // Revenue Trends Line Chart - Enhanced
+        const revenueTrendChart = new Chart(revenueTrendCtx, {
+            type: 'line',
+            data: revenueData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                aspectRatio: 2.5,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20,
+                            font: {
+                                size: 14,
+                                weight: '600',
+                                family: 'Inter, sans-serif'
+                            },
+                            color: '#4b5563'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                        padding: 16,
+                        titleFont: { size: 15, weight: 'bold', family: 'Inter, sans-serif' },
+                        bodyFont: { size: 14, family: 'Inter, sans-serif' },
+                        titleColor: '#ffffff',
+                        bodyColor: '#ffffff',
+                        borderColor: '#d4a574',
+                        borderWidth: 2,
+                        cornerRadius: 8,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.parsed.y;
+                                const formatted = 'KES ' + value.toLocaleString();
+                                const change = context.dataIndex > 0 ? 
+                                    ((value - revenueData.datasets[0].data[context.dataIndex - 1]) / revenueData.datasets[0].data[context.dataIndex - 1] * 100).toFixed(1) : 0;
+                                return [
+                                    formatted,
+                                    change !== 0 ? (change > 0 ? '↑ ' : '↓ ') + Math.abs(change) + '% vs previous' : ''
+                                ];
+                            },
+                            title: function(context) {
+                                return context[0].label + ' Revenue';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            callback: function(value) {
+                                return 'KES ' + (value / 1000) + 'K';
+                            },
+                            font: {
+                                size: 12,
+                                family: 'Inter, sans-serif'
+                            },
+                            color: '#6b7280',
+                            padding: 10
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.06)',
+                            drawBorder: false,
+                            lineWidth: 1
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            font: {
+                                size: 12,
+                                weight: '500',
+                                family: 'Inter, sans-serif'
+                            },
+                            color: '#6b7280',
+                            padding: 12
+                        }
+                    }
+                },
+                elements: {
+                    point: {
+                        hoverRadius: 10
+                    }
+                }
+            },
+            plugins: [{
+                id: 'customGradient',
+                beforeDraw: (chart) => {
+                    const ctx = chart.canvas.getContext('2d');
+                    const chartArea = chart.chartArea;
+                    const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                    gradient.addColorStop(0, 'rgba(212, 165, 116, 0.4)');
+                    gradient.addColorStop(1, 'rgba(212, 165, 116, 0.05)');
+                    chart.data.datasets[0].backgroundColor = gradient;
+                }
+            }]
+        });
+
+        // Category Pie Chart
+        const categoryPieCtx = document.getElementById('categoryPieChart').getContext('2d');
+        const categoryPieChart = new Chart(categoryPieCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Accommodation', 'Marketplace', 'Tourism', 'Cultural'],
+                datasets: [{
+                    data: [63, 18, 15, 4],
+                    backgroundColor: [
+                        '#d4a574',
+                        '#2c5530',
+                        '#8b4513',
+                        '#b8935f'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Category Bar Chart
+        const categoryBarCtx = document.getElementById('categoryBarChart').getContext('2d');
+        const categoryBarChart = new Chart(categoryBarCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Accommodation', 'Marketplace', 'Tourism', 'Cultural'],
+                datasets: [{
+                    label: 'Revenue %',
+                    data: [63, 18, 15, 4],
+                    backgroundColor: [
+                        'rgba(212, 165, 116, 0.8)',
+                        'rgba(44, 85, 48, 0.8)',
+                        'rgba(139, 69, 19, 0.8)',
+                        'rgba(184, 147, 95, 0.8)'
+                    ],
+                    borderColor: [
+                        '#d4a574',
+                        '#2c5530',
+                        '#8b4513',
+                        '#b8935f'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y + '% of total revenue';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Monthly Comparison Chart
+        const monthlyComparisonCtx = document.getElementById('monthlyComparisonChart').getContext('2d');
+        const monthlyComparisonChart = new Chart(monthlyComparisonCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [
+                    {
+                        label: 'This Year',
+                        data: [180000, 195000, 210000, 225000, 240000, 255000],
+                        backgroundColor: 'rgba(212, 165, 116, 0.8)',
+                        borderColor: '#d4a574',
+                        borderWidth: 2,
+                        borderRadius: 6
+                    },
+                    {
+                        label: 'Last Year',
+                        data: [165000, 180000, 195000, 210000, 225000, 240000],
+                        backgroundColor: 'rgba(44, 85, 48, 0.6)',
+                        borderColor: '#2c5530',
+                        borderWidth: 2,
+                        borderRadius: 6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': KES ' + context.parsed.y.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'KES ' + (value / 1000) + 'K';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Product Performance Chart
+        const productPerformanceCtx = document.getElementById('productPerformanceChart').getContext('2d');
+        const productPerformanceChart = new Chart(productPerformanceCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Ecolodge', 'Homestays', 'Beading', 'Wildlife Walks', 'Bags', 'Cultural Evenings'],
+                datasets: [{
+                    label: 'Revenue (KES)',
+                    data: [1102500, 441000, 294000, 196000, 147000, 98000],
+                    backgroundColor: function(context) {
+                        const value = context.parsed.y;
+                        if (value > 800000) return 'rgba(212, 165, 116, 0.9)';
+                        if (value > 400000) return 'rgba(212, 165, 116, 0.7)';
+                        return 'rgba(212, 165, 116, 0.5)';
+                    },
+                    borderColor: '#d4a574',
+                    borderWidth: 2,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const percentage = ((context.parsed.x / 2450000) * 100).toFixed(1);
+                                return 'KES ' + context.parsed.x.toLocaleString() + ' (' + percentage + '%)';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'KES ' + (value / 1000) + 'K';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Booking Trends vs Revenue Chart
+        const bookingTrendsCtx = document.getElementById('bookingTrendsChart').getContext('2d');
+        const bookingTrendsChart = new Chart(bookingTrendsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [
+                    {
+                        label: 'Revenue (KES)',
+                        data: [180000, 195000, 210000, 225000, 240000, 255000],
+                        borderColor: '#d4a574',
+                        backgroundColor: 'rgba(212, 165, 116, 0.1)',
+                        borderWidth: 3,
+                        yAxisID: 'y',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Number of Bookings',
+                        data: [8, 9, 10, 11, 12, 13],
+                        borderColor: '#2c5530',
+                        backgroundColor: 'rgba(44, 85, 48, 0.1)',
+                        borderWidth: 3,
+                        yAxisID: 'y1',
+                        fill: true,
+                        tension: 0.4,
+                        borderDash: [5, 5]
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                if (context.datasetIndex === 0) {
+                                    return 'Revenue: KES ' + context.parsed.y.toLocaleString();
+                                } else {
+                                    return 'Bookings: ' + context.parsed.y;
+                                }
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'KES ' + (value / 1000) + 'K';
+                            }
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        beginAtZero: true,
+                        grid: {
+                            drawOnChartArea: false
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + ' bookings';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Time period selector with chart updates
+        document.querySelectorAll('.time-period-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.time-period-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const period = this.dataset.period;
+                
+                // Define data for different periods
+                let chartData, statsData;
+                
+                switch(period) {
+                    case 'month':
+                        chartData = {
+                            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                            values: [550000, 600000, 650000, 650000]
+                        };
+                        statsData = {
+                            totalRevenue: 2450000,
+                            totalBookings: 127,
+                            productsSold: 342,
+                            avgRevenue: 19291
+                        };
+                        break;
+                    case 'quarter':
+                        chartData = {
+                            labels: ['Month 1', 'Month 2', 'Month 3'],
+                            values: [180000, 195000, 210000]
+                        };
+                        statsData = {
+                            totalRevenue: 585000,
+                            totalBookings: 38,
+                            productsSold: 102,
+                            avgRevenue: 15395
+                        };
+                        break;
+                    case 'year':
+                        chartData = {
+                            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                            values: [585000, 720000, 855000, 290000]
+                        };
+                        statsData = {
+                            totalRevenue: 2450000,
+                            totalBookings: 127,
+                            productsSold: 342,
+                            avgRevenue: 19291
+                        };
+                        break;
+                    default: // 'all'
+                        chartData = {
+                            labels: revenueData.labels,
+                            values: revenueData.datasets[0].data
+                        };
+                        statsData = {
+                            totalRevenue: 2450000,
+                            totalBookings: 127,
+                            productsSold: 342,
+                            avgRevenue: 19291
+                        };
+                }
+                
+                // Update revenue trend chart
+                if (chartData && chartData.labels && chartData.values && typeof revenueTrendChart !== 'undefined') {
+                    try {
+                        revenueTrendChart.data.labels = chartData.labels;
+                        revenueTrendChart.data.datasets[0].data = chartData.values;
+                        revenueTrendChart.update('active');
+                    } catch (error) {
+                        console.error('Error updating chart:', error);
+                    }
+                }
+                
+                // Update summary stats
+                if (statsData) {
+                    const statBoxes = document.querySelectorAll('.stat-box');
+                    if (statBoxes.length >= 4) {
+                        // Total Revenue
+                        const revenueValue = statBoxes[0].querySelector('.stat-box-value');
+                        if (revenueValue) {
+                            revenueValue.textContent = 'KES ' + statsData.totalRevenue.toLocaleString();
+                        }
+                        
+                        // Total Bookings
+                        const bookingsValue = statBoxes[1].querySelector('.stat-box-value');
+                        if (bookingsValue) {
+                            bookingsValue.textContent = statsData.totalBookings.toLocaleString();
+                        }
+                        
+                        // Products Sold
+                        const productsValue = statBoxes[2].querySelector('.stat-box-value');
+                        if (productsValue) {
+                            productsValue.textContent = statsData.productsSold.toLocaleString();
+                        }
+                        
+                        // Avg Revenue/Booking
+                        const avgValue = statBoxes[3].querySelector('.stat-box-value');
+                        if (avgValue) {
+                            avgValue.textContent = 'KES ' + statsData.avgRevenue.toLocaleString();
+                        }
+                    }
+                }
+                
+                console.log('Period changed to:', period);
+            });
+        });
+
+        // Filter functionality - Fixed
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.dataset.filter.toLowerCase();
+                const rows = document.querySelectorAll('.revenue-row');
+                
+                rows.forEach(row => {
+                    if (filter === 'all') {
+                        row.classList.remove('hidden');
+                        row.style.display = '';
+                    } else {
+                        const category = row.dataset.category.toLowerCase();
+                        // Exact match or contains the filter
+                        if (category === filter || category.includes(filter)) {
+                            row.classList.remove('hidden');
+                            row.style.display = '';
+                        } else {
+                            row.classList.add('hidden');
+                            row.style.display = 'none';
+                        }
+                    }
+                });
+            });
+        });
+
+        // Animate revenue bars on load
+        window.addEventListener('load', function() {
+            document.querySelectorAll('.revenue-bar-fill').forEach((bar, index) => {
+                const percentage = bar.dataset.percentage;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.transition = 'width 1s ease';
+                    bar.style.width = percentage + '%';
+                }, index * 50);
+            });
+        });
+
+        // Add click functionality to revenue rows
+        document.querySelectorAll('.revenue-row').forEach(row => {
+            row.addEventListener('click', function() {
+                const nameEl = this.querySelector('.revenue-col-name');
+                const amountEl = this.querySelector('.revenue-col-amount');
+                const percentageEl = this.querySelector('.percentage-badge');
+                
+                if (nameEl && amountEl && percentageEl) {
+                    const name = nameEl.textContent.trim();
+                    const amount = amountEl.textContent.trim();
+                    const percentage = percentageEl.textContent.trim();
+                    
+                    // Highlight the row
+                    document.querySelectorAll('.revenue-row').forEach(r => {
+                        r.style.background = '';
+                        r.style.borderColor = '#e5e7eb';
+                    });
+                    this.style.background = '#fef3e7';
+                    this.style.borderColor = 'var(--primary-color)';
+                    
+                    console.log('Selected:', { name, amount, percentage });
+                    // In a real implementation, this could show detailed breakdown or update other charts
+                }
+            });
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Il Ngwesi Conservancy</h3>
+                    <p>People of Wildlife</p>
+                    <p>Community-owned and operated tourism</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: info@ilngwesi.com</p>
+                    <p>Phone: +254 (0) 741 770 540</p>
+                    <p>Tourism Steward: Available 7AM-7PM</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Location</h4>
+                    <p>Il Ngwesi Group Ranch</p>
+                    <p>Laikipia County, Kenya</p>
+                    <p>Via Lewa Wildlife Conservancy</p>
+                </div>
+                <div class="footer-section">
+                    <h4>System</h4>
+                    <p>Powered by Community Tourism Relay</p>
+                    <p>Low-tech, community-owned booking system</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Il Ngwesi Conservancy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

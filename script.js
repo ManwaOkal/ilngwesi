@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeGallery();
     initializeBookingForm();
     initializeModal();
+    initializeMarketplace();
+    initializeReviews();
 });
 
 // Navigation
@@ -497,5 +499,63 @@ function generateBookingCode() {
     const dateStr = date.toISOString().slice(0, 10).replace(/-/g, '');
     const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
     return `V${dateStr}-${random}`;
+}
+
+// Marketplace Tabs
+function initializeMarketplace() {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetTab = this.dataset.tab;
+
+            // Remove active class from all buttons and contents
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // Add active class to clicked button and corresponding content
+            this.classList.add('active');
+            const targetContent = document.getElementById(`${targetTab}-tab`);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        });
+    });
+}
+
+// Add to Cart / Book Experience
+function addToCart(productType) {
+    alert(`Added ${productType} to cart! (This is a demo - cart functionality will be implemented)`);
+}
+
+function bookExperience(experienceType) {
+    // Scroll to booking form and pre-select the experience
+    const bookingSection = document.getElementById('booking');
+    if (bookingSection) {
+        bookingSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    alert(`Redirecting to booking for ${experienceType} experience!`);
+}
+
+// Reviews Form
+function initializeReviews() {
+    const reviewForm = document.getElementById('reviewForm');
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                reviewerName: document.getElementById('reviewerName').value,
+                rating: document.getElementById('reviewRating').value,
+                reviewText: document.getElementById('reviewText').value
+            };
+
+            // In a real implementation, this would send to the backend
+            console.log('Review submitted:', formData);
+            alert('Thank you for your review! It will be published after moderation.');
+            reviewForm.reset();
+        });
+    }
 }
 
