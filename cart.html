@@ -506,15 +506,6 @@
             </svg>
             <span>Bags</span>
         </a>
-        <a href="cart.html" class="app-bottom-nav-item active" data-page="cart" style="position: relative;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="9" cy="21" r="1"></circle>
-                <circle cx="20" cy="21" r="1"></circle>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-            </svg>
-            <span>Cart</span>
-            <span id="bottomNavCartBadge" style="position: absolute; top: 0.25rem; right: 0.75rem; background: var(--primary-color); color: white; border-radius: 50%; width: 18px; height: 18px; display: none; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700;">0</span>
-        </a>
     </nav>
 
     <script>
@@ -523,41 +514,7 @@
             const bottomNav = document.getElementById('appBottomNav');
             if (!bottomNav) return;
             
-            // Update active state - cart should be active
-            function updateActiveNav() {
-                bottomNav.querySelectorAll('.app-bottom-nav-item').forEach(item => {
-                    item.classList.remove('active');
-                });
-                const cartItem = bottomNav.querySelector('[data-page="cart"]');
-                if (cartItem) cartItem.classList.add('active');
-            }
-            
-            // Update cart badge
-            function updateBottomNavCart() {
-                const badge = document.getElementById('bottomNavCartBadge');
-                if (badge && typeof cart !== 'undefined') {
-                    const count = cart.getItemCount();
-                    if (count > 0) {
-                        badge.textContent = count;
-                        badge.style.display = 'flex';
-                    } else {
-                        badge.style.display = 'none';
-                    }
-                }
-            }
-            
-            window.addEventListener('load', function() {
-                updateActiveNav();
-                updateBottomNavCart();
-            });
-            
-            if (typeof cart !== 'undefined') {
-                const originalUpdate = cart.updateCartUI;
-                cart.updateCartUI = function() {
-                    originalUpdate.call(this);
-                    updateBottomNavCart();
-                };
-            }
+            // No active state needed - cart removed from bottom nav
         })();
     </script>
 </body>
