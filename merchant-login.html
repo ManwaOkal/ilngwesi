@@ -247,13 +247,13 @@
             </div>
 
             <div class="login-error" id="loginError">
-                Invalid access code. Please try again.
+                Please enter your name to continue.
             </div>
 
             <form class="merchant-login-form" id="merchantLoginForm" onsubmit="handleMerchantLogin(event)">
                 <div class="form-group">
-                    <label for="merchantCode">Access Code</label>
-                    <input type="password" id="merchantCode" name="merchantCode" placeholder="Enter your access code" required autocomplete="off">
+                    <label for="merchantName">Name</label>
+                    <input type="text" id="merchantName" name="merchantName" placeholder="Enter your name" required autocomplete="name">
                 </div>
 
                 <button type="submit" class="btn-login">Login</button>
@@ -304,18 +304,19 @@
         function handleMerchantLogin(event) {
             event.preventDefault();
             
-            const code = document.getElementById('merchantCode').value;
+            const name = document.getElementById('merchantName').value.trim();
             const errorDiv = document.getElementById('loginError');
             
-            // For now, any code will log in
-            if (code && code.trim() !== '') {
+            // Any name will log in - no access code needed
+            if (name && name !== '') {
                 // Store merchant session
                 sessionStorage.setItem('merchantLoggedIn', 'true');
-                sessionStorage.setItem('merchantCode', code);
+                sessionStorage.setItem('merchantName', name);
                 
                 // Redirect to merchant dashboard
                 window.location.href = 'merchant-dashboard.html';
             } else {
+                errorDiv.textContent = 'Please enter your name.';
                 errorDiv.classList.add('show');
                 setTimeout(() => {
                     errorDiv.classList.remove('show');
