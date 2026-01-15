@@ -245,6 +245,48 @@ form, input, textarea, select {
     box-shadow: 0 4px 16px rgba(44, 85, 48, 0.3);
 }
 
+/* Book Now button - make it pop with primary color */
+.nav-menu .book-now-btn {
+    background: var(--gradient-primary) !important;
+    color: white !important;
+    padding: 0.625rem 1.5rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 12px rgba(212, 165, 116, 0.4) !important;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+.nav-menu .book-now-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.nav-menu .book-now-btn:hover::before {
+    left: 100%;
+}
+
+.nav-menu .book-now-btn:hover {
+    transform: translateY(-2px) scale(1.05) !important;
+    box-shadow: 0 6px 20px rgba(212, 165, 116, 0.6) !important;
+    background: var(--gradient-primary) !important;
+}
+
+.nav-menu .book-now-btn:active {
+    transform: translateY(0) scale(0.98) !important;
+}
+
+.nav-menu .book-now-btn::after {
+    display: none !important;
+}
+
 .mobile-menu-toggle {
     display: none;
     flex-direction: column;
@@ -467,6 +509,8 @@ form, input, textarea, select {
     border: none;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4);
+    font-weight: 600;
 }
 
 .btn-primary::before {
@@ -476,7 +520,7 @@ form, input, textarea, select {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
     transition: left 0.5s;
 }
 
@@ -487,7 +531,7 @@ form, input, textarea, select {
 .btn-primary:hover {
     background: var(--gradient-primary);
     transform: translateY(-3px);
-    box-shadow: 0 12px 25px rgba(212, 165, 116, 0.4);
+    box-shadow: 0 8px 25px rgba(212, 165, 116, 0.6);
 }
 
 .btn-primary:active {
@@ -2170,17 +2214,20 @@ textarea::placeholder {
     margin-bottom: 0.5rem;
     opacity: 0.9;
     line-height: 1.8;
+    color: white;
 }
 
 .footer-section a {
-    color: rgba(255, 255, 255, 0.9);
+    color: white;
     text-decoration: none;
     transition: all 0.3s;
+    opacity: 0.9;
 }
 
 .footer-section a:hover {
     color: var(--primary-light);
     padding-left: 5px;
+    opacity: 1;
 }
 
 .footer-bottom {
@@ -2191,6 +2238,20 @@ textarea::placeholder {
     position: relative;
     z-index: 1;
     margin-top: 2rem;
+}
+
+.footer-bottom p {
+    color: white;
+}
+
+/* Marketplace footer - ensure all text is white except headings */
+.marketplace-footer .footer-section p,
+.marketplace-footer .footer-section a {
+    color: white !important;
+}
+
+.marketplace-footer .footer-bottom p {
+    color: white !important;
 }
 
 /* Modal */
@@ -2440,6 +2501,19 @@ textarea::placeholder {
     .nav-menu a:active {
         background: rgba(212, 165, 116, 0.1);
         transform: translateX(4px);
+    }
+
+    .nav-menu .book-now-btn {
+        background: var(--gradient-primary) !important;
+        color: white !important;
+        box-shadow: 0 4px 12px rgba(212, 165, 116, 0.4) !important;
+        margin: 0.5rem 0 !important;
+        border-radius: 8px !important;
+    }
+
+    .nav-menu .book-now-btn:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(212, 165, 116, 0.6) !important;
     }
 
     .mobile-menu-toggle {
