@@ -488,22 +488,14 @@
                 width: 100%;
             }
 
+            /* Hamburger menu removed - cart icon now in its place */
             .marketplace-nav .mobile-menu-toggle {
-                display: flex;
-                flex-direction: column;
-                gap: 4px;
-                background: transparent;
-                border: none;
-                cursor: pointer;
-                padding: 0.5rem;
+                display: none !important;
             }
 
-            .marketplace-nav .mobile-menu-toggle span {
-                width: 25px;
-                height: 3px;
-                background: var(--secondary-color);
-                border-radius: 2px;
-                transition: all 0.3s ease;
+            .marketplace-nav .cart-icon-link {
+                display: flex;
+                margin-left: auto;
             }
         }
 
@@ -770,39 +762,7 @@
         }
         
         // Initialize mobile menu toggle
-        const mobileToggle = document.querySelector('.mobile-menu-toggle');
-        const navMenu = document.querySelector('.nav-menu');
-        
-        if (mobileToggle && navMenu) {
-            mobileToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                navMenu.classList.toggle('active');
-                
-                const spans = mobileToggle.querySelectorAll('span');
-                if (navMenu.classList.contains('active')) {
-                    spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                    spans[1].style.opacity = '0';
-                    spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    spans[0].style.transform = 'none';
-                    spans[1].style.opacity = '1';
-                    spans[2].style.transform = 'none';
-                    document.body.style.overflow = '';
-                }
-            });
-            
-            document.addEventListener('click', function(e) {
-                if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('active')) {
-                    navMenu.classList.remove('active');
-                    const spans = mobileToggle.querySelectorAll('span');
-                    spans[0].style.transform = 'none';
-                    spans[1].style.opacity = '1';
-                    spans[2].style.transform = 'none';
-                    document.body.style.overflow = '';
-                }
-            });
-        }
+        // Mobile menu toggle removed - cart icon now in its place
     </script>
     <script src="script.js"></script>
 
