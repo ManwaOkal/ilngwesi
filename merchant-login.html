@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description" content="Merchant Login - Maasai Marketplace">
+    <meta name="theme-color" content="#d4a574">
+    <title>Merchant Login - Maasai Marketplace</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .marketplace-nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-bottom: 2px solid rgba(212, 165, 116, 0.2);
+        }
+
+        .marketplace-nav .nav-brand h1 {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .marketplace-nav .nav-brand .tagline {
+            color: var(--text-light);
+            font-size: 0.75rem;
+        }
+
+        .merchant-login-container {
+            min-height: calc(100vh - 200px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.1) 0%, rgba(44, 85, 48, 0.05) 100%);
+            padding: 4rem 1rem 2rem;
+            margin-top: 80px;
+        }
+
+        .merchant-login-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            border: 2px solid rgba(212, 165, 116, 0.2);
+            max-width: 450px;
+            width: 100%;
+        }
+
+        .merchant-login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .merchant-login-header h1 {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .merchant-login-header p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .merchant-login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            padding: 0.875rem 1rem;
+            border: 2px solid rgba(212, 165, 116, 0.3);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(212, 165, 116, 0.15);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(212, 165, 116, 0.3);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(212, 165, 116, 0.4);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .login-error {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .back-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .merchant-login-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .merchant-login-header h1 {
+                font-size: 1.75rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .marketplace-nav .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                display: none;
+                z-index: 999;
+                border-top: 2px solid rgba(212, 165, 116, 0.2);
+            }
+
+            .marketplace-nav .nav-menu.active {
+                display: flex;
+            }
+
+            .marketplace-nav .nav-menu li {
+                width: 100%;
+            }
+
+            .marketplace-nav .nav-menu a {
+                display: block;
+                padding: 0.75rem 0;
+                border-bottom: 1px solid rgba(212, 165, 116, 0.1);
+                width: 100%;
+            }
+
+            .marketplace-nav .mobile-menu-toggle {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                padding: 0.5rem;
+            }
+
+            .marketplace-nav .mobile-menu-toggle span {
+                width: 25px;
+                height: 3px;
+                background: var(--secondary-color);
+                border-radius: 2px;
+                transition: all 0.3s ease;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar marketplace-nav">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>Maasai Marketplace</h1>
+                <span class="tagline">Authentic Handmade Products</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="marketplace.html">Shop</a></li>
+                <li><a href="marketplace.html#jewelry">Jewelry</a></li>
+                <li><a href="marketplace.html#bags">Bags</a></li>
+                <li><a href="marketplace.html#clothing">Clothing</a></li>
+                <li><a href="marketplace.html#home">Home Decor</a></li>
+                <li><a href="marketplace.html#art">Art</a></li>
+                <li>
+                    <a href="cart.html" class="cart-icon-link" style="position: relative;">
+                        🛒 Cart
+                        <span id="cartBadge" class="cart-badge" style="display: none;">0</span>
+                    </a>
+                </li>
+            </ul>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="merchant-login-container">
+        <div class="merchant-login-card">
+            <div class="merchant-login-header">
+                <h1>Merchant Portal</h1>
+                <p>Login to manage your products</p>
+            </div>
+
+            <div class="login-error" id="loginError">
+                Invalid access code. Please try again.
+            </div>
+
+            <form class="merchant-login-form" id="merchantLoginForm" onsubmit="handleMerchantLogin(event)">
+                <div class="form-group">
+                    <label for="merchantCode">Access Code</label>
+                    <input type="password" id="merchantCode" name="merchantCode" placeholder="Enter your access code" required autocomplete="off">
+                </div>
+
+                <button type="submit" class="btn-login">Login</button>
+            </form>
+
+            <div class="back-link">
+                <a href="marketplace.html">← Back to Marketplace</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer marketplace-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Maasai Marketplace</h3>
+                    <p>Authentic Handmade Products</p>
+                    <p>Supporting Il Ngwesi Community</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Shop</h4>
+                    <p><a href="marketplace.html" style="color: var(--text-light); text-decoration: none;">All Products</a></p>
+                    <p><a href="marketplace.html#jewelry" style="color: var(--text-light); text-decoration: none;">Jewelry</a></p>
+                    <p><a href="marketplace.html#clothing" style="color: var(--text-light); text-decoration: none;">Clothing</a></p>
+                    <p><a href="marketplace.html#home" style="color: var(--text-light); text-decoration: none;">Home Decor</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <p>Email: marketplace@ilngwesi.com</p>
+                    <p>Phone: +254 (0) 741 770 540</p>
+                    <p>Delivery: Within Kenya Only</p>
+                </div>
+                <div class="footer-section">
+                    <h4>About</h4>
+                    <p><a href="index.html" style="color: var(--text-light); text-decoration: none;">Il Ngwesi Conservancy</a></p>
+                    <p>Community-owned marketplace</p>
+                    <p>Every purchase supports conservation</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Maasai Marketplace - Il Ngwesi Conservancy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function handleMerchantLogin(event) {
+            event.preventDefault();
+            
+            const code = document.getElementById('merchantCode').value;
+            const errorDiv = document.getElementById('loginError');
+            
+            // For now, any code will log in
+            if (code && code.trim() !== '') {
+                // Store merchant session
+                sessionStorage.setItem('merchantLoggedIn', 'true');
+                sessionStorage.setItem('merchantCode', code);
+                
+                // Redirect to merchant dashboard
+                window.location.href = 'merchant-dashboard.html';
+            } else {
+                errorDiv.classList.add('show');
+                setTimeout(() => {
+                    errorDiv.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        // Check if already logged in
+        if (sessionStorage.getItem('merchantLoggedIn') === 'true') {
+            window.location.href = 'merchant-dashboard.html';
+        }
+
+        // Initialize mobile menu toggle
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (mobileToggle && navMenu) {
+            mobileToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                navMenu.classList.toggle('active');
+                
+                const spans = mobileToggle.querySelectorAll('span');
+                if (navMenu.classList.contains('active')) {
+                    spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                    spans[1].style.opacity = '0';
+                    spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    const spans = mobileToggle.querySelectorAll('span');
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+    </script>
+    <script src="cart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

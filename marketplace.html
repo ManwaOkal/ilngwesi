@@ -11,35 +11,97 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        .marketplace-nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-bottom: 2px solid rgba(212, 165, 116, 0.2);
+        }
+
+        .marketplace-nav .nav-brand h1 {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .marketplace-nav .nav-brand .tagline {
+            color: var(--text-light);
+            font-size: 0.75rem;
+        }
+
+        .marketplace-nav .cart-icon-link {
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
+            border-radius: 8px;
+            background: rgba(212, 165, 116, 0.1);
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .marketplace-nav .cart-icon-link:hover {
+            background: rgba(212, 165, 116, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .marketplace-nav .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            min-width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border: 2px solid white;
+            padding: 0 4px;
+            box-sizing: border-box;
+            white-space: nowrap;
+        }
+
         .marketplace-hero {
             background: linear-gradient(135deg, rgba(212, 165, 116, 0.1) 0%, rgba(44, 85, 48, 0.05) 100%);
-            padding: 4rem 0 3rem;
-            margin-top: 80px;
+            padding: 2rem 1rem 1.5rem;
+            margin-top: 70px;
             text-align: center;
         }
 
         .marketplace-hero h1 {
-            font-size: 3rem;
+            font-size: 1.75rem;
             font-weight: 800;
             background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
         }
 
         .marketplace-hero p {
-            font-size: 1.25rem;
+            font-size: 1rem;
             color: #6b7280;
             max-width: 700px;
             margin: 0 auto;
+            padding: 0 1rem;
+            line-height: 1.6;
         }
 
         .marketplace-filters {
             background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            margin: 2rem auto;
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 1rem;
             max-width: 1200px;
             box-shadow: 0 4px 16px rgba(0,0,0,0.08);
             border: 1px solid rgba(212, 165, 116, 0.15);
@@ -98,9 +160,9 @@
 
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            padding: 2rem 0;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+            padding: 1rem;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -139,14 +201,14 @@
 
         .product-image {
             width: 100%;
-            height: 280px;
+            height: 220px;
             object-fit: cover;
             background: #f3f4f6;
             display: block;
         }
 
         .product-info {
-            padding: 1.5rem;
+            padding: 1.25rem;
         }
 
         .product-category {
@@ -163,7 +225,7 @@
         }
 
         .product-name {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: var(--secondary-color);
             margin-bottom: 0.5rem;
@@ -172,7 +234,7 @@
 
         .product-description {
             color: #6b7280;
-            font-size: 0.9375rem;
+            font-size: 0.875rem;
             line-height: 1.6;
             margin-bottom: 1rem;
             display: -webkit-box;
@@ -182,7 +244,7 @@
         }
 
         .product-price {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 800;
             background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
             -webkit-background-clip: text;
@@ -193,21 +255,36 @@
 
         .product-actions {
             display: flex;
-            gap: 0.75rem;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
         .btn-add-cart {
             flex: 1;
-            padding: 0.875rem 1.5rem;
+            width: 100%;
+            padding: 0.75rem 1rem;
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
             border-radius: 12px;
             font-weight: 700;
-            font-size: 0.9375rem;
+            font-size: 0.875rem;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 4px 16px rgba(212, 165, 116, 0.3);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            min-height: 44px;
+        }
+
+        .btn-add-cart::before {
+            content: '🛒';
+            font-size: 1rem;
+            transition: transform 0.3s ease;
         }
 
         .btn-add-cart:hover {
@@ -215,21 +292,77 @@
             box-shadow: 0 6px 24px rgba(212, 165, 116, 0.4);
         }
 
+        .btn-add-cart:hover::before {
+            transform: scale(1.2) rotate(-10deg);
+        }
+
+        .btn-add-cart:active {
+            transform: translateY(0) scale(0.95);
+            box-shadow: 0 2px 8px rgba(212, 165, 116, 0.3);
+        }
+
+        .btn-add-cart.added {
+            background: var(--success-color);
+            animation: buttonSuccess 0.6s ease;
+        }
+
+        @keyframes buttonSuccess {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); background: var(--success-color); }
+            100% { transform: scale(1); }
+        }
+
         .btn-view {
-            padding: 0.875rem 1.25rem;
+            width: 100%;
+            padding: 0.75rem 1rem;
             background: white;
             color: var(--primary-color);
             border: 2px solid var(--primary-color);
             border-radius: 12px;
             font-weight: 600;
-            font-size: 0.9375rem;
+            font-size: 0.875rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            min-height: 44px;
+        }
+
+
+        .btn-view::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(212, 165, 116, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
         }
 
         .btn-view:hover {
             background: var(--primary-color);
             color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.3);
+        }
+
+        .btn-view:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+
+
+        .btn-view:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(212, 165, 116, 0.2);
         }
 
         .no-products {
@@ -238,41 +371,348 @@
             color: #6b7280;
         }
 
-        @media (max-width: 768px) {
+        /* Mobile First - Base styles are mobile */
+        
+        /* Small Mobile (up to 480px) */
+        @media (max-width: 480px) {
+            .marketplace-hero {
+                padding: 2rem 1rem 1.5rem;
+                margin-top: 70px;
+            }
+
             .marketplace-hero h1 {
-                font-size: 2rem;
+                font-size: 1.75rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .marketplace-hero p {
+                font-size: 1rem;
+                padding: 0 1rem;
+            }
+
+            .marketplace-filters {
+                padding: 1rem;
+                margin: 1rem;
+                border-radius: 12px;
+            }
+
+            .filter-label {
+                font-size: 0.8rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .filter-buttons {
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+                border-radius: 20px;
             }
 
             .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 1.5rem;
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
                 padding: 1rem;
+            }
+
+            .product-card {
+                border-radius: 12px;
+            }
+
+            .product-image {
+                height: 220px;
+            }
+
+            .product-info {
+                padding: 1.25rem;
+            }
+
+            .product-name {
+                font-size: 1.1rem;
+            }
+
+            .product-price {
+                font-size: 1.25rem;
+            }
+
+            .product-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .btn-add-cart,
+            .btn-view {
+                width: 100%;
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+            }
+
+            .marketplace-nav .nav-brand h1 {
+                font-size: 1.25rem;
+            }
+
+            .marketplace-nav .nav-brand .tagline {
+                font-size: 0.65rem;
+            }
+
+            .marketplace-nav .nav-menu {
+                gap: 0.25rem;
+            }
+
+            .marketplace-nav .nav-menu a {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.75rem;
+            }
+
+            .marketplace-nav .cart-icon-link {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Mobile (481px to 768px) */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .marketplace-hero {
+                padding: 3rem 1.5rem 2rem;
+                margin-top: 75px;
+            }
+
+            .marketplace-hero h1 {
+                font-size: 2.25rem;
+            }
+
+            .marketplace-hero p {
+                font-size: 1.1rem;
             }
 
             .marketplace-filters {
                 padding: 1.5rem;
-                margin: 1rem;
+                margin: 1.5rem 1rem;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: 1.5rem;
+                padding: 1.5rem 1rem;
+            }
+
+            .product-image {
+                height: 250px;
+            }
+
+            .product-actions {
+                flex-direction: row;
+            }
+
+            .btn-add-cart,
+            .btn-view {
+                font-size: 0.875rem;
+                padding: 0.75rem 1.25rem;
+            }
+        }
+
+        /* Tablet (769px to 1024px) */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .marketplace-hero {
+                padding: 3.5rem 2rem 2.5rem;
+            }
+
+            .marketplace-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+                gap: 1.75rem;
+                padding: 2rem 1.5rem;
+            }
+
+            .marketplace-filters {
+                padding: 1.75rem;
+                margin: 2rem auto;
+            }
+        }
+
+        /* Desktop (1025px and above) */
+        @media (min-width: 1025px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
+        /* Large Desktop (1200px and above) */
+        @media (min-width: 1200px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        /* Navigation Responsive */
+        @media (max-width: 968px) {
+            .marketplace-nav .nav-menu {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .marketplace-nav .nav-menu li {
+                flex: 0 0 auto;
+            }
+        }
+
+        /* Mobile Menu Styles for Marketplace */
+        @media (max-width: 768px) {
+            .marketplace-nav .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                display: none;
+                z-index: 999;
+                border-top: 2px solid rgba(212, 165, 116, 0.2);
+            }
+
+            .marketplace-nav .nav-menu.active {
+                display: flex;
+            }
+
+            .marketplace-nav .nav-menu li {
+                width: 100%;
+            }
+
+            .marketplace-nav .nav-menu a {
+                display: block;
+                padding: 0.75rem 0;
+                border-bottom: 1px solid rgba(212, 165, 116, 0.1);
+                width: 100%;
+            }
+
+            .marketplace-nav .mobile-menu-toggle {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                padding: 0.5rem;
+            }
+
+            .marketplace-nav .mobile-menu-toggle span {
+                width: 25px;
+                height: 3px;
+                background: var(--secondary-color);
+                border-radius: 2px;
+                transition: all 0.3s ease;
+            }
+        }
+
+        /* Touch-friendly on mobile */
+        @media (max-width: 768px) {
+            .product-card:hover {
+                transform: none;
+            }
+
+            .product-card:active {
+                transform: scale(0.98);
+            }
+
+            .btn-add-cart:hover,
+            .btn-view:hover {
+                transform: none;
+            }
+
+            .btn-add-cart:active,
+            .btn-view:active {
+                transform: scale(0.95);
+            }
+
+            .filter-btn:hover {
+                transform: none;
+            }
+
+            .filter-btn:active {
+                transform: scale(0.95);
+            }
+
+            .marketplace-footer .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .marketplace-footer .footer-section {
+                text-align: center;
+            }
+
+            .marketplace-footer .footer-bottom {
+                text-align: center;
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Tablet footer */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .marketplace-footer .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Ensure container is responsive */
+        .marketplace-hero .container,
+        .marketplace-filters,
+        .products-grid {
+            width: 100%;
+            max-width: 100%;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            box-sizing: border-box;
+        }
+
+        @media (min-width: 640px) {
+            .marketplace-hero .container,
+            .marketplace-filters,
+            .products-grid {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .marketplace-hero .container,
+            .marketplace-filters,
+            .products-grid {
+                padding-left: 2rem;
+                padding-right: 2rem;
             }
         }
     </style>
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar marketplace-nav">
         <div class="container">
             <div class="nav-brand">
-                <h1>Il Ngwesi</h1>
-                <span class="tagline">People of Wildlife</span>
+                <h1>Maasai Marketplace</h1>
+                <span class="tagline">Authentic Handmade Products</span>
             </div>
             <ul class="nav-menu">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#about">About</a></li>
-                <li><a href="index.html#services">Services</a></li>
-                <li><a href="marketplace.html" class="btn-primary">Marketplace</a></li>
-                <li><a href="index.html#gallery">Gallery</a></li>
-                <li><a href="index.html#reviews">Reviews</a></li>
-                <li><a href="index.html#booking" class="btn-primary">Book Now</a></li>
-                <li><a href="login.html" class="btn-secondary">Community Login</a></li>
+                <li><a href="marketplace.html">Shop</a></li>
+                <li><a href="marketplace.html#jewelry">Jewelry</a></li>
+                <li><a href="marketplace.html#bags">Bags</a></li>
+                <li><a href="marketplace.html#clothing">Clothing</a></li>
+                <li><a href="marketplace.html#home">Home Decor</a></li>
+                <li><a href="marketplace.html#art">Art</a></li>
+                <li>
+                    <a href="cart.html" class="cart-icon-link" style="position: relative;">
+                        🛒 Cart
+                        <span id="cartBadge" class="cart-badge" style="display: none;">0</span>
+                    </a>
+                </li>
             </ul>
             <button class="mobile-menu-toggle" aria-label="Toggle menu">
                 <span></span>
@@ -289,7 +729,7 @@
             <p>Authentic handmade products crafted by the Il Ngwesi community. Every purchase supports local artisans and conservation efforts.</p>
             <div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: rgba(212, 165, 116, 0.1); border-left: 4px solid var(--primary-color); border-radius: 8px; display: inline-block;">
                 <p style="margin: 0; font-size: 0.9375rem; color: var(--secondary-color); font-weight: 600;">
-                    📦 Delivery available only within Kenya
+                    📦 Free shipping on orders over KES 10,000 | Delivery within Kenya only
                 </p>
             </div>
         </div>
@@ -323,40 +763,50 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer marketplace-footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Il Ngwesi Conservancy</h3>
-                    <p>People of Wildlife</p>
-                    <p>Community-owned and operated tourism</p>
+                    <h3>Maasai Marketplace</h3>
+                    <p>Authentic Handmade Products</p>
+                    <p>Supporting Il Ngwesi Community</p>
                 </div>
                 <div class="footer-section">
-                    <h4>Contact</h4>
-                    <p>Email: info@ilngwesi.com</p>
+                    <h4>Shop</h4>
+                    <p><a href="marketplace.html" style="color: var(--text-light); text-decoration: none;">All Products</a></p>
+                    <p><a href="marketplace.html#jewelry" style="color: var(--text-light); text-decoration: none;">Jewelry</a></p>
+                    <p><a href="marketplace.html#clothing" style="color: var(--text-light); text-decoration: none;">Clothing</a></p>
+                    <p><a href="marketplace.html#home" style="color: var(--text-light); text-decoration: none;">Home Decor</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <p>Email: marketplace@ilngwesi.com</p>
                     <p>Phone: +254 (0) 741 770 540</p>
-                    <p>Tourism Steward: Available 7AM-7PM</p>
+                    <p>Delivery: Within Kenya Only</p>
                 </div>
                 <div class="footer-section">
-                    <h4>Location</h4>
-                    <p>Il Ngwesi Group Ranch</p>
-                    <p>Laikipia County, Kenya</p>
-                    <p>Via Lewa Wildlife Conservancy</p>
-                </div>
-                <div class="footer-section">
-                    <h4>System</h4>
-                    <p>Powered by Community Tourism Relay</p>
-                    <p>Low-tech, community-owned booking system</p>
+                    <h4>About</h4>
+                    <p><a href="index.html" style="color: var(--text-light); text-decoration: none;">Il Ngwesi Conservancy</a></p>
+                    <p>Community-owned marketplace</p>
+                    <p>Every purchase supports conservation</p>
+                    <p style="margin-top: 1rem;"><a href="merchant-login.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Merchant Login →</a></p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Il Ngwesi Conservancy. All rights reserved.</p>
+                <p>&copy; 2024 Maasai Marketplace - Il Ngwesi Conservancy. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
+    <script src="cart.js"></script>
     <script src="script.js"></script>
     <script>
+        // Ensure cart is available
+        if (typeof cart === 'undefined') {
+            console.error('Cart failed to initialize');
+        }
+        
+        // Store products in localStorage for use in product detail page
         // Product data based on Maasai collection - using actual scraped images
         const products = [
             {
@@ -705,6 +1155,9 @@
             }
         ];
 
+        // Store products in localStorage
+        localStorage.setItem('marketplaceProducts', JSON.stringify(products));
+
         // Render products
         function renderProducts(filterCategory = 'all') {
             const productsGrid = document.getElementById('productsGrid');
@@ -755,28 +1208,120 @@
                 
                 const category = this.dataset.category;
                 renderProducts(category);
+                
+                // Scroll to products if on mobile
+                if (window.innerWidth < 768) {
+                    document.getElementById('productsGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             });
         });
 
+        // Handle category links from navigation
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash && ['jewelry', 'bags', 'clothing', 'home', 'art'].includes(hash)) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                const btn = document.querySelector(`.filter-btn[data-category="${hash}"]`);
+                if (btn) {
+                    btn.classList.add('active');
+                    renderProducts(hash);
+                }
+            }
+        });
+
+        // Check hash on page load
+        if (window.location.hash) {
+            const hash = window.location.hash.substring(1);
+            if (hash && ['jewelry', 'bags', 'clothing', 'home', 'art'].includes(hash)) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                const btn = document.querySelector(`.filter-btn[data-category="${hash}"]`);
+                if (btn) {
+                    btn.classList.add('active');
+                    renderProducts(hash);
+                }
+            }
+        }
+
         // Cart and product view functions
         function addToCart(productId) {
+            // Wait for cart to be available
+            if (typeof cart === 'undefined') {
+                console.error('Cart not loaded. Please refresh the page.');
+                alert('Cart system is loading. Please try again in a moment.');
+                return;
+            }
+            
             const product = products.find(p => p.id === productId);
             if (product) {
-                alert(`Added "${product.name}" to cart! (KES ${product.price.toLocaleString()})`);
-                // In a real implementation, this would add to a cart system
+                try {
+                    // Find the button that was clicked
+                    const button = event.target.closest('.btn-add-cart');
+                    if (button) {
+                        // Add visual feedback to button
+                        button.classList.add('added');
+                        const originalText = button.innerHTML;
+                        button.innerHTML = '✓ Added!';
+                        
+                        setTimeout(() => {
+                            button.classList.remove('added');
+                            button.innerHTML = originalText;
+                        }, 2000);
+                    }
+                    
+                    cart.addItem(product);
+                } catch (error) {
+                    console.error('Error adding to cart:', error);
+                    alert('Error adding product to cart. Please try again.');
+                }
+            } else {
+                console.error('Product not found:', productId);
+                alert('Product not found.');
             }
         }
 
         function viewProduct(productId) {
-            const product = products.find(p => p.id === productId);
-            if (product) {
-                // In a real implementation, this would open a product detail modal/page
-                alert(`Viewing: ${product.name}\n\n${product.description}\n\nPrice: KES ${product.price.toLocaleString()}`);
-            }
+            window.location.href = `product.html?id=${productId}`;
         }
 
         // Initialize
         renderProducts();
+        
+        // Initialize mobile menu toggle
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (mobileToggle && navMenu) {
+            mobileToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                navMenu.classList.toggle('active');
+                
+                // Animate hamburger icon
+                const spans = mobileToggle.querySelectorAll('span');
+                if (navMenu.classList.contains('active')) {
+                    spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                    spans[1].style.opacity = '0';
+                    spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    const spans = mobileToggle.querySelectorAll('span');
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+        }
     </script>
 </body>
 </html>

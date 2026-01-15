@@ -13,6 +13,55 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .navbar .cart-icon-link {
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
+            border-radius: 8px;
+            background: rgba(212, 165, 116, 0.1);
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .navbar .cart-icon-link:hover {
+            background: rgba(212, 165, 116, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .navbar .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            min-width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border: 2px solid white;
+            padding: 0 4px;
+            box-sizing: border-box;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            .navbar .cart-icon-link {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -28,8 +77,14 @@
                 <li><a href="marketplace.html">Marketplace</a></li>
                 <li><a href="#gallery">Gallery</a></li>
                 <li><a href="#reviews">Reviews</a></li>
-                <li><a href="#booking" class="btn-primary">Book Now</a></li>
-                <li><a href="login.html" class="btn-secondary">Community Login</a></li>
+                <li><a href="#booking">Book Now</a></li>
+                <li><a href="community.html" class="btn-secondary">Community Login</a></li>
+                <li>
+                    <a href="cart.html" class="cart-icon-link" style="position: relative;">
+                        🛒 Cart
+                        <span id="cartBadge" class="cart-badge" style="display: none;">0</span>
+                    </a>
+                </li>
             </ul>
             <button class="mobile-menu-toggle" aria-label="Toggle menu">
                 <span></span>
@@ -59,258 +114,31 @@
         <div class="hero-overlay"></div>
     </section>
 
-    <!-- How It Works Section -->
-    <section id="how-it-works" class="section how-it-works">
-        <div class="container">
-            <h2 class="section-title">How Community Tourism Relay Works</h2>
-            <p class="section-subtitle">A transparent, community-owned system connecting you directly with local experiences</p>
-            
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-number">1</div>
-                    <h3>Book Online</h3>
-                    <p>Choose your preferred dates and services. Our low-tech relay system ensures your booking reaches the community even without reliable internet.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">2</div>
-                    <h3>Community Confirmation</h3>
-                    <p>Our Tourism Steward receives your booking via SMS and confirms availability with local guides and homestays within hours.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">3</div>
-                    <h3>Secure Payment</h3>
-                    <p>Pay via M-Pesa directly to the community. Your payment is automatically and transparently distributed: 40% guide, 35% homestay, 20% conservancy fund, 5% steward.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">4</div>
-                    <h3>Authentic Experience</h3>
-                    <p>Enjoy wildlife viewing, cultural experiences, and homestays while directly supporting the community that protects this land.</p>
-                </div>
-            </div>
-
-            <div class="transparency-box">
-                <h3>💰 Transparent Revenue Sharing</h3>
-                <p class="transparency-intro">Every payment is automatically and transparently distributed to ensure fair compensation for all community members.</p>
-                <div class="revenue-breakdown">
-                    <div class="revenue-item">
-                        <div class="revenue-icon">👨‍🏫</div>
-                        <span class="percentage">40%</span>
-                        <span class="label">Local Guide</span>
-                    </div>
-                    <div class="revenue-item">
-                        <div class="revenue-icon">🏠</div>
-                        <span class="percentage">35%</span>
-                        <span class="label">Homestay Provider</span>
-                    </div>
-                    <div class="revenue-item">
-                        <div class="revenue-icon">🦏</div>
-                        <span class="percentage">20%</span>
-                        <span class="label">Conservancy Fund</span>
-                    </div>
-                    <div class="revenue-item">
-                        <div class="revenue-icon">📱</div>
-                        <span class="percentage">5%</span>
-                        <span class="label">Steward Honorarium</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Impact Statistics Section -->
-    <section class="section stats-section">
-        <div class="container">
-            <h2 class="section-title">Our Impact</h2>
-            <p class="section-subtitle">Supporting conservation and community through sustainable tourism</p>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">🦏</div>
-                    <div class="stat-number" data-target="500">0</div>
-                    <div class="stat-label">Wildlife Protected</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">👥</div>
-                    <div class="stat-number" data-target="200">0</div>
-                    <div class="stat-label">Community Members Supported</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">🌍</div>
-                    <div class="stat-number" data-target="15000">0</div>
-                    <div class="stat-label">Hectares Conserved</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">⭐</div>
-                    <div class="stat-number" data-target="98">0</div>
-                    <div class="stat-label">% Visitor Satisfaction</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="section services">
-        <div class="container">
-            <h2 class="section-title">Our Services</h2>
-            <p class="section-subtitle">Experience the best of Il Ngwesi Conservancy</p>
-            
-            <div class="services-grid">
-                <!-- Il Ngwesi Ecolodge -->
-                <div class="service-card">
-                    <div class="service-image" style="background-image: url('images/content_visit_2016_04_04_staying-at-il-ngwesi_Main-House-Night-9.jpg')"></div>
-                    <div class="service-content">
-                        <h3>Il Ngwesi Ecolodge</h3>
-                        <p>Stay at the award-winning ecolodge overlooking the conservancy. Luxurious accommodation with stunning views and exceptional service.</p>
-                        <div class="service-price">From KES 15,000 / night</div>
-                        <ul class="service-features">
-                            <li>6 exclusive bandas (cottages)</li>
-                            <li>Infinity pool with wildlife viewing</li>
-                            <li>Gourmet dining with local ingredients</li>
-                            <li>Game drives and guided walks</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Community Homestays -->
-                <div class="service-card">
-                    <div class="service-image" style="background-image: url('images/content_visit_2016_04_04_staying-at-il-ngwesi_Manyatta-Donkey-8.jpg')"></div>
-                    <div class="service-content">
-                        <h3>Community Homestays</h3>
-                        <p>Stay with local families in traditional manyattas. Experience authentic Maasai hospitality and culture.</p>
-                        <div class="service-price">KES 1,500 / night</div>
-                        <ul class="service-features">
-                            <li>Traditional accommodation</li>
-                            <li>Home-cooked meals</li>
-                            <li>Cultural immersion</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Guided Wildlife Walks -->
-                <div class="service-card">
-                    <div class="service-image" style="background-image: url('images/content_visit_2016_04_04_staying-at-il-ngwesi_Elephants-at-waterhole.jpg')"></div>
-                    <div class="service-content">
-                        <h3>Guided Wildlife Walks</h3>
-                        <p>Explore the conservancy on foot with experienced Maasai guides. Morning and afternoon walks available.</p>
-                        <div class="service-price">KES 500 / person</div>
-                        <ul class="service-features">
-                            <li>2-3 hour guided walks</li>
-                            <li>Wildlife viewing opportunities</li>
-                            <li>Cultural insights from guides</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Cultural Evenings -->
-                <div class="service-card">
-                    <div class="service-image" style="background-image: url('images/content_visit_2016_04_04_staying-at-il-ngwesi_Manyatta-Dancing-7c.jpg')"></div>
-                    <div class="service-content">
-                        <h3>Cultural Evenings</h3>
-                        <p>Join traditional Maasai dancing, learn about hunting techniques, honey collecting, and local customs.</p>
-                        <div class="service-price">KES 750 / person</div>
-                        <ul class="service-features">
-                            <li>Traditional music and dance</li>
-                            <li>Cultural demonstrations</li>
-                            <li>Community interaction</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Bush Breakfasts -->
-                <div class="service-card">
-                    <div class="service-image" style="background-image: url('images/content_visit_2016_04_04_staying-at-il-ngwesi_Breakfast-Room-1-8.jpg')"></div>
-                    <div class="service-content">
-                        <h3>Bush Breakfasts & Dining</h3>
-                        <p>Enjoy breakfast by the Ngare Ndare River or in the ecolodge's beautiful breakfast room. Gourmet meals featuring local ingredients.</p>
-                        <div class="service-price">KES 1,200 / person</div>
-                        <ul class="service-features">
-                            <li>Scenic locations</li>
-                            <li>Fresh local cuisine</li>
-                            <li>Wildlife viewing during meal</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Pool & Relaxation -->
-                <div class="service-card">
-                    <div class="service-image" style="background-image: url('images/content_visit_2016_04_04_staying-at-il-ngwesi_Pool-Jan-2016-8.jpg')"></div>
-                    <div class="service-content">
-                        <h3>Infinity Pool & Relaxation</h3>
-                        <p>Unwind at the ecolodge's stunning infinity pool with panoramic views of the conservancy. Perfect for wildlife watching while you relax.</p>
-                        <div class="service-price">Included with ecolodge stay</div>
-                        <ul class="service-features">
-                            <li>Infinity pool with views</li>
-                            <li>Wildlife viewing from pool</li>
-                            <li>Sunset viewing area</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Rhino Sanctuary Visit -->
-                <div class="service-card">
-                    <div class="service-image" style="background-image: url('images/content_visit_Rhino-Mouth.jpg')"></div>
-                    <div class="service-content">
-                        <h3>Rhino Sanctuary Visit</h3>
-                        <p>Accompanied walk to the rhino sanctuary to learn about conservation efforts and see these magnificent animals.</p>
-                        <div class="service-price">KES 800 / person</div>
-                        <ul class="service-features">
-                            <li>Conservation education</li>
-                            <li>Rhino viewing</li>
-                            <li>Guided by rangers</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Beading Workshops -->
-                <div class="service-card">
-                    <div class="service-image" style="background-image: url('images/content_visit_2016_04_04_staying-at-il-ngwesi_Beading-3.jpg')"></div>
-                    <div class="service-content">
-                        <h3>Beading Workshops</h3>
-                        <p>Learn traditional Maasai beading techniques from local women. Create your own piece to take home.</p>
-                        <div class="service-price">KES 600 / person</div>
-                        <ul class="service-features">
-                            <li>Hands-on learning</li>
-                            <li>Take home your creation</li>
-                            <li>Support women's groups</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- About Section -->
     <section id="about" class="section about">
         <div class="container">
             <div class="about-content">
+                <div class="about-image">
+                    <img src="images/content_visit_2016_04_04_staying-at-il-ngwesi_Main-House-Night-9.jpg" alt="Il Ngwesi Ecolodge">
+                </div>
                 <div class="about-text">
-                    <h2 class="section-title">About Il Ngwesi</h2>
-                    <p>Owned and run by the Maasai community, Il Ngwesi offers something truly special. Visitors to the conservancy have a full wildlife and cultural experience, enjoying hospitality more akin to that offered to a valued family member.</p>
-                    <p>With no other tourist facilities within the Group Ranch, it is the ultimate personal experience. Our Community Tourism Relay system ensures that every booking directly benefits the community while maintaining transparency and accountability.</p>
-                    
+                    <h2 class="section-title">Community-Owned Conservation</h2>
+                    <p>Il Ngwesi is 100% owned and operated by the Maasai community. With no other tourist facilities in the Group Ranch, visitors enjoy an intimate wildlife and cultural experience with hospitality that feels like family.</p>
+                    <p>Our Community Tourism Relay ensures every booking directly benefits the community while maintaining complete transparency. Tourism revenue supports both wildlife protection and cultural preservation.</p>
                     <div class="about-features">
                         <div class="feature-item">
                             <strong>Community Owned</strong>
-                            <p>100% owned and operated by the Maasai community</p>
+                            <p>100% Maasai-owned and operated</p>
                         </div>
                         <div class="feature-item">
                             <strong>Wildlife Conservation</strong>
-                            <p>Supporting conservation efforts through sustainable tourism</p>
+                            <p>Protecting 15,000 hectares of conservancy</p>
                         </div>
                         <div class="feature-item">
                             <strong>Cultural Preservation</strong>
-                            <p>Maintaining traditional ways while embracing sustainable development</p>
+                            <p>Maintaining traditions while supporting development</p>
                         </div>
                     </div>
-                    
-                    <div class="cultural-info" style="margin-top: 2rem;">
-                        <h3 style="margin-bottom: 1rem; color: var(--secondary-color);">Maasai Culture & History</h3>
-                        <p>The Maasai people have lived in harmony with wildlife for centuries. Il Ngwesi Conservancy represents a unique model where community ownership ensures both wildlife protection and cultural preservation. Our traditions, from beading to manyatta construction, are passed down through generations while we adapt to modern conservation needs.</p>
-                        <p style="margin-top: 1rem;">The conservancy was established to protect the land from subdivision and ensure wildlife corridors remain open. Today, it's a model of community-led conservation where tourism revenue directly supports both the people and the wildlife.</p>
-                    </div>
-                </div>
-                <div class="about-image">
-                    <img src="images/content_visit_2016_04_04_staying-at-il-ngwesi_Main-House-Night-9.jpg" alt="Il Ngwesi Ecolodge">
                 </div>
             </div>
         </div>
@@ -328,11 +156,113 @@
         </div>
     </section>
 
+    <!-- Services Section -->
+    <section id="services" class="section services">
+        <div class="container">
+            <h2 class="section-title">Experience Il Ngwesi</h2>
+            <p class="section-subtitle">Click on experiences below to select them, then click "Complete Selection" to proceed</p>
+            
+            <div class="services-grid">
+                <!-- Il Ngwesi Ecolodge -->
+                <div class="service-card selectable-service" data-service="ecolodge" data-form-value="ecolodge">
+                    <div class="service-selected-badge">✓ Selected</div>
+                    <div class="service-image" style="background-image: url('images/content_visit_2016_04_04_staying-at-il-ngwesi_Main-House-Night-9.jpg')"></div>
+                    <div class="service-content">
+                        <h3>Il Ngwesi Ecolodge</h3>
+                        <p>Award-winning ecolodge with infinity pool, gourmet dining, and stunning conservancy views.</p>
+                        <div class="service-price">From KES 15,000 / night</div>
+                        <div class="service-click-hint">Tap to select</div>
+                    </div>
+                </div>
+
+                <!-- Community Homestays -->
+                <div class="service-card selectable-service" data-service="homestay" data-form-value="homestay">
+                    <div class="service-selected-badge">✓ Selected</div>
+                    <div class="service-image" style="background-image: url('images/content_visit_2016_04_04_staying-at-il-ngwesi_Manyatta-Donkey-8.jpg')"></div>
+                    <div class="service-content">
+                        <h3>Community Homestays</h3>
+                        <p>Stay with local families in traditional manyattas. Authentic Maasai hospitality and culture.</p>
+                        <div class="service-price">KES 1,500 / night</div>
+                        <div class="service-click-hint">Tap to select</div>
+                    </div>
+                </div>
+
+                <!-- Guided Wildlife Walks -->
+                <div class="service-card selectable-service" data-service="guided_walk" data-form-value="guided_walk">
+                    <div class="service-selected-badge">✓ Selected</div>
+                    <div class="service-image" style="background-image: url('images/content_visit_2016_04_04_staying-at-il-ngwesi_Elephants-at-waterhole.jpg')"></div>
+                    <div class="service-content">
+                        <h3>Guided Wildlife Walks</h3>
+                        <p>Explore on foot with experienced Maasai guides. Wildlife viewing and cultural insights.</p>
+                        <div class="service-price">KES 500 / person</div>
+                        <div class="service-click-hint">Tap to select</div>
+                    </div>
+                </div>
+
+                <!-- Cultural Evenings -->
+                <div class="service-card selectable-service" data-service="cultural_evening" data-form-value="cultural_evening">
+                    <div class="service-selected-badge">✓ Selected</div>
+                    <div class="service-image" style="background-image: url('images/content_visit_2016_04_04_staying-at-il-ngwesi_Manyatta-Dancing-7c.jpg')"></div>
+                    <div class="service-content">
+                        <h3>Cultural Experiences</h3>
+                        <p>Traditional Maasai dancing, beading workshops, and cultural demonstrations.</p>
+                        <div class="service-price">From KES 600 / person</div>
+                        <div class="service-click-hint">Tap to select</div>
+                    </div>
+                </div>
+
+                <!-- Bush Breakfasts -->
+                <div class="service-card selectable-service" data-service="bush_breakfast" data-form-value="bush_breakfast">
+                    <div class="service-selected-badge">✓ Selected</div>
+                    <div class="service-image" style="background-image: url('images/content_visit_2016_04_04_staying-at-il-ngwesi_Bush-Breakfast-Brooke-and-Kirstin-7b.jpg')"></div>
+                    <div class="service-content">
+                        <h3>Bush Breakfasts & Dining</h3>
+                        <p>Enjoy breakfast by the Ngare Ndare River or in the ecolodge's beautiful breakfast room. Gourmet meals featuring local ingredients.</p>
+                        <div class="service-price">KES 1,200 / person</div>
+                        <div class="service-click-hint">Tap to select</div>
+                    </div>
+                </div>
+
+                <!-- Rhino Sanctuary Visit -->
+                <div class="service-card selectable-service" data-service="rhino_sanctuary" data-form-value="rhino_sanctuary">
+                    <div class="service-selected-badge">✓ Selected</div>
+                    <div class="service-image" style="background-image: url('images/content_visit_Rhino-Mouth.jpg')"></div>
+                    <div class="service-content">
+                        <h3>Rhino Sanctuary Visit</h3>
+                        <p>Accompanied walk to the rhino sanctuary to learn about conservation efforts and see these magnificent animals.</p>
+                        <div class="service-price">KES 800 / person</div>
+                        <div class="service-click-hint">Tap to select</div>
+                    </div>
+                </div>
+
+                <!-- Beading Workshops -->
+                <div class="service-card selectable-service" data-service="beading_workshop" data-form-value="beading_workshop">
+                    <div class="service-selected-badge">✓ Selected</div>
+                    <div class="service-image" style="background-image: url('images/content_visit_2016_04_04_staying-at-il-ngwesi_Beading-3.jpg')"></div>
+                    <div class="service-content">
+                        <h3>Beading Workshops</h3>
+                        <p>Learn traditional Maasai beading techniques from local women. Create your own piece to take home.</p>
+                        <div class="service-price">KES 600 / person</div>
+                        <div class="service-click-hint">Tap to select</div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <button id="completeSelectionBtn" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2.5rem; opacity: 0.5; cursor: not-allowed;" disabled>Complete Selection →</button>
+            </div>
+        </div>
+    </section>
+
     <!-- Booking Section -->
     <section id="booking" class="section booking">
         <div class="container">
             <h2 class="section-title">Book Your Visit</h2>
             <p class="section-subtitle">Fill out the form below and our Tourism Steward will confirm your booking via SMS</p>
+            
+            <div class="booking-info" style="margin-bottom: 2rem; text-align: center; max-width: 800px; margin-left: auto; margin-right: auto;">
+                <h3>What Happens Next?</h3>
+                <p>After you submit your booking, you'll receive an email confirmation with your booking code. Our Tourism Steward will confirm availability and send you payment instructions. Once payment is complete, you'll receive final confirmation and arrival details.</p>
+            </div>
             
             <div class="booking-container">
                 <form id="bookingForm" class="booking-form">
@@ -367,6 +297,10 @@
                         <label>Select Services *</label>
                         <div class="services-checkboxes">
                             <label class="checkbox-label">
+                                <input type="checkbox" name="services" value="ecolodge" data-price="15000">
+                                <span>Il Ngwesi Ecolodge (KES 15,000/night)</span>
+                            </label>
+                            <label class="checkbox-label">
                                 <input type="checkbox" name="services" value="guided_walk" data-price="500">
                                 <span>Guided Wildlife Walk (KES 500/person)</span>
                             </label>
@@ -395,7 +329,7 @@
 
                     <div class="form-group">
                         <label for="specialRequests">Special Requests or Notes</label>
-                        <textarea id="specialRequests" name="specialRequests" rows="4" placeholder="Any dietary requirements, accessibility needs, or other requests..."></textarea>
+                        <textarea id="specialRequests" name="specialRequests" rows="3" placeholder="Any dietary requirements, accessibility needs, or other requests..."></textarea>
                     </div>
 
                     <div class="booking-summary">
@@ -496,38 +430,6 @@
                         <span class="btn-loader" style="display: none;">Processing...</span>
                     </button>
                 </form>
-
-                <div class="booking-info">
-                    <h3>What Happens Next?</h3>
-                    <ol>
-                        <li>You'll receive an email confirmation with your booking code</li>
-                        <li>Our Tourism Steward receives your booking via SMS</li>
-                        <li>Within 4 hours, you'll receive confirmation of availability</li>
-                        <li>You'll receive M-Pesa payment instructions</li>
-                        <li>After payment, you'll get final confirmation and arrival details</li>
-                    </ol>
-
-                    <div class="info-box">
-                        <h4>📱 M-Pesa Payment</h4>
-                        <p>Once confirmed, you'll receive:</p>
-                        <ul>
-                            <li>Community Till Number</li>
-                            <li>Exact amount to pay</li>
-                            <li>Booking code to include in payment reference</li>
-                        </ul>
-                    </div>
-
-                    <div class="info-box">
-                        <h4>🔄 Transparent Distribution</h4>
-                        <p>Your payment is automatically distributed:</p>
-                        <ul>
-                            <li>40% to your guide</li>
-                            <li>35% to homestay provider</li>
-                            <li>20% to conservancy fund</li>
-                            <li>5% to Tourism Steward</li>
-                        </ul>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -578,6 +480,7 @@
         </div>
     </div>
 
+    <script src="cart.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

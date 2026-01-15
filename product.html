@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description" content="Product Details - Maasai Marketplace">
+    <meta name="theme-color" content="#d4a574">
+    <title>Product Details - Il Ngwesi Conservancy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .marketplace-nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-bottom: 2px solid rgba(212, 165, 116, 0.2);
+        }
+
+        .marketplace-nav .nav-brand h1 {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .marketplace-nav .nav-brand .tagline {
+            color: var(--text-light);
+            font-size: 0.75rem;
+        }
+
+        .cart-icon-link {
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
+            border-radius: 8px;
+            background: rgba(212, 165, 116, 0.1);
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .cart-icon-link:hover {
+            background: rgba(212, 165, 116, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            min-width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border: 2px solid white;
+            padding: 0 4px;
+            box-sizing: border-box;
+            white-space: nowrap;
+        }
+
+        .product-detail-container {
+            max-width: 1200px;
+            margin: 100px auto 4rem;
+            padding: 2rem;
+        }
+
+        .product-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-image-gallery {
+            position: sticky;
+            top: 100px;
+        }
+
+        .product-main-image {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            border-radius: 16px;
+            background: #f3f4f6;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .product-thumbnails {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+        }
+
+        .product-thumbnail {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .product-thumbnail:hover,
+        .product-thumbnail.active {
+            border-color: var(--primary-color);
+        }
+
+        .product-info {
+            padding: 1rem 0;
+        }
+
+        .product-category-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(212, 165, 116, 0.1);
+            color: var(--primary-color);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .product-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .product-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+        }
+
+        .product-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .product-features li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--text-dark);
+        }
+
+        .product-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-add-cart-large {
+            flex: 1;
+            padding: 1.25rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(212, 165, 116, 0.3);
+        }
+
+        .btn-add-cart-large:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(212, 165, 116, 0.4);
+        }
+
+        .btn-add-cart-large:active {
+            transform: translateY(0) scale(0.95);
+            box-shadow: 0 2px 8px rgba(212, 165, 116, 0.3);
+        }
+
+        .btn-add-cart-large.added {
+            background: var(--success-color) !important;
+            animation: buttonSuccess 0.6s ease;
+        }
+
+        @keyframes buttonSuccess {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .btn-buy-now {
+            flex: 1;
+            padding: 1.25rem 2rem;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-buy-now:hover {
+            background: var(--secondary-dark);
+            transform: translateY(-2px);
+        }
+
+        .product-shipping-info {
+            background: rgba(212, 165, 116, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-color);
+            margin-bottom: 2rem;
+        }
+
+        .product-shipping-info h4 {
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-shipping-info p {
+            color: var(--text-dark);
+            margin: 0.25rem 0;
+        }
+
+        .related-products {
+            margin-top: 4rem;
+            padding: 3rem 2rem;
+            border-top: 2px solid rgba(212, 165, 116, 0.2);
+        }
+
+        .related-products h2 {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+        }
+
+        #relatedProducts {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 1rem 0;
+        }
+
+        #relatedProducts .product-card {
+            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            border: 1px solid rgba(212, 165, 116, 0.2);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            padding: 0;
+        }
+
+        #relatedProducts .product-info {
+            padding: 1.5rem;
+        }
+
+        #relatedProducts .product-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            background: #f3f4f6;
+            display: block;
+        }
+
+        #relatedProducts .product-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(212, 165, 116, 0.1);
+            color: var(--primary-color);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        #relatedProducts .product-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        #relatedProducts .product-description {
+            color: #6b7280;
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        #relatedProducts .product-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        #relatedProducts .product-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        #relatedProducts .btn-add-cart {
+            flex: 1;
+            padding: 0.875rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9375rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 16px rgba(212, 165, 116, 0.3);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        #relatedProducts .btn-add-cart::before {
+            content: '🛒';
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        #relatedProducts .btn-add-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(212, 165, 116, 0.4);
+        }
+
+        #relatedProducts .btn-add-cart:hover::before {
+            transform: scale(1.2) rotate(-10deg);
+        }
+
+        #relatedProducts .btn-add-cart:active {
+            transform: translateY(0) scale(0.95);
+            box-shadow: 0 2px 8px rgba(212, 165, 116, 0.3);
+        }
+
+        #relatedProducts .btn-add-cart.added {
+            background: var(--success-color);
+            animation: buttonSuccess 0.6s ease;
+        }
+
+        #relatedProducts .btn-view {
+            padding: 0.875rem 1.25rem;
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        #relatedProducts .btn-view::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(212, 165, 116, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        #relatedProducts .btn-view:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.3);
+        }
+
+        #relatedProducts .btn-view:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+
+
+        #relatedProducts .btn-view:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(212, 165, 116, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            #relatedProducts {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+
+            .related-products {
+                padding: 2rem 1rem;
+            }
+        }
+
+        /* Mobile Menu Styles */
+        @media (max-width: 768px) {
+            .marketplace-nav .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                display: none;
+                z-index: 999;
+                border-top: 2px solid rgba(212, 165, 116, 0.2);
+            }
+
+            .marketplace-nav .nav-menu.active {
+                display: flex;
+            }
+
+            .marketplace-nav .nav-menu li {
+                width: 100%;
+            }
+
+            .marketplace-nav .nav-menu a {
+                display: block;
+                padding: 0.75rem 0;
+                border-bottom: 1px solid rgba(212, 165, 116, 0.1);
+                width: 100%;
+            }
+
+            .marketplace-nav .mobile-menu-toggle {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                padding: 0.5rem;
+            }
+
+            .marketplace-nav .mobile-menu-toggle span {
+                width: 25px;
+                height: 3px;
+                background: var(--secondary-color);
+                border-radius: 2px;
+                transition: all 0.3s ease;
+            }
+        }
+
+        @media (max-width: 968px) {
+            .product-detail-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .product-image-gallery {
+                position: static;
+            }
+
+            .product-main-image {
+                height: 400px;
+            }
+
+            .product-title {
+                font-size: 2rem;
+            }
+
+            .product-price {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar marketplace-nav">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>Maasai Marketplace</h1>
+                <span class="tagline">Authentic Handmade Products</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="marketplace.html">Shop</a></li>
+                <li><a href="marketplace.html#jewelry">Jewelry</a></li>
+                <li><a href="marketplace.html#bags">Bags</a></li>
+                <li><a href="marketplace.html#clothing">Clothing</a></li>
+                <li><a href="marketplace.html#home">Home Decor</a></li>
+                <li><a href="marketplace.html#art">Art</a></li>
+                <li>
+                    <a href="cart.html" class="cart-icon-link" style="position: relative;">
+                        🛒 Cart
+                        <span id="cartBadge" class="cart-badge" style="display: none;">0</span>
+                    </a>
+                </li>
+            </ul>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="product-detail-container">
+        <div class="product-detail-grid" id="productDetail">
+            <!-- Product details will be populated by JavaScript -->
+        </div>
+
+        <div class="related-products">
+            <h2>You may also like</h2>
+            <div class="products-grid" id="relatedProducts">
+                <!-- Related products will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer marketplace-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Maasai Marketplace</h3>
+                    <p>Authentic Handmade Products</p>
+                    <p>Supporting Il Ngwesi Community</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Shop</h4>
+                    <p><a href="marketplace.html" style="color: var(--text-light); text-decoration: none;">All Products</a></p>
+                    <p><a href="marketplace.html#jewelry" style="color: var(--text-light); text-decoration: none;">Jewelry</a></p>
+                    <p><a href="marketplace.html#clothing" style="color: var(--text-light); text-decoration: none;">Clothing</a></p>
+                    <p><a href="marketplace.html#home" style="color: var(--text-light); text-decoration: none;">Home Decor</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <p>Email: marketplace@ilngwesi.com</p>
+                    <p>Phone: +254 (0) 741 770 540</p>
+                    <p>Delivery: Within Kenya Only</p>
+                </div>
+                <div class="footer-section">
+                    <h4>About</h4>
+                    <p><a href="index.html" style="color: var(--text-light); text-decoration: none;">Il Ngwesi Conservancy</a></p>
+                    <p>Community-owned marketplace</p>
+                    <p>Every purchase supports conservation</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Maasai Marketplace - Il Ngwesi Conservancy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="cart.js"></script>
+    <script>
+        // Ensure cart is available
+        if (typeof cart === 'undefined') {
+            console.error('Cart failed to initialize');
+        }
+        
+        // Get product ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = parseInt(urlParams.get('id'));
+
+        // Product data (same as marketplace)
+        const products = [
+            // ... (same products array from marketplace.html)
+        ];
+
+        // Load products from marketplace data
+        async function loadProducts() {
+            // Try to get from marketplace page's script
+            const script = document.createElement('script');
+            script.src = 'marketplace.html';
+            // For now, we'll include a simplified version
+            return getProductsData();
+        }
+
+        function renderProductDetail() {
+            if (!productId) {
+                document.getElementById('productDetail').innerHTML = '<h2>Product not found</h2>';
+                return;
+            }
+
+            // Get product from localStorage
+            const allProducts = JSON.parse(localStorage.getItem('marketplaceProducts') || '[]');
+            
+            if (allProducts.length === 0) {
+                document.getElementById('productDetail').innerHTML = '<h2>Please visit the marketplace first to load products</h2><a href="marketplace.html" class="btn btn-primary">Go to Marketplace</a>';
+                return;
+            }
+            
+            const product = allProducts.find(p => p.id === productId);
+
+            if (!product) {
+                document.getElementById('productDetail').innerHTML = '<h2>Product not found</h2>';
+                return;
+            }
+
+            const detailHTML = `
+                <div class="product-image-gallery">
+                    <img src="${product.image}" alt="${product.name}" class="product-main-image" id="mainImage" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 200 200%27%3E%3Crect fill=%27%23f3f4f6%27 width=%27200%27 height=%27200%27/%3E%3Ctext fill=%27%239ca3af%27 font-family=%27sans-serif%27 font-size=%2714%27 x=%2750%25%27 y=%2750%25%27 text-anchor=%27middle%27 dy=%27.3em%27%3ENo Image%3C/text%3E%3C/svg%3E'">
+                    <div class="product-thumbnails">
+                        <img src="${product.image}" alt="${product.name}" class="product-thumbnail active" onclick="document.getElementById('mainImage').src = this.src; document.querySelectorAll('.product-thumbnail').forEach(t => t.classList.remove('active')); this.classList.add('active');">
+                    </div>
+                </div>
+                <div class="product-info">
+                    <span class="product-category-badge">${product.category}</span>
+                    <h1 class="product-title">${product.name}</h1>
+                    <div class="product-price">KES ${product.price.toLocaleString()}</div>
+                    <div class="product-description">${product.description}</div>
+                    <ul class="product-features">
+                        <li>Handcrafted by local Maasai artisans</li>
+                        <li>Authentic traditional design</li>
+                        <li>Supports community conservation</li>
+                        <li>Delivery available within Kenya</li>
+                    </ul>
+                    <div class="product-actions">
+                        <button class="btn-add-cart-large" onclick="addToCartFromDetail(${product.id})">Add to Cart</button>
+                        <a href="checkout.html?product=${product.id}&qty=1" class="btn-buy-now">Buy Now</a>
+                    </div>
+                    <div class="product-shipping-info">
+                        <h4>Shipping Information</h4>
+                        <p><strong>Delivery:</strong> Available within Kenya only</p>
+                        <p><strong>Shipping Cost:</strong> KES 500 (Free for orders over KES 10,000)</p>
+                        <p><strong>Estimated Delivery:</strong> 5-7 business days</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('productDetail').innerHTML = detailHTML;
+
+            // Render related products
+            const related = allProducts.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
+            renderRelatedProducts(related);
+        }
+
+        function renderRelatedProducts(relatedProducts) {
+            const grid = document.getElementById('relatedProducts');
+            if (!grid) return;
+            
+            if (relatedProducts.length === 0) {
+                grid.innerHTML = '<p>No related products found.</p>';
+                return;
+            }
+
+            grid.innerHTML = relatedProducts.map(product => `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}" class="product-image" onclick="window.location.href='product.html?id=${product.id}'" style="cursor: pointer;" onerror="this.style.display='none';">
+                    <div class="product-info">
+                        <span class="product-category">${product.category}</span>
+                        <h3 class="product-name" onclick="window.location.href='product.html?id=${product.id}'" style="cursor: pointer;">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-price">KES ${product.price.toLocaleString()}</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCartFromDetail(${product.id})">Add to Cart</button>
+                            <button class="btn-view" onclick="window.location.href='product.html?id=${product.id}'">View</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCartFromDetail(productId) {
+            // Wait for cart to be available
+            if (typeof cart === 'undefined') {
+                console.error('Cart not loaded. Please refresh the page.');
+                alert('Cart system is loading. Please try again in a moment.');
+                return;
+            }
+            
+            const allProducts = JSON.parse(localStorage.getItem('marketplaceProducts') || '[]');
+            const product = allProducts.find(p => p.id === productId);
+            if (product) {
+                try {
+                    // Find the button that was clicked
+                    const button = event.target.closest('.btn-add-cart-large, .btn-add-cart');
+                    if (button) {
+                        // Add visual feedback to button
+                        button.classList.add('added');
+                        const originalText = button.innerHTML;
+                        button.innerHTML = '✓ Added to Cart!';
+                        button.style.background = 'var(--success-color)';
+                        
+                        setTimeout(() => {
+                            button.classList.remove('added');
+                            button.innerHTML = originalText;
+                            button.style.background = '';
+                        }, 2000);
+                    }
+                    
+                    cart.addItem(product);
+                } catch (error) {
+                    console.error('Error adding to cart:', error);
+                    alert('Error adding product to cart. Please try again.');
+                }
+            } else {
+                alert('Product not found. Please visit the marketplace first.');
+            }
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', renderProductDetail);
+        } else {
+            renderProductDetail();
+        }
+        
+        // Initialize mobile menu toggle
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (mobileToggle && navMenu) {
+            mobileToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                navMenu.classList.toggle('active');
+                
+                const spans = mobileToggle.querySelectorAll('span');
+                if (navMenu.classList.contains('active')) {
+                    spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                    spans[1].style.opacity = '0';
+                    spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    const spans = mobileToggle.querySelectorAll('span');
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

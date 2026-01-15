@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="sw">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="description" content="Dashibodi ya Mapato - Il Ngwesi Conservancy">
+    <meta name="description" content="Revenue Dashboard - Il Ngwesi Conservancy">
     <meta name="theme-color" content="#d4a574">
-    <title>Dashibodi ya Mapato - Il Ngwesi Conservancy</title>
+    <title>Revenue Dashboard - Il Ngwesi Conservancy</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -129,7 +129,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin: 0 0 1.5rem 0;
+            margin: 0 0 1rem 0;
             font-size: 1.5rem;
             font-weight: 700;
             letter-spacing: -0.01em;
@@ -164,108 +164,82 @@
             max-height: 300px;
         }
 
-        /* Revenue Table Styles - Card Based */
-        .revenue-table {
-            width: 100%;
-        }
-
-        .revenue-table-header {
-            display: none;
-        }
-
-        .revenue-table-body {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 0;
-        }
-
-        .revenue-row {
-            background: transparent;
-            border: none;
-            border-left: 3px solid transparent;
-            border-bottom: 1px solid rgba(212, 165, 116, 0.1);
-            border-radius: 0;
-            padding: 1rem 1rem 1rem 0;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .revenue-row:last-child {
-            border-bottom: none;
-        }
-
-        .revenue-row::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: linear-gradient(180deg, #d4a574 0%, #b8935f 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .revenue-row:hover {
-            transform: translateX(8px);
-            border-left-color: #d4a574;
-        }
-
-        .revenue-row:hover::before {
-            opacity: 1;
-        }
 
         .revenue-row.hidden {
             display: none;
         }
 
-        .revenue-col-name {
-            font-weight: 600;
-            color: #1e293b;
-            font-size: 0.95rem;
-            margin-bottom: 0.5rem;
-            line-height: 1.4;
-            letter-spacing: -0.01em;
+        .revenue-filters {
+            margin-bottom: 1.5rem;
         }
 
-        .revenue-col-category {
-            margin-bottom: 0.5rem;
-        }
-
-        .revenue-col-amount {
-            font-weight: 700;
-            background: linear-gradient(135deg, #2c5530 0%, #4a7c59 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 1.1rem;
-            margin-bottom: 0.25rem;
-            letter-spacing: -0.02em;
-        }
-
-        .revenue-col-percentage {
-            margin-bottom: 0.5rem;
+        .revenue-filters-label {
             font-size: 0.85rem;
-        }
-
-        .revenue-col-chart {
-            margin-top: 0.25rem;
-        }
-
-        .revenue-row-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            color: #64748b;
             margin-bottom: 0.5rem;
+            font-weight: 500;
         }
 
-        .revenue-row-main {
+        .revenue-list {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 0;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .revenue-item {
+            display: flex;
             align-items: center;
-            margin-bottom: 0.5rem;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(212, 165, 116, 0.1);
+            gap: 1rem;
+        }
+
+        .revenue-item:last-child {
+            border-bottom: none;
+        }
+
+        .revenue-item-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .revenue-item-name {
+            font-weight: 500;
+            color: #1e293b;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .revenue-item-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .revenue-item-amount {
+            font-weight: 600;
+            color: #2c5530;
+            font-size: 0.9rem;
+            text-align: right;
+            white-space: nowrap;
+            min-width: 90px;
+        }
+
+        .revenue-item-percentage {
+            color: #64748b;
+            font-size: 0.85rem;
+            text-align: right;
+            white-space: nowrap;
+            min-width: 50px;
         }
 
         .category-badge {
@@ -305,22 +279,6 @@
             letter-spacing: 0.01em;
         }
 
-        .revenue-bar {
-            width: 100%;
-            height: 10px;
-            background: rgba(229, 229, 229, 0.5);
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .revenue-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #d4a574 0%, #b8935f 100%);
-            border-radius: 10px;
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(212, 165, 116, 0.4);
-        }
 
         .filter-buttons {
             display: flex;
@@ -442,10 +400,6 @@
                 font-size: 1.5rem;
             }
 
-            .revenue-table-body {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
 
             .chart-container {
                 padding: 2.5rem;
@@ -461,9 +415,6 @@
         }
 
         @media (min-width: 1024px) {
-            .revenue-table-body {
-                grid-template-columns: repeat(3, 1fr);
-            }
 
             .dashboard {
                 padding: 3rem;
@@ -477,11 +428,12 @@
         <div class="container">
             <div class="nav-brand">
                 <h1>Il Ngwesi</h1>
-                <span class="tagline">Dashibodi ya Mapato</span>
+                <span class="tagline">Revenue Dashboard</span>
             </div>
             <ul class="nav-menu">
-                <li><a href="index.html">Rudi kwenye Tovuti</a></li>
-                <li><a href="#" id="logoutBtn" style="color: #dc2626;">Toka</a></li>
+                <li><a href="community.html">Community Portal</a></li>
+                <li><a href="index.html">Back to Website</a></li>
+                <li><a href="#" id="logoutBtn" style="color: #dc2626;">Logout</a></li>
             </ul>
         </div>
     </nav>
@@ -490,43 +442,43 @@
     <section class="dashboard" style="margin-top: 80px;">
         <div class="container">
             <div class="dashboard-header">
-                <h1>Dashibodi ya Mapato</h1>
-                <p>Ufuatiliaji wa mapato na viashiria vya utendaji</p>
+                <h1>Revenue Dashboard</h1>
+                <p>Revenue tracking and performance metrics</p>
             </div>
 
             <!-- Time Period Selector -->
             <div class="time-period-selector">
-                <button class="time-period-btn active" data-period="month">Mwezi</button>
-                <button class="time-period-btn" data-period="quarter">Robo</button>
-                <button class="time-period-btn" data-period="year">Mwaka</button>
-                <button class="time-period-btn" data-period="all">Wakati Wote</button>
+                <button class="time-period-btn active" data-period="month">Month</button>
+                <button class="time-period-btn" data-period="quarter">Quarter</button>
+                <button class="time-period-btn" data-period="year">Year</button>
+                <button class="time-period-btn" data-period="all">All Time</button>
             </div>
 
             <!-- Summary Stats -->
             <div class="dashboard-stats">
                 <div class="stat-box">
-                    <div class="stat-box-label">Jumla ya Mapato</div>
+                    <div class="stat-box-label">Total Revenue</div>
                     <div class="stat-box-value-wrapper">
                         <div class="stat-box-value">KES 2,450,000</div>
                         <div class="stat-box-change">↑ 12%</div>
                     </div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-box-label">Maajiri</div>
+                    <div class="stat-box-label">Total Bookings</div>
                     <div class="stat-box-value-wrapper">
                         <div class="stat-box-value">127</div>
                         <div class="stat-box-change">↑ 8%</div>
                     </div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-box-label">Bidhaa</div>
+                    <div class="stat-box-label">Products Sold</div>
                     <div class="stat-box-value-wrapper">
                         <div class="stat-box-value">342</div>
                         <div class="stat-box-change">↑ 15%</div>
                     </div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-box-label">Wastani/Kiajiri</div>
+                    <div class="stat-box-label">Avg. Revenue/Booking</div>
                     <div class="stat-box-value-wrapper">
                         <div class="stat-box-value">KES 19,291</div>
                         <div class="stat-box-change">↑ 4%</div>
@@ -534,205 +486,42 @@
                 </div>
             </div>
 
-            <!-- Category Filters -->
-            <div class="category-filters-section">
-                <h2>Mapato kwa Bidhaa/Huduma</h2>
-                <div class="category-filters-label">Chagua Kategoria:</div>
-                <div class="filter-buttons">
-                    <button class="filter-btn active" data-filter="all">Zote</button>
-                    <button class="filter-btn" data-filter="accommodation">Malazi</button>
-                    <button class="filter-btn" data-filter="marketplace">Soko</button>
-                    <button class="filter-btn" data-filter="tourism">Utalii</button>
-                    <button class="filter-btn" data-filter="cultural">Kitamaduni</button>
-                </div>
+            <!-- Revenue by Category Bar Chart -->
+            <div class="chart-container">
+                <h2>Revenue by Category</h2>
+                <canvas id="categoryBarChart"></canvas>
             </div>
 
-            <!-- Revenue Breakdown by Product/Service -->
-            <div class="revenue-breakdown">
-                <h2>Mapato kwa Bidhaa/Huduma</h2>
-                <div class="revenue-table">
-                    <div class="revenue-table-body">
-                        <div class="revenue-row" data-category="Accommodation">
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-                                <span class="category-badge accommodation"></span>
-                                <div class="revenue-col-name">Il Ngwesi Ecolodge</div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
-                                <div class="revenue-col-amount">KES 1.1M</div>
-                                <div class="percentage-badge">45%</div>
-                            </div>
-                            <div class="revenue-col-chart">
-                                <div class="revenue-bar">
-                                    <div class="revenue-bar-fill" data-percentage="45" style="width: 45%"></div>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Product Performance Chart -->
+            <div class="chart-container">
+                <h2>Top Products Performance</h2>
+                <canvas id="productPerformanceChart"></canvas>
+            </div>
 
-                        <div class="revenue-row" data-category="Accommodation">
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-                                <span class="category-badge accommodation"></span>
-                                <div class="revenue-col-name">Community Homestays</div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
-                                <div class="revenue-col-amount">KES 441K</div>
-                                <div class="percentage-badge">18%</div>
-                            </div>
-                            <div class="revenue-col-chart">
-                                <div class="revenue-bar">
-                                    <div class="revenue-bar-fill" data-percentage="18" style="width: 18%"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="revenue-row" data-category="Marketplace">
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-                                <span class="category-badge marketplace"></span>
-                                <div class="revenue-col-name">Beaded Jewelry</div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
-                                <div class="revenue-col-amount">KES 294K</div>
-                                <div class="percentage-badge">12%</div>
-                            </div>
-                            <div class="revenue-col-chart">
-                                <div class="revenue-bar">
-                                    <div class="revenue-bar-fill" data-percentage="12" style="width: 12%"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="revenue-row" data-category="Tourism">
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-                                <span class="category-badge tourism"></span>
-                                <div class="revenue-col-name">Guided Wildlife Walks</div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
-                                <div class="revenue-col-amount">KES 196K</div>
-                                <div class="percentage-badge">8%</div>
-                            </div>
-                            <div class="revenue-col-chart">
-                                <div class="revenue-bar">
-                                    <div class="revenue-bar-fill" data-percentage="8" style="width: 8%"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="revenue-row" data-category="Marketplace">
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                <span class="category-badge marketplace"></span>
-                                <div class="revenue-col-name">Traditional Bags</div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                <div class="revenue-col-amount">KES 147K</div>
-                                <div class="percentage-badge">6%</div>
-                            </div>
-                            <div class="revenue-col-chart">
-                                <div class="revenue-bar">
-                                    <div class="revenue-bar-fill" data-percentage="6" style="width: 6%"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="revenue-row" data-category="Tourism">
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                <span class="category-badge tourism"></span>
-                                <div class="revenue-col-name">Cultural Evenings</div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                <div class="revenue-col-amount">KES 98K</div>
-                                <div class="percentage-badge">4%</div>
-                            </div>
-                            <div class="revenue-col-chart">
-                                <div class="revenue-bar">
-                                    <div class="revenue-bar-fill" data-percentage="4" style="width: 4%"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="revenue-row" data-category="Tourism">
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                <span class="category-badge tourism"></span>
-                                <div class="revenue-col-name">Bush Breakfasts</div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                <div class="revenue-col-amount">KES 73.5K</div>
-                                <div class="percentage-badge">3%</div>
-                            </div>
-                            <div class="revenue-col-chart">
-                                <div class="revenue-bar">
-                                    <div class="revenue-bar-fill" data-percentage="3" style="width: 3%"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="revenue-row" data-category="Cultural">
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-                                <span class="category-badge cultural"></span>
-                                <div class="revenue-col-name">Manyatta Experiences</div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
-                                <div class="revenue-col-amount">KES 49K</div>
-                                <div class="percentage-badge">2%</div>
-                            </div>
-                            <div class="revenue-col-chart">
-                                <div class="revenue-bar">
-                                    <div class="revenue-bar-fill" data-percentage="2" style="width: 2%"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="revenue-row" data-category="Miscellaneous">
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-                                <span class="category-badge miscellaneous"></span>
-                                <div class="revenue-col-name">Other Services</div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
-                                <div class="revenue-col-amount">KES 49K</div>
-                                <div class="percentage-badge">2%</div>
-                            </div>
-                            <div class="revenue-col-chart">
-                                <div class="revenue-bar">
-                                    <div class="revenue-bar-fill" data-percentage="2" style="width: 2%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Product Sales Section -->
+            <div class="chart-container">
+                <h2>Product Sales</h2>
+                <div id="productSalesTable" style="margin-top: 1.5rem;">
+                    <!-- Product sales will be populated by JavaScript -->
                 </div>
             </div>
 
             <!-- Revenue Trends Chart -->
             <div class="chart-container">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-                    <h2 style="margin: 0;">Mienendo ya Mapato Kwa Muda</h2>
+                    <h2 style="margin: 0;">Revenue Trends Over Time</h2>
                     <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                         <div style="background: linear-gradient(135deg, #fef3e7 0%, #fde68a 100%); padding: 0.75rem 1.25rem; border-radius: 8px; border-left: 4px solid var(--primary-color);">
-                            <div style="font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Mwezi wa Kilele</div>
+                            <div style="font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Peak Month</div>
                             <div style="font-size: 1.1rem; font-weight: 700; color: var(--secondary-color);">Nov: KES 330K</div>
                         </div>
                         <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 0.75rem 1.25rem; border-radius: 8px; border-left: 4px solid #10b981;">
-                            <div style="font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Ukuaji</div>
+                            <div style="font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Growth</div>
                             <div style="font-size: 1.1rem; font-weight: 700; color: #10b981;">↑ 36.1%</div>
                         </div>
                     </div>
                 </div>
                 <canvas id="revenueTrendChart"></canvas>
-            </div>
-
-            <!-- Revenue by Category Pie Chart -->
-            <div class="chart-container">
-                <h2>Mapato kwa Kategoria</h2>
-                <canvas id="categoryPieChart"></canvas>
-            </div>
-
-            <!-- Revenue by Category Bar Chart -->
-            <div class="chart-container">
-                <h2>Mapato kwa Kategoria</h2>
-                <canvas id="categoryBarChart"></canvas>
-            </div>
-
-            <!-- Product Performance Chart -->
-            <div class="chart-container">
-                <h2>Utendaji wa Bidhaa Bora</h2>
-                <canvas id="productPerformanceChart"></canvas>
             </div>
 
         </div>
@@ -859,67 +648,15 @@
             }
         });
 
-            // Category Pie Chart
-            const categoryPieCtx = document.getElementById('categoryPieChart').getContext('2d');
-            const categoryPieChart = new Chart(categoryPieCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Malazi', 'Soko', 'Utalii', 'Kitamaduni'],
-                datasets: [{
-                    label: 'Mapato %',
-                    data: [63, 18, 15, 4],
-                    backgroundColor: [
-                        'rgba(212, 165, 116, 0.8)',
-                        'rgba(44, 85, 48, 0.8)',
-                        'rgba(139, 69, 19, 0.8)',
-                        'rgba(184, 147, 95, 0.8)'
-                    ],
-                    borderColor: [
-                        '#d4a574',
-                        '#2c5530',
-                        '#8b4513',
-                        '#b8935f'
-                    ],
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'bottom',
-                        labels: {
-                            font: { size: 11 },
-                            color: '#666',
-                            padding: 12
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                        padding: 8,
-                        titleFont: { size: 12 },
-                        bodyFont: { size: 11 },
-                        callbacks: {
-                            label: function(context) {
-                                return context.label + ': ' + context.parsed + '% ya mapato yote';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
             // Category Bar Chart
             const categoryBarCtx = document.getElementById('categoryBarChart').getContext('2d');
             const categoryBarChart = new Chart(categoryBarCtx, {
             type: 'bar',
             data: {
-                labels: ['Malazi', 'Soko', 'Utalii', 'Kitamaduni'],
+                labels: ['Accommodation', 'Marketplace', 'Tourism', 'Cultural'],
                 datasets: [{
-                    label: 'Mapato %',
-                    data: [63, 18, 15, 4],
+                    label: 'Revenue (KES)',
+                    data: [1543500, 441000, 367500, 98000],
                     backgroundColor: [
                         'rgba(212, 165, 116, 0.8)',
                         'rgba(44, 85, 48, 0.8)',
@@ -950,7 +687,14 @@
                         bodyFont: { size: 11 },
                         callbacks: {
                             label: function(context) {
-                                return context.parsed.y + '% ya mapato yote';
+                                const value = context.parsed.y;
+                                if (value >= 1000000) {
+                                    return 'KES ' + (value / 1000000).toFixed(1) + 'M';
+                                } else if (value >= 1000) {
+                                    return 'KES ' + (value / 1000).toFixed(0) + 'K';
+                                } else {
+                                    return 'KES ' + value.toLocaleString();
+                                }
                             }
                         }
                     }
@@ -958,13 +702,18 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 100,
                         ticks: {
                             font: { size: 11 },
                             color: '#666',
                             padding: 8,
                             callback: function(value) {
-                                return value + '%';
+                                if (value >= 1000000) {
+                                    return 'KES ' + (value / 1000000).toFixed(1) + 'M';
+                                } else if (value >= 1000) {
+                                    return 'KES ' + (value / 1000).toFixed(0) + 'K';
+                                } else {
+                                    return 'KES ' + value.toLocaleString();
+                                }
                             }
                         },
                         grid: {
@@ -991,9 +740,9 @@
             const productPerformanceChart = new Chart(productPerformanceCtx, {
             type: 'bar',
             data: {
-                labels: ['Ecolodge', 'Malazi ya Jumuiya', 'Vito', 'Tembea Wanyama', 'Mifuko', 'Jioni za Kitamaduni'],
+                labels: ['Ecolodge', 'Homestays', 'Beading', 'Wildlife Walks', 'Bags', 'Cultural Evenings'],
                 datasets: [{
-                    label: 'Mapato (KES)',
+                    label: 'Revenue (KES)',
                     data: [1102500, 441000, 294000, 196000, 147000, 98000],
                     backgroundColor: function(context) {
                         const value = context.parsed.y;
@@ -1313,31 +1062,15 @@
                     revenueTrendChart.update('active');
                 }
 
-                // Update category pie chart
-                if (data.categoryBar && typeof categoryPieChart !== 'undefined') {
-                    const swahiliLabels = data.categoryBar.labels.map(label => {
-                        if (label === 'Accommodation') return 'Malazi';
-                        if (label === 'Marketplace') return 'Soko';
-                        if (label === 'Tourism') return 'Utalii';
-                        if (label === 'Cultural') return 'Kitamaduni';
-                        return label;
-                    });
-                    categoryPieChart.data.labels = swahiliLabels;
-                    categoryPieChart.data.datasets[0].data = data.categoryBar.values;
-                    categoryPieChart.update('active');
-                }
-
                 // Update category bar chart
-                if (data.categoryBar && typeof categoryBarChart !== 'undefined') {
-                    const swahiliLabels = data.categoryBar.labels.map(label => {
-                        if (label === 'Accommodation') return 'Malazi';
-                        if (label === 'Marketplace') return 'Soko';
-                        if (label === 'Tourism') return 'Utalii';
-                        if (label === 'Cultural') return 'Kitamaduni';
-                        return label;
+                if (data.categoryBar && typeof categoryBarChart !== 'undefined' && data.stats) {
+                    categoryBarChart.data.labels = data.categoryBar.labels;
+                    // Convert percentages to actual amounts
+                    const totalRevenue = data.stats.totalRevenue;
+                    const amounts = data.categoryBar.values.map(percentage => {
+                        return (totalRevenue * percentage) / 100;
                     });
-                    categoryBarChart.data.labels = swahiliLabels;
-                    categoryBarChart.data.datasets[0].data = data.categoryBar.values;
+                    categoryBarChart.data.datasets[0].data = amounts;
                     categoryBarChart.update('active');
                 }
 
@@ -1349,60 +1082,12 @@
                     productPerformanceChart.update('active');
                 }
 
-                // Update revenue breakdown rows
-                if (data.products) {
-                    const rows = document.querySelectorAll('.revenue-row');
-                    rows.forEach((row, index) => {
-                        if (index < data.products.length) {
-                            const product = data.products[index];
-                            const nameEl = row.querySelector('.revenue-col-name');
-                            const amountEl = row.querySelector('.revenue-col-amount');
-                            const percentageEl = row.querySelector('.percentage-badge');
-                            const barFill = row.querySelector('.revenue-bar-fill');
-                            const categoryBadge = row.querySelector('.category-badge');
-                            
-                            if (nameEl) nameEl.textContent = product.name;
-                            if (amountEl) {
-                                const amount = product.amount;
-                                if (amount >= 1000000) {
-                                    amountEl.textContent = 'KES ' + (amount / 1000000).toFixed(1) + 'M';
-                                } else if (amount >= 1000) {
-                                    amountEl.textContent = 'KES ' + (amount / 1000).toFixed(0) + 'K';
-                                } else {
-                                    amountEl.textContent = 'KES ' + amount.toLocaleString();
-                                }
-                            }
-                            if (percentageEl) percentageEl.textContent = product.percentage.toFixed(1) + '%';
-                            if (barFill) {
-                                barFill.style.width = product.percentage + '%';
-                                barFill.dataset.percentage = product.percentage;
-                            }
-                            if (categoryBadge) {
-                                let badgeClass = product.category.toLowerCase();
-                                if (badgeClass.includes('marketplace')) badgeClass = 'marketplace';
-                                else if (badgeClass.includes('accommodation')) badgeClass = 'accommodation';
-                                else if (badgeClass.includes('tourism')) badgeClass = 'tourism';
-                                else if (badgeClass.includes('cultural')) badgeClass = 'cultural';
-                                else if (badgeClass.includes('miscellaneous')) badgeClass = 'miscellaneous';
-                                categoryBadge.className = 'category-badge ' + badgeClass;
-                            }
-                            
-                            row.dataset.category = product.category;
-                            row.style.display = '';
-                            row.classList.remove('hidden');
-                        } else {
-                            row.style.display = 'none';
-                            row.classList.add('hidden');
-                        }
-                    });
-                }
             }
 
             // Get current active filters
             function getActiveFilters() {
-                const activeCategory = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
                 const activePeriod = document.querySelector('.time-period-btn.active')?.dataset.period || 'month';
-                return { category: activeCategory, period: activePeriod };
+                return { category: 'all', period: activePeriod };
             }
 
             // Time period selector with chart updates
@@ -1417,59 +1102,62 @@
             });
             });
 
-            // Filter functionality
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                
-                const filters = getActiveFilters();
-                updateDashboard(filters.category, filters.period);
-            });
-        });
 
-            // Animate revenue bars on load
-            window.addEventListener('load', function() {
-            document.querySelectorAll('.revenue-bar-fill').forEach((bar, index) => {
-                const percentage = bar.dataset.percentage;
-                bar.style.width = '0%';
-                setTimeout(() => {
-                    bar.style.transition = 'width 1s ease';
-                    bar.style.width = percentage + '%';
-                }, index * 50);
-            });
-            });
-
-            // Add click functionality to revenue rows
-            document.querySelectorAll('.revenue-row').forEach(row => {
-            row.addEventListener('click', function() {
-                const nameEl = this.querySelector('.revenue-col-name');
-                const amountEl = this.querySelector('.revenue-col-amount');
-                const percentageEl = this.querySelector('.percentage-badge');
+            // Load and display product sales
+            function loadProductSales() {
+                const salesData = JSON.parse(localStorage.getItem('productSales') || '[]');
+                const salesTable = document.getElementById('productSalesTable');
                 
-                if (nameEl && amountEl && percentageEl) {
-                    const name = nameEl.textContent.trim();
-                    const amount = amountEl.textContent.trim();
-                    const percentage = percentageEl.textContent.trim();
-                    
-                    // Highlight the row
-                    document.querySelectorAll('.revenue-row').forEach(r => {
-                        r.style.background = '';
-                        r.style.borderColor = '#e5e7eb';
-                    });
-                    this.style.background = '#fef3e7';
-                    this.style.borderColor = 'var(--primary-color)';
-                    
-                    console.log('Selected:', { name, amount, percentage });
-                    // In a real implementation, this could show detailed breakdown or update other charts
+                if (salesData.length === 0) {
+                    salesTable.innerHTML = '<p style="color: var(--text-light); text-align: center; padding: 2rem;">No product sales data available yet.</p>';
+                    return;
                 }
-            });
-        });
+                
+                // Sort by quantity sold (descending)
+                salesData.sort((a, b) => b.quantity - a.quantity);
+                
+                let tableHTML = `
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden;">
+                            <thead>
+                                <tr style="background: linear-gradient(135deg, rgba(212, 165, 116, 0.1) 0%, rgba(44, 85, 48, 0.05) 100%);">
+                                    <th style="padding: 1rem; text-align: left; font-weight: 600; color: var(--secondary-color); border-bottom: 2px solid rgba(212, 165, 116, 0.2);">Product Name</th>
+                                    <th style="padding: 1rem; text-align: left; font-weight: 600; color: var(--secondary-color); border-bottom: 2px solid rgba(212, 165, 116, 0.2);">Category</th>
+                                    <th style="padding: 1rem; text-align: center; font-weight: 600; color: var(--secondary-color); border-bottom: 2px solid rgba(212, 165, 116, 0.2);">Quantity Sold</th>
+                                    <th style="padding: 1rem; text-align: right; font-weight: 600; color: var(--secondary-color); border-bottom: 2px solid rgba(212, 165, 116, 0.2);">Total Revenue</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                salesData.forEach((sale, index) => {
+                    const rowStyle = index % 2 === 0 ? 'background: rgba(212, 165, 116, 0.02);' : 'background: white;';
+                    tableHTML += `
+                        <tr style="${rowStyle}">
+                            <td style="padding: 1rem; color: var(--text-dark); font-weight: 500;">${sale.productName}</td>
+                            <td style="padding: 1rem; color: var(--text-light); text-transform: capitalize;">${sale.category}</td>
+                            <td style="padding: 1rem; text-align: center; color: var(--secondary-color); font-weight: 600; font-size: 1.1rem;">${sale.quantity}</td>
+                            <td style="padding: 1rem; text-align: right; color: var(--secondary-color); font-weight: 600;">KES ${sale.totalRevenue.toLocaleString()}</td>
+                        </tr>
+                    `;
+                });
+                
+                tableHTML += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                
+                salesTable.innerHTML = tableHTML;
+            }
+            
+            // Load product sales on page load
+            loadProductSales();
 
             // Logout functionality
             document.getElementById('logoutBtn').addEventListener('click', function(e) {
                 e.preventDefault();
-                if (confirm('Je, una uhakika unataka kutoka?')) {
+                if (confirm('Are you sure you want to logout?')) {
                     localStorage.removeItem('communityAuthenticated');
                     localStorage.removeItem('communityLoginTime');
                     window.location.href = 'login.html';

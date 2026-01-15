@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description" content="Shopping Cart - Maasai Marketplace">
+    <meta name="theme-color" content="#d4a574">
+    <title>Shopping Cart - Il Ngwesi Conservancy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .marketplace-nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-bottom: 2px solid rgba(212, 165, 116, 0.2);
+        }
+
+        .marketplace-nav .nav-brand h1 {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .marketplace-nav .nav-brand .tagline {
+            color: var(--text-light);
+            font-size: 0.75rem;
+        }
+
+        .cart-icon-link {
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
+            border-radius: 8px;
+            background: rgba(212, 165, 116, 0.1);
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .cart-icon-link:hover {
+            background: rgba(212, 165, 116, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            min-width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border: 2px solid white;
+            padding: 0 4px;
+            box-sizing: border-box;
+            white-space: nowrap;
+        }
+
+        .cart-page-container {
+            max-width: 1200px;
+            margin: 100px auto 4rem;
+            padding: 2rem;
+        }
+
+        .cart-page-header {
+            margin-bottom: 2rem;
+        }
+
+        .cart-page-header h1 {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-page-header p {
+            color: var(--text-light);
+        }
+
+        .cart-page-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .cart-items-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 2px solid rgba(212, 165, 116, 0.1);
+        }
+
+        .cart-page-item {
+            display: grid;
+            grid-template-columns: 150px 1fr auto auto auto;
+            gap: 1.5rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(212, 165, 116, 0.2);
+            align-items: center;
+        }
+
+        .cart-page-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-page-item-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f3f4f6;
+        }
+
+        .cart-page-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cart-page-item-info {
+            flex: 1;
+        }
+
+        .cart-page-item-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-page-item-category {
+            font-size: 0.875rem;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-page-item-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .cart-page-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .qty-btn {
+            width: 36px;
+            height: 36px;
+            border: 2px solid rgba(212, 165, 116, 0.3);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            border-color: var(--primary-color);
+            background: rgba(212, 165, 116, 0.1);
+        }
+
+        .qty-input {
+            width: 60px;
+            padding: 0.5rem;
+            border: 2px solid rgba(212, 165, 116, 0.3);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .cart-page-item-subtotal {
+            text-align: right;
+            min-width: 120px;
+        }
+
+        .subtotal-label {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .subtotal-amount {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .cart-page-item-remove {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 2px solid #dc3545;
+            color: #dc3545;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .cart-page-item-remove:hover {
+            background: #dc3545;
+            color: white;
+        }
+
+        .cart-summary-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 2px solid rgba(212, 165, 116, 0.1);
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .cart-summary-card h3 {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            font-size: 1rem;
+            color: var(--text-dark);
+        }
+
+        .summary-row.total {
+            border-top: 2px solid rgba(212, 165, 116, 0.3);
+            margin-top: 1rem;
+            padding-top: 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .empty-cart h2 {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .empty-cart p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        /* Mobile Menu Styles */
+        @media (max-width: 768px) {
+            .marketplace-nav .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                display: none;
+                z-index: 999;
+                border-top: 2px solid rgba(212, 165, 116, 0.2);
+            }
+
+            .marketplace-nav .nav-menu.active {
+                display: flex;
+            }
+
+            .marketplace-nav .nav-menu li {
+                width: 100%;
+            }
+
+            .marketplace-nav .nav-menu a {
+                display: block;
+                padding: 0.75rem 0;
+                border-bottom: 1px solid rgba(212, 165, 116, 0.1);
+                width: 100%;
+            }
+
+            .marketplace-nav .mobile-menu-toggle {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                padding: 0.5rem;
+            }
+
+            .marketplace-nav .mobile-menu-toggle span {
+                width: 25px;
+                height: 3px;
+                background: var(--secondary-color);
+                border-radius: 2px;
+                transition: all 0.3s ease;
+            }
+        }
+
+        @media (max-width: 968px) {
+            .cart-page-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-page-item {
+                grid-template-columns: 100px 1fr;
+                gap: 1rem;
+            }
+
+            .cart-page-item-quantity,
+            .cart-page-item-subtotal,
+            .cart-page-item-remove {
+                grid-column: 1 / -1;
+            }
+
+            .cart-summary-card {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar marketplace-nav">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>Maasai Marketplace</h1>
+                <span class="tagline">Authentic Handmade Products</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="marketplace.html">Shop</a></li>
+                <li><a href="marketplace.html#jewelry">Jewelry</a></li>
+                <li><a href="marketplace.html#bags">Bags</a></li>
+                <li><a href="marketplace.html#clothing">Clothing</a></li>
+                <li><a href="marketplace.html#home">Home Decor</a></li>
+                <li><a href="marketplace.html#art">Art</a></li>
+                <li>
+                    <a href="cart.html" class="cart-icon-link" style="position: relative;">
+                        🛒 Cart
+                        <span id="cartBadge" class="cart-badge" style="display: none;">0</span>
+                    </a>
+                </li>
+            </ul>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="cart-page-container">
+        <div class="cart-page-header">
+            <h1>Shopping Cart</h1>
+            <p>Review your items before checkout</p>
+        </div>
+
+        <div class="cart-page-layout">
+            <div class="cart-items-section">
+                <div id="cartItems">
+                    <!-- Cart items will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div id="cartSummary">
+                <!-- Cart summary will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer marketplace-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Maasai Marketplace</h3>
+                    <p>Authentic Handmade Products</p>
+                    <p>Supporting Il Ngwesi Community</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Shop</h4>
+                    <p><a href="marketplace.html" style="color: var(--text-light); text-decoration: none;">All Products</a></p>
+                    <p><a href="marketplace.html#jewelry" style="color: var(--text-light); text-decoration: none;">Jewelry</a></p>
+                    <p><a href="marketplace.html#clothing" style="color: var(--text-light); text-decoration: none;">Clothing</a></p>
+                    <p><a href="marketplace.html#home" style="color: var(--text-light); text-decoration: none;">Home Decor</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <p>Email: marketplace@ilngwesi.com</p>
+                    <p>Phone: +254 (0) 741 770 540</p>
+                    <p>Delivery: Within Kenya Only</p>
+                </div>
+                <div class="footer-section">
+                    <h4>About</h4>
+                    <p><a href="index.html" style="color: var(--text-light); text-decoration: none;">Il Ngwesi Conservancy</a></p>
+                    <p>Community-owned marketplace</p>
+                    <p>Every purchase supports conservation</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Maasai Marketplace - Il Ngwesi Conservancy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="cart.js"></script>
+    <script>
+        // Render cart on page load
+        cart.renderCartPage();
+        
+        // Initialize mobile menu toggle
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (mobileToggle && navMenu) {
+            mobileToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                navMenu.classList.toggle('active');
+                
+                const spans = mobileToggle.querySelectorAll('span');
+                if (navMenu.classList.contains('active')) {
+                    spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                    spans[1].style.opacity = '0';
+                    spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    const spans = mobileToggle.querySelectorAll('span');
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

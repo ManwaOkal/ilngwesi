@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeNavbarScroll();
     initializeHeroSlideshow();
     initializeGallery();
+    initializeServiceSelection();
     initializeBookingForm();
     initializeModal();
     initializeMarketplace();
@@ -32,6 +33,51 @@ function initializeNavigation() {
     const navLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
     const mobileToggle = document.querySelector('.mobile-menu-toggle');
     const navMenu = document.querySelector('.nav-menu');
+    
+    // Initialize mobile menu toggle for all pages (including marketplace)
+    if (mobileToggle && navMenu) {
+        function toggleMobileMenu() {
+            navMenu.classList.toggle('active');
+            
+            // Animate hamburger icon
+            const spans = mobileToggle.querySelectorAll('span');
+            if (navMenu.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                // Prevent body scroll when menu is open
+                document.body.style.overflow = 'hidden';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Remove any existing event listeners by cloning
+        const newToggle = mobileToggle.cloneNode(true);
+        mobileToggle.parentNode.replaceChild(newToggle, mobileToggle);
+        
+        newToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleMobileMenu();
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const currentNavMenu = document.querySelector('.nav-menu');
+            const currentToggle = document.querySelector('.mobile-menu-toggle');
+            if (currentNavMenu && currentToggle && !currentNavMenu.contains(e.target) && !currentToggle.contains(e.target) && currentNavMenu.classList.contains('active')) {
+                currentNavMenu.classList.remove('active');
+                const spans = currentToggle.querySelectorAll('span');
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+                document.body.style.overflow = '';
+            }
+        });
+    }
 
     // Close mobile menu function
     function closeMobileMenu() {
@@ -160,19 +206,14 @@ function initializeGallery() {
     const galleryGrid = document.getElementById('galleryGrid');
     if (!galleryGrid) return;
 
-    // List of image files with titles
+    // List of image files with titles (excluding images used in service previews)
     const imageData = [
         { file: 'content_visit_cropped-Sundowner-9.jpg', title: 'Sundowner Experience' },
-        { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Elephants-at-waterhole.jpg', title: 'Elephants at Waterhole' },
-        { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Manyatta-Dancing-7c.jpg', title: 'Traditional Maasai Dancing' },
         { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Pool-Jan-2016-8.jpg', title: 'Infinity Pool' },
         { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Main-House-Night-9.jpg', title: 'Main House at Night' },
-        { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Bush-Breakfast-Brooke-and-Kirstin-7b.jpg', title: 'Bush Breakfast' },
         { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Camera-Kenya-2-336.jpg', title: 'Wildlife Photography' },
         { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Manyatta-Hunting-8.jpg', title: 'Cultural Experience' },
-        { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Beading-3.jpg', title: 'Beading Workshop' },
         { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Camera-Kenya-2-516.jpg', title: 'Conservancy Views' },
-        { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Manyatta-Donkey-8.jpg', title: 'Community Life' },
         { file: 'content_visit_2016_04_04_staying-at-il-ngwesi_Beef-and-Wine-10.jpg', title: 'Dining Experience' },
         { file: 'content_visit_Il-Ngwesi-Elephant.jpg', title: 'Elephant Encounter' },
         { file: 'content_visit_Mukogodo-Escarpment.jpg', title: 'Mukogodo Escarpment' },
@@ -211,11 +252,25 @@ function initializeGallery() {
 
     let currentImageIndex = 0;
     const images = [];
+    const initialDisplayCount = 6; // Show first 6 images
+    let allImagesVisible = false;
+
+    // Create "See More" button
+    const seeMoreBtn = document.createElement('div');
+    seeMoreBtn.className = 'gallery-see-more';
+    seeMoreBtn.style.cssText = 'text-align: center; margin-top: 2rem;';
+    seeMoreBtn.innerHTML = '<button class="btn btn-primary" id="gallerySeeMoreBtn">See More</button>';
+    galleryGrid.parentElement.appendChild(seeMoreBtn);
 
     fullSizeImages.forEach((item, index) => {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
         galleryItem.dataset.index = index;
+        
+        // Hide items beyond initial count
+        if (index >= initialDisplayCount) {
+            galleryItem.style.display = 'none';
+        }
         
         const img = document.createElement('img');
         img.src = `images/${item.file}`;
@@ -241,6 +296,43 @@ function initializeGallery() {
             showLightbox();
         });
     });
+
+    // Handle "See More" button click
+    const seeMoreButton = document.getElementById('gallerySeeMoreBtn');
+    if (seeMoreButton) {
+        seeMoreButton.addEventListener('click', function() {
+            const hiddenItems = galleryGrid.querySelectorAll('.gallery-item[style*="display: none"]');
+            
+            if (!allImagesVisible) {
+                // Show all hidden items
+                hiddenItems.forEach(item => {
+                    item.style.display = '';
+                });
+                seeMoreButton.textContent = 'See Less';
+                allImagesVisible = true;
+            } else {
+                // Hide items beyond initial count
+                const allItems = galleryGrid.querySelectorAll('.gallery-item');
+                allItems.forEach((item, index) => {
+                    if (index >= initialDisplayCount) {
+                        item.style.display = 'none';
+                    }
+                });
+                seeMoreButton.textContent = 'See More';
+                allImagesVisible = false;
+                
+                // Scroll to gallery section
+                const gallerySection = document.getElementById('gallery');
+                if (gallerySection) {
+                    const navHeight = document.querySelector('.navbar')?.offsetHeight || 80;
+                    window.scrollTo({
+                        top: gallerySection.offsetTop - navHeight,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+    }
 
     function showLightbox() {
         const lightboxImg = lightbox.querySelector('img');
@@ -303,20 +395,122 @@ function initializeGallery() {
     });
 }
 
+// Service Selection (Gamified)
+function initializeServiceSelection() {
+    const selectableServices = document.querySelectorAll('.selectable-service');
+    const completeBtn = document.getElementById('completeSelectionBtn');
+    let selectedServices = new Set();
+
+    function updateCompleteButton() {
+        if (completeBtn) {
+            if (selectedServices.size === 0) {
+                completeBtn.disabled = true;
+                completeBtn.style.opacity = '0.5';
+                completeBtn.style.cursor = 'not-allowed';
+            } else {
+                completeBtn.disabled = false;
+                completeBtn.style.opacity = '1';
+                completeBtn.style.cursor = 'pointer';
+            }
+        }
+    }
+
+    selectableServices.forEach(card => {
+        card.addEventListener('click', function(e) {
+            e.preventDefault();
+            const serviceValue = this.dataset.formValue;
+            
+            if (!serviceValue) return;
+            
+            if (this.classList.contains('selected')) {
+                // Deselect
+                this.classList.remove('selected');
+                selectedServices.delete(serviceValue);
+                createSparkles(this, false);
+            } else {
+                // Select
+                this.classList.add('selected');
+                selectedServices.add(serviceValue);
+                createSparkles(this, true);
+                
+                // Add selection animation (removed for less zoom)
+            }
+            
+            updateCompleteButton();
+        });
+    });
+
+    // Complete button handler
+    if (completeBtn) {
+        completeBtn.addEventListener('click', function() {
+            if (selectedServices.size === 0) return;
+            
+            // Scroll to booking form
+            const bookingSection = document.getElementById('booking');
+            if (bookingSection) {
+                const navHeight = document.querySelector('.navbar')?.offsetHeight || 80;
+                window.scrollTo({
+                    top: bookingSection.offsetTop - navHeight,
+                    behavior: 'smooth'
+                });
+                
+                // After scroll, pre-check the form checkboxes
+                setTimeout(() => {
+                    selectedServices.forEach(serviceValue => {
+                        const checkbox = document.querySelector(`input[name="services"][value="${serviceValue}"]`);
+                        if (checkbox && !checkbox.checked) {
+                            checkbox.checked = true;
+                            checkbox.dispatchEvent(new Event('change'));
+                        }
+                    });
+                }, 800);
+            }
+        });
+    }
+
+    function createSparkles(element, isSelecting) {
+        for (let i = 0; i < 8; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            const rect = element.getBoundingClientRect();
+            sparkle.style.left = (Math.random() * rect.width) + 'px';
+            sparkle.style.top = (Math.random() * rect.height) + 'px';
+            sparkle.style.animationDelay = (Math.random() * 0.3) + 's';
+            if (isSelecting) {
+                sparkle.style.background = 'var(--primary-color)';
+            } else {
+                sparkle.style.background = '#999';
+            }
+            element.appendChild(sparkle);
+            
+            setTimeout(() => sparkle.remove(), 800);
+        }
+    }
+
+    updateCompleteButton();
+}
+
 // Booking Form
 function initializeBookingForm() {
     const form = document.getElementById('bookingForm');
+    if (!form) return;
+    
     const serviceCheckboxes = document.querySelectorAll('input[name="services"]');
     const numVisitorsInput = document.getElementById('numVisitors');
+    const subtotalEl = document.getElementById('subtotal');
+    const serviceFeeEl = document.getElementById('serviceFee');
+    const totalAmountEl = document.getElementById('totalAmount');
 
     // Calculate total when services or number of visitors change
     function calculateTotal() {
+        if (!subtotalEl || !serviceFeeEl || !totalAmountEl) return;
+        
         let subtotal = 0;
-        const numVisitors = parseInt(numVisitorsInput.value) || 0;
+        const numVisitors = parseInt(numVisitorsInput?.value) || 1;
 
         serviceCheckboxes.forEach(checkbox => {
             if (checkbox.checked) {
-                const price = parseFloat(checkbox.dataset.price);
+                const price = parseFloat(checkbox.dataset.price) || 0;
                 const serviceValue = checkbox.value;
                 
                 // Homestay is per night, others are per person
@@ -331,16 +525,52 @@ function initializeBookingForm() {
         const serviceFee = subtotal * 0.05;
         const total = subtotal + serviceFee;
 
-        document.getElementById('subtotal').textContent = `KES ${subtotal.toLocaleString()}`;
-        document.getElementById('serviceFee').textContent = `KES ${serviceFee.toLocaleString()}`;
-        document.getElementById('totalAmount').textContent = `KES ${total.toLocaleString()}`;
+        subtotalEl.textContent = `KES ${subtotal.toLocaleString()}`;
+        serviceFeeEl.textContent = `KES ${serviceFee.toLocaleString()}`;
+        totalAmountEl.textContent = `KES ${total.toLocaleString()}`;
+    }
+
+
+    // Create sparkle effect
+    function createSparkles(element) {
+        for (let i = 0; i < 6; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            const rect = element.getBoundingClientRect();
+            sparkle.style.left = (Math.random() * rect.width) + 'px';
+            sparkle.style.top = (Math.random() * rect.height) + 'px';
+            sparkle.style.animationDelay = (Math.random() * 0.3) + 's';
+            element.appendChild(sparkle);
+            
+            setTimeout(() => sparkle.remove(), 800);
+        }
     }
 
     serviceCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', calculateTotal);
+        checkbox.addEventListener('change', function() {
+            calculateTotal();
+            
+            const label = this.closest('.checkbox-label');
+            if (this.checked) {
+                // Celebration animation
+                label.classList.add('selecting');
+                createSparkles(label);
+                
+                // Remove animation class after animation completes
+                setTimeout(() => {
+                    label.classList.remove('selecting');
+                }, 600);
+            }
+        });
     });
 
-    numVisitorsInput.addEventListener('input', calculateTotal);
+    if (numVisitorsInput) {
+        numVisitorsInput.addEventListener('input', calculateTotal);
+        numVisitorsInput.addEventListener('change', calculateTotal);
+    }
+
+    // Calculate total on page load
+    calculateTotal();
 
     // Payment Method Selection
     const paymentMethods = document.querySelectorAll('input[name="paymentMethod"]');

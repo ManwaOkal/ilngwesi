@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description" content="Community Portal - Il Ngwesi Conservancy">
+    <meta name="theme-color" content="#d4a574">
+    <title>Community Portal - Il Ngwesi Conservancy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .community-container {
+            min-height: calc(100vh - 200px);
+            padding: 4rem 1rem 2rem;
+            margin-top: 80px;
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.05) 0%, rgba(44, 85, 48, 0.02) 100%);
+        }
+
+        .community-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .community-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .community-header h1 {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .community-header p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .community-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .community-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 2px solid rgba(212, 165, 116, 0.1);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .community-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            border-color: var(--primary-color);
+        }
+
+        .community-card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .community-card h2 {
+            font-size: 1.75rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .community-card p {
+            color: var(--text-light);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .community-card-link {
+            display: inline-block;
+            padding: 0.875rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(212, 165, 116, 0.3);
+        }
+
+        .community-card-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(212, 165, 116, 0.4);
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .back-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        .login-form-container {
+            max-width: 450px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 2px solid rgba(212, 165, 116, 0.1);
+        }
+
+        .login-form-container h2 {
+            font-size: 1.75rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .login-form-container p {
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid rgba(212, 165, 116, 0.3);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(212, 165, 116, 0.15);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(212, 165, 116, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(212, 165, 116, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .portal-content {
+            display: none;
+        }
+
+        .portal-content.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .community-header h1 {
+                font-size: 2rem;
+            }
+
+            .community-cards {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .community-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>Il Ngwesi</h1>
+                <span class="tagline">People of Wildlife</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="community.html" class="btn-secondary">Community Login</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="community-container">
+        <div class="community-content">
+            <!-- Login Form -->
+            <div id="loginFormContainer" class="login-form-container">
+                <h2>Community Portal Login</h2>
+                <p>Enter your credentials to access community tools</p>
+                
+                <div class="error-message" id="errorMessage"></div>
+                
+                <form id="communityLoginForm">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required autocomplete="username">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required autocomplete="current-password">
+                    </div>
+                    
+                    <button type="submit" class="login-btn">Login</button>
+                </form>
+            </div>
+
+            <!-- Portal Content (shown after login) -->
+            <div id="portalContent" class="portal-content">
+                <div class="community-header">
+                    <h1>Community Portal</h1>
+                    <p>Access community management tools, revenue dashboard, and merchant services</p>
+                </div>
+
+                <div class="community-cards">
+                    <a href="dashboard.html" class="community-card">
+                        <span class="community-card-icon">📊</span>
+                        <h2>Revenue Dashboard</h2>
+                        <p>View booking statistics, revenue breakdown, and community tourism analytics. Monitor bookings and track financial performance.</p>
+                        <span class="community-card-link">View Dashboard →</span>
+                    </a>
+
+                    <a href="merchant-login.html" class="community-card">
+                        <span class="community-card-icon">🛍️</span>
+                        <h2>Merchant Portal</h2>
+                        <p>Manage marketplace products, add new items, and track your sales. Access the merchant dashboard to update your product listings.</p>
+                        <span class="community-card-link">Merchant Login →</span>
+                    </a>
+                </div>
+
+                <div class="back-link">
+                    <a href="index.html">← Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Il Ngwesi Conservancy</h3>
+                    <p>People of Wildlife</p>
+                    <p>Community-owned and operated tourism</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: info@ilngwesi.com</p>
+                    <p>Phone: +254 (0) 741 770 540</p>
+                    <p>Tourism Steward: Available 7AM-7PM</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Location</h4>
+                    <p>Il Ngwesi Group Ranch</p>
+                    <p>Laikipia County, Kenya</p>
+                    <p>Via Lewa Wildlife Conservancy</p>
+                </div>
+                <div class="footer-section">
+                    <h4>System</h4>
+                    <p>Powered by Community Tourism Relay</p>
+                    <p>Low-tech, community-owned booking system</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Il Ngwesi Conservancy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Check if already logged in
+        if (sessionStorage.getItem('communityLoggedIn') === 'true') {
+            document.getElementById('loginFormContainer').style.display = 'none';
+            document.getElementById('portalContent').classList.add('show');
+        }
+
+        // Handle login form submission
+        document.getElementById('communityLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Mock login - accept any non-empty credentials
+            if (username && password) {
+                // Store login state
+                sessionStorage.setItem('communityLoggedIn', 'true');
+                sessionStorage.setItem('communityUsername', username);
+                
+                // Hide login form and show portal
+                document.getElementById('loginFormContainer').style.display = 'none';
+                document.getElementById('portalContent').classList.add('show');
+            } else {
+                // Show error if fields are empty
+                errorMessage.textContent = 'Please enter both username and password.';
+                errorMessage.classList.add('show');
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                }, 3000);
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
