@@ -625,46 +625,20 @@
     </section>
 
     <script>
-        // Authentication check - protect dashboard
+        // Authentication check - allow access from community portal
         (function() {
-            // Wait for DOM to be ready
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', checkAuth);
-            } else {
-                checkAuth();
+            // Check if logged in via community portal or old authentication
+            const communityLoggedIn = sessionStorage.getItem('communityLoggedIn') === 'true';
+            const oldAuth = localStorage.getItem('communityAuthenticated') === 'true';
+            
+            // If neither authentication method is present, redirect to community portal
+            if (!communityLoggedIn && !oldAuth) {
+                console.log('Not authenticated, redirecting to community portal...');
+                window.location.replace('community.html');
+                return;
             }
             
-            function checkAuth() {
-                const isAuthenticated = localStorage.getItem('communityAuthenticated') === 'true';
-                
-                console.log('Dashboard auth check:', isAuthenticated);
-                
-                if (!isAuthenticated) {
-                    // Redirect to login page
-                    console.log('Not authenticated, redirecting to login...');
-                    window.location.replace('login.html');
-                    return;
-                }
-
-                // Check if session is still valid (24 hours)
-                const loginTime = localStorage.getItem('communityLoginTime');
-                if (loginTime) {
-                    const loginDate = new Date(loginTime);
-                    const now = new Date();
-                    const hoursDiff = (now - loginDate) / (1000 * 60 * 60);
-                    
-                    if (hoursDiff > 24) {
-                        // Session expired
-                        console.log('Session expired, redirecting to login...');
-                        localStorage.removeItem('communityAuthenticated');
-                        localStorage.removeItem('communityLoginTime');
-                        window.location.replace('login.html');
-                        return;
-                    }
-                }
-                
-                console.log('Authentication successful, dashboard loaded');
-            }
+            console.log('Authentication successful, dashboard loaded');
         })();
 
         // Wait for DOM to be fully loaded before initializing charts
