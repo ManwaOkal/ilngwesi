@@ -8,17 +8,25 @@
 :root {
     --primary-color: #d4a574;
     --primary-dark: #b8935f;
+    --primary-light: #e8d4b8;
     --secondary-color: #2c5530;
+    --secondary-dark: #1e3a21;
     --accent-color: #8b4513;
     --text-dark: #2c2c2c;
     --text-light: #666;
+    --text-lighter: #999;
     --bg-light: #f8f6f2;
     --bg-white: #ffffff;
+    --bg-gradient: linear-gradient(135deg, #f8f6f2 0%, #ffffff 100%);
     --border-color: #e0e0e0;
     --success-color: #28a745;
     --error-color: #dc3545;
     --shadow: 0 2px 10px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 15px rgba(0,0,0,0.12);
     --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+    --shadow-xl: 0 20px 40px rgba(0,0,0,0.2);
+    --gradient-primary: linear-gradient(135deg, #d4a574 0%, #b8935f 100%);
+    --gradient-secondary: linear-gradient(135deg, #2c5530 0%, #1e3a21 100%);
 }
 
 html {
@@ -96,6 +104,12 @@ form, input, textarea, select {
     transition: all 0.3s ease;
     width: 100%;
     max-width: 100vw;
+}
+
+.navbar.scrolled {
+    padding: 0.75rem 0;
+    box-shadow: var(--shadow-md);
+    background: rgba(255, 255, 255, 0.98);
 }
 
 .navbar .container {
@@ -197,7 +211,18 @@ form, input, textarea, select {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+    background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.7));
+    z-index: 1;
+}
+
+.hero-overlay::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,0.3) 100%);
 }
 
 .hero-content {
@@ -215,8 +240,79 @@ form, input, textarea, select {
     font-size: 3.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.3);
+    animation: fadeInUp 1s ease-out;
+    line-height: 1.2;
 }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Scroll Animation Classes */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger animation for grid items */
+.steps-grid .step-card:nth-child(1) { transition-delay: 0.1s; }
+.steps-grid .step-card:nth-child(2) { transition-delay: 0.2s; }
+.steps-grid .step-card:nth-child(3) { transition-delay: 0.3s; }
+.steps-grid .step-card:nth-child(4) { transition-delay: 0.4s; }
+
+.services-grid .service-card:nth-child(1) { transition-delay: 0.1s; }
+.services-grid .service-card:nth-child(2) { transition-delay: 0.2s; }
+.services-grid .service-card:nth-child(3) { transition-delay: 0.3s; }
+
+.stats-grid .stat-card:nth-child(1) { transition-delay: 0.1s; }
+.stats-grid .stat-card:nth-child(2) { transition-delay: 0.2s; }
+.stats-grid .stat-card:nth-child(3) { transition-delay: 0.3s; }
+.stats-grid .stat-card:nth-child(4) { transition-delay: 0.4s; }
 
 .hero-subtitle {
     font-size: 1.25rem;
@@ -224,6 +320,10 @@ form, input, textarea, select {
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+    animation: fadeInUp 1s ease-out 0.2s both;
+    font-weight: 300;
+    letter-spacing: 0.5px;
 }
 
 .hero-buttons {
@@ -234,6 +334,7 @@ form, input, textarea, select {
     width: 100%;
     max-width: 100%;
     padding: 0 1rem;
+    animation: fadeInUp 1s ease-out 0.4s both;
 }
 
 /* Buttons */
@@ -250,14 +351,36 @@ form, input, textarea, select {
 }
 
 .btn-primary {
-    background: var(--primary-color);
+    background: var(--gradient-primary);
     color: white;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
 }
 
 .btn-primary:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    background: var(--gradient-primary);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(212, 165, 116, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(-1px);
 }
 
 .btn-secondary {
@@ -286,6 +409,21 @@ form, input, textarea, select {
     text-align: center;
     margin-bottom: 1rem;
     color: var(--secondary-color);
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
 }
 
 .section-subtitle {
@@ -296,6 +434,8 @@ form, input, textarea, select {
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 2rem;
+    line-height: 1.7;
 }
 
 /* How It Works */
@@ -321,29 +461,57 @@ form, input, textarea, select {
 .step-card {
     background: white;
     padding: 2rem;
-    border-radius: 10px;
+    border-radius: 15px;
     box-shadow: var(--shadow);
     text-align: center;
-    transition: transform 0.3s;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(212, 165, 116, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.step-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transition: transform 0.4s;
+}
+
+.step-card:hover::before {
+    transform: scaleX(1);
 }
 
 .step-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-color);
 }
 
 .step-number {
-    width: 60px;
-    height: 60px;
-    background: var(--primary-color);
+    width: 70px;
+    height: 70px;
+    background: var(--gradient-primary);
     color: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 700;
-    margin: 0 auto 1rem;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 4px 15px rgba(212, 165, 116, 0.3);
+    transition: all 0.4s;
+    position: relative;
+}
+
+.step-card:hover .step-number {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 6px 20px rgba(212, 165, 116, 0.5);
 }
 
 .step-card h3 {
@@ -352,17 +520,52 @@ form, input, textarea, select {
 }
 
 .transparency-box {
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: var(--shadow);
-    margin-top: 3rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f6f2 100%);
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    margin-top: 4rem;
+    border: 2px solid rgba(212, 165, 116, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.transparency-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(212, 165, 116, 0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .transparency-box h3 {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     color: var(--secondary-color);
+    font-size: 1.75rem;
+    position: relative;
+    z-index: 1;
+}
+
+.transparency-intro {
+    text-align: center;
+    color: var(--text-light);
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
+    position: relative;
+    z-index: 1;
 }
 
 .revenue-breakdown {
@@ -381,23 +584,44 @@ form, input, textarea, select {
 
 .revenue-item {
     text-align: center;
-    padding: 1rem;
-    background: var(--bg-light);
-    border-radius: 8px;
+    padding: 1.5rem 1rem;
+    background: white;
+    border-radius: 12px;
+    border: 2px solid rgba(212, 165, 116, 0.2);
+    transition: all 0.3s;
+    position: relative;
+    z-index: 1;
+}
+
+.revenue-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
+}
+
+.revenue-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: block;
 }
 
 .percentage {
     display: block;
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 700;
-    color: var(--primary-color);
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 0.5rem;
+    line-height: 1;
 }
 
 .label {
     display: block;
-    color: var(--text-light);
-    font-size: 0.9rem;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    font-weight: 500;
 }
 
 /* Services */
@@ -417,23 +641,48 @@ form, input, textarea, select {
 
 .service-card {
     background: white;
-    border-radius: 10px;
+    border-radius: 15px;
     overflow: hidden;
     box-shadow: var(--shadow);
-    transition: transform 0.3s;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(212, 165, 116, 0.1);
+    position: relative;
+}
+
+.service-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(212, 165, 116, 0.05) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.service-card:hover::after {
+    opacity: 1;
 }
 
 .service-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-color);
 }
 
 .service-image {
-    height: 250px;
+    height: 280px;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     width: 100%;
+    transition: transform 0.6s ease;
+    position: relative;
+}
+
+.service-card:hover .service-image {
+    transform: scale(1.1);
 }
 
 .service-content {
@@ -446,10 +695,14 @@ form, input, textarea, select {
 }
 
 .service-price {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    color: var(--primary-color);
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin: 1rem 0;
+    display: inline-block;
 }
 
 .service-features {
@@ -495,12 +748,23 @@ form, input, textarea, select {
     width: 100%;
 }
 
+.about-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
 .about-image img {
     width: 100%;
     height: auto;
-    border-radius: 10px;
+    border-radius: 15px;
     box-shadow: var(--shadow-lg);
     display: block;
+    transition: transform 0.6s;
+}
+
+.about-image:hover img {
+    transform: scale(1.05);
 }
 
 .about-features {
@@ -515,6 +779,80 @@ form, input, textarea, select {
     display: block;
     color: var(--secondary-color);
     margin-bottom: 0.5rem;
+}
+
+/* Statistics Section */
+.stats-section {
+    background: var(--gradient-secondary);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    opacity: 0.3;
+}
+
+.stats-section .section-title,
+.stats-section .section-subtitle {
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+    position: relative;
+    z-index: 1;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 2.5rem 2rem;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.4s;
+}
+
+.stat-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+}
+
+.stat-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.stat-number {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 /* Gallery */
@@ -535,21 +873,44 @@ form, input, textarea, select {
 .gallery-item {
     position: relative;
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: 12px;
     aspect-ratio: 4/3;
     cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: all 0.4s;
+}
+
+.gallery-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 100%);
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.gallery-item:hover::after {
+    opacity: 1;
 }
 
 .gallery-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: block;
 }
 
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+}
+
 .gallery-item:hover img {
-    transform: scale(1.1);
+    transform: scale(1.15);
 }
 
 /* Booking Section */
@@ -564,37 +925,33 @@ form, input, textarea, select {
 }
 
 .booking-form {
-    background: white;
-    padding: 2.5rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    border: 1px solid rgba(212, 165, 116, 0.2);
+    background: #ffffff;
+    padding: 3.5rem;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    border: 1px solid #e5e5e5;
     position: relative;
-    overflow: hidden;
     width: 100%;
     max-width: 100%;
-}
-
-.booking-form::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
 }
 
 .form-label-main {
     display: block;
     margin-bottom: 1rem;
-    font-weight: 600;
-    color: var(--secondary-color);
-    font-size: 1.1rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
 }
 
 .form-row {
@@ -607,7 +964,10 @@ label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: var(--text-dark);
+    color: #1a1a1a;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 input[type="text"],
@@ -618,23 +978,35 @@ input[type="number"],
 textarea {
     width: 100%;
     padding: 0.875rem 1rem;
-    border: 2px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.9375rem;
     font-family: inherit;
-    transition: all 0.3s;
-    background: #fafafa;
+    transition: all 0.2s ease;
+    background: #ffffff;
     resize: vertical;
     min-height: 100px;
     max-width: 100%;
     box-sizing: border-box;
+    color: #1a1a1a;
+    font-weight: 400;
+}
+
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="tel"]:hover,
+input[type="date"]:hover,
+input[type="number"]:hover,
+textarea:hover {
+    border-color: #9ca3af;
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
     outline: none;
     border-color: var(--primary-color);
-    background: white;
+    background: #ffffff;
     box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
 }
 
@@ -649,47 +1021,30 @@ textarea::placeholder {
     gap: 0.75rem;
 }
 
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    padding: 0.75rem;
-    background: var(--bg-light);
-    border-radius: 5px;
-    transition: background 0.3s;
-}
-
-.checkbox-label:hover {
-    background: #f0f0f0;
-}
-
-.checkbox-label input[type="checkbox"] {
-    width: auto;
-    cursor: pointer;
-}
 
 .booking-summary {
-    background: linear-gradient(135deg, #f8f6f2 0%, #ffffff 100%);
-    padding: 1.75rem;
-    border-radius: 12px;
-    margin: 2rem 0;
-    border: 2px solid rgba(212, 165, 116, 0.15);
+    background: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 2.5rem 0;
+    border: 1px solid #e5e7eb;
 }
 
 .summary-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    color: #4b5563;
 }
 
 .summary-row.total {
     margin-top: 1rem;
     padding-top: 1rem;
-    border-top: 2px solid var(--border-color);
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--secondary-color);
+    border-top: 1px solid #e5e7eb;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
 }
 
 .booking-info {
@@ -789,41 +1144,39 @@ textarea::placeholder {
 }
 
 .payment-method-option:hover .payment-method-card {
-    border-color: var(--primary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(212, 165, 116, 0.2);
+    border-color: #d1d5db;
+    background: #f9fafb;
 }
 
 .payment-method-option input[type="radio"]:checked + .payment-method-card {
     border-color: var(--primary-color);
-    background: linear-gradient(135deg, rgba(212, 165, 116, 0.1) 0%, rgba(212, 165, 116, 0.05) 100%);
-    box-shadow: 0 4px 16px rgba(212, 165, 116, 0.3);
+    background: #fef3e7;
 }
 
 .payment-icon {
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom: 0.5rem;
 }
 
 .payment-name {
-    font-weight: 600;
-    color: var(--secondary-color);
+    font-weight: 500;
+    color: #1a1a1a;
     margin-bottom: 0.25rem;
-    font-size: 1rem;
+    font-size: 0.875rem;
 }
 
 .payment-desc {
-    font-size: 0.85rem;
-    color: var(--text-light);
+    font-size: 0.75rem;
+    color: #6b7280;
 }
 
 /* Payment Info Boxes */
 .payment-info-box {
-    background: linear-gradient(135deg, #e8f4f8 0%, #f0f8ff 100%);
-    padding: 1.25rem;
-    border-radius: 10px;
-    margin: 1rem 0;
-    border-left: 4px solid var(--primary-color);
+    background: #fef3e7;
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+    border-left: 3px solid var(--primary-color);
 }
 
 .payment-info-box p {
@@ -834,11 +1187,11 @@ textarea::placeholder {
 
 /* Card Payment Form */
 .payment-form-section {
-    background: #fafafa;
+    background: #f9fafb;
     padding: 1.5rem;
-    border-radius: 12px;
-    margin: 1rem 0;
-    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    border: 1px solid #e5e7eb;
 }
 
 .card-brands {
@@ -893,14 +1246,17 @@ textarea::placeholder {
 /* Enhanced Submit Button */
 .btn-submit {
     width: 100%;
-    margin-top: 1.5rem;
-    position: relative;
-    overflow: hidden;
+    margin-top: 2rem;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .btn-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(212, 165, 116, 0.4);
+    transform: none;
 }
 
 .btn-loader {
@@ -925,44 +1281,56 @@ textarea::placeholder {
 }
 
 .services-checkboxes {
-    background: #fafafa;
-    padding: 1rem;
-    border-radius: 10px;
-    border: 1px solid var(--border-color);
+    background: #f9fafb;
+    padding: 1.25rem;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .checkbox-label {
-    background: white;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
     padding: 1rem;
-    transition: all 0.3s;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
 .checkbox-label:hover {
-    background: #f8f6f2;
-    border-color: var(--primary-color);
-    transform: translateX(4px);
-}
-
-.checkbox-label input[type="checkbox"]:checked + span {
-    color: var(--primary-color);
-    font-weight: 600;
-}
-
-.checkbox-label input[type="checkbox"]:checked ~ span::before {
-    content: "✓ ";
-    color: var(--primary-color);
-    font-weight: 700;
-    margin-right: 0.5rem;
+    background: #f9fafb;
+    border-color: #d1d5db;
 }
 
 .checkbox-label input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    margin-right: 0.75rem;
+    width: 18px;
+    height: 18px;
     cursor: pointer;
     accent-color: var(--primary-color);
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.checkbox-label input[type="checkbox"]:checked + span {
+    color: #1a1a1a;
+    font-weight: 500;
+}
+
+.checkbox-label:has(input[type="checkbox"]:checked) {
+    background: #fef3e7;
+    border-color: var(--primary-color);
+}
+
+.checkbox-label span {
+    flex: 1;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #4b5563;
 }
 
 /* Enhanced Terms Checkbox */
@@ -978,9 +1346,9 @@ textarea::placeholder {
 
 /* Section Dividers */
 .booking-form .form-group:not(:last-child) {
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    padding-bottom: 1.5rem;
-    margin-bottom: 1.5rem;
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .payment-method-section {
@@ -1017,9 +1385,22 @@ textarea::placeholder {
 
 /* Footer */
 .footer {
-    background: var(--secondary-color);
+    background: var(--gradient-secondary);
     color: white;
-    padding: 3rem 0 1rem;
+    padding: 4rem 0 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><path d="M30 0l5 20-5 20-5-20z" fill="rgba(255,255,255,0.03)"/></svg>');
+    opacity: 0.5;
 }
 
 .footer-content {
@@ -1037,14 +1418,33 @@ textarea::placeholder {
     }
 }
 
+.footer-section {
+    position: relative;
+    z-index: 1;
+}
+
 .footer-section h3,
 .footer-section h4 {
     margin-bottom: 1rem;
+    color: var(--primary-light);
+    font-weight: 600;
 }
 
 .footer-section p {
     margin-bottom: 0.5rem;
     opacity: 0.9;
+    line-height: 1.8;
+}
+
+.footer-section a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.footer-section a:hover {
+    color: var(--primary-light);
+    padding-left: 5px;
 }
 
 .footer-bottom {
@@ -1052,6 +1452,9 @@ textarea::placeholder {
     padding-top: 2rem;
     border-top: 1px solid rgba(255,255,255,0.2);
     opacity: 0.8;
+    position: relative;
+    z-index: 1;
+    margin-top: 2rem;
 }
 
 /* Modal */

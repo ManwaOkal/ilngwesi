@@ -2,8 +2,23 @@
 const API_BASE_URL = 'http://localhost:5000/api'; // Update with your Bridge Server URL
 
 // Initialize on page load
+// Navbar scroll effect
+function initializeNavbarScroll() {
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     initializeNavigation();
+    initializeNavbarScroll();
     initializeHeroSlideshow();
     initializeGallery();
     initializeBookingForm();
@@ -315,6 +330,51 @@ function initializeBookingForm() {
         const today = new Date().toISOString().split('T')[0];
         arrivalDateInput.setAttribute('min', today);
     }
+
+    // Statistics Counter Animation
+    function animateCounter(element, target, duration = 2000) {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+            start += increment;
+            if (start >= target) {
+                element.textContent = target;
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(start);
+            }
+        }, 16);
+    }
+
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in-visible');
+                
+                // Animate statistics if it's a stat card
+                if (entry.target.classList.contains('stat-card')) {
+                    const statNumber = entry.target.querySelector('.stat-number');
+                    if (statNumber && !statNumber.classList.contains('animated')) {
+                        const target = parseInt(statNumber.getAttribute('data-target'));
+                        statNumber.classList.add('animated');
+                        animateCounter(statNumber, target);
+                    }
+                }
+            }
+        });
+    }, observerOptions);
+
+    // Observe all sections and cards
+    document.querySelectorAll('.section, .step-card, .service-card, .stat-card, .revenue-item').forEach(el => {
+        el.classList.add('fade-in');
+        observer.observe(el);
+    });
 
     // Form submission
     form.addEventListener('submit', async function(e) {
