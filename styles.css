@@ -3153,16 +3153,32 @@ textarea::placeholder {
         gap: 0.25rem;
     }
 
+    .app-bottom-nav-item svg {
+        width: 22px;
+        height: 22px;
+        stroke: currentColor;
+        fill: none;
+        transition: all 0.2s ease;
+        margin-bottom: 0.25rem;
+    }
+
     .app-bottom-nav-item.active {
         color: var(--primary-color);
     }
 
-    .app-bottom-nav-item span:first-child {
-        font-size: 1.5rem;
+    .app-bottom-nav-item.active svg {
+        stroke: var(--primary-color);
+        stroke-width: 2.5;
     }
 
     .app-bottom-nav-item span:last-child {
         font-size: 0.7rem;
+        margin-top: 0;
+    }
+
+    .app-bottom-nav-item:active {
+        transform: scale(0.95);
+        opacity: 0.8;
     }
 
     .app-bottom-nav-item:active {
