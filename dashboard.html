@@ -118,21 +118,62 @@
         .dashboard-stats {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-            margin-bottom: 3rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid rgba(212, 165, 116, 0.15);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .stat-box {
-            background: transparent;
-            padding: 0;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(212, 165, 116, 0.1);
             transition: all 0.3s ease;
             position: relative;
+            overflow: hidden;
+            min-height: 120px;
+        }
+
+        .stat-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .stat-box:hover {
-            transform: translateX(4px);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            border-color: rgba(212, 165, 116, 0.3);
+        }
+
+        .stat-box:hover::before {
+            opacity: 1;
+        }
+
+        .stat-box-icon {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.15) 0%, rgba(212, 165, 116, 0.08) 100%);
+            opacity: 0.7;
+        }
+
+        .stat-box-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--primary-color);
         }
 
         .stat-box-label {
@@ -147,22 +188,30 @@
             align-items: baseline;
             gap: 0.5rem;
             flex-wrap: wrap;
+            width: 100%;
         }
 
         .stat-box-value {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 700;
             background: linear-gradient(135deg, #13501b 0%, #4a7c59 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             line-height: 1.2;
+            word-break: break-word;
         }
 
         .stat-box-change {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: #10b981;
-            font-weight: 500;
+            font-weight: 600;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
         }
 
         .revenue-breakdown {
@@ -185,11 +234,17 @@
         }
 
         .chart-container {
-            background: transparent;
-            padding: 0;
-            margin-bottom: 3rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid rgba(212, 165, 116, 0.15);
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(212, 165, 116, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .chart-container:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
         }
 
         .chart-container:last-child {
@@ -204,13 +259,25 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin: 0 0 1.5rem 0;
-            font-size: 1.25rem;
-            font-weight: 600;
+            font-size: 1.35rem;
+            font-weight: 700;
             letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .chart-container h2::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border-radius: 2px;
         }
 
         .chart-container canvas {
             max-height: 300px;
+            padding: 0.5rem;
         }
 
 
@@ -232,7 +299,7 @@
         .revenue-list {
             display: flex;
             flex-direction: column;
-            gap: 0;
+            gap: 0.5rem;
             width: 100%;
             max-width: 100%;
         }
@@ -241,9 +308,15 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.75rem 0;
+            padding: 1rem;
             border-bottom: 1px solid rgba(212, 165, 116, 0.1);
             gap: 1rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .revenue-item:hover {
+            background: rgba(212, 165, 116, 0.05);
         }
 
         .revenue-item:last-child {
@@ -446,6 +519,24 @@
             }
 
             .stat-box-value {
+                font-size: 1.75rem;
+            }
+
+            .stat-box-icon {
+                width: 56px;
+                height: 56px;
+            }
+
+            .stat-box-icon svg {
+                width: 28px;
+                height: 28px;
+            }
+
+            .chart-container {
+                padding: 2rem;
+            }
+
+            .chart-container h2 {
                 font-size: 1.5rem;
             }
 
@@ -460,6 +551,10 @@
 
             .revenue-breakdown {
                 padding: 2.5rem;
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+                border: 1px solid rgba(212, 165, 116, 0.1);
             }
         }
 
@@ -472,6 +567,73 @@
 
         /* Product Sales Responsive Styles */
         @media (max-width: 768px) {
+            .dashboard-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .stat-box {
+                padding: 1.25rem;
+                border-radius: 10px;
+            }
+
+            .stat-box-icon {
+                width: 40px;
+                height: 40px;
+                top: 0.75rem;
+                right: 0.75rem;
+            }
+
+            .stat-box-icon svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            .stat-box-label {
+                font-size: 0.7rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .stat-box-value {
+                font-size: 1.25rem;
+                line-height: 1.3;
+            }
+
+            .stat-box-change {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.4rem;
+            }
+
+            .stat-box-value-wrapper {
+                flex-direction: row;
+                align-items: center;
+                gap: 0.75rem;
+                flex-wrap: wrap;
+            }
+
+            .stat-box-value {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .stat-box-change {
+                flex-shrink: 0;
+            }
+
+            .chart-container {
+                padding: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .chart-container h2 {
+                font-size: 1.1rem;
+                margin-bottom: 1rem;
+            }
+
+            .chart-container h2::before {
+                height: 20px;
+            }
+
             #productSalesTable .sales-grid {
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
                 gap: 1rem !important;
@@ -519,6 +681,49 @@
         }
 
         @media (max-width: 480px) {
+            .dashboard-stats {
+                gap: 0.75rem;
+            }
+
+            .stat-box {
+                padding: 1rem;
+            }
+
+            .stat-box-icon {
+                width: 36px;
+                height: 36px;
+                top: 0.75rem;
+                right: 0.75rem;
+            }
+
+            .stat-box-icon svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .stat-box-label {
+                font-size: 0.65rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .stat-box-value {
+                font-size: 1.1rem;
+                line-height: 1.3;
+            }
+
+            .stat-box-change {
+                font-size: 0.65rem;
+                padding: 0.15rem 0.35rem;
+            }
+
+            .chart-container {
+                padding: 0.875rem;
+            }
+
+            .chart-container h2 {
+                font-size: 1rem;
+            }
+
             #productSalesTable .sales-grid {
                 grid-template-columns: 1fr !important;
             }
@@ -566,8 +771,8 @@
         <div class="container">
             <div class="nav-brand">
                 <a href="index.html" style="text-decoration: none; color: inherit;">
-                    <h1>Il Ngwesi</h1>
-                    <span class="tagline">Revenue Dashboard</span>
+                <h1>Il Ngwesi</h1>
+                <span class="tagline">Revenue Dashboard</span>
                 </a>
             </div>
             <ul class="nav-menu">
@@ -602,6 +807,12 @@
             <!-- Summary Stats -->
             <div class="dashboard-stats">
                 <div class="stat-box">
+                    <div class="stat-box-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
                     <div class="stat-box-label">Total Revenue</div>
                     <div class="stat-box-value-wrapper">
                         <div class="stat-box-value">KES 2,450,000</div>
@@ -609,6 +820,14 @@
                     </div>
                 </div>
                 <div class="stat-box">
+                    <div class="stat-box-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                    </div>
                     <div class="stat-box-label">Total Bookings</div>
                     <div class="stat-box-value-wrapper">
                         <div class="stat-box-value">127</div>
@@ -616,6 +835,13 @@
                     </div>
                 </div>
                 <div class="stat-box">
+                    <div class="stat-box-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                        </svg>
+                    </div>
                     <div class="stat-box-label">Products Sold</div>
                     <div class="stat-box-value-wrapper">
                         <div class="stat-box-value">342</div>
@@ -623,6 +849,12 @@
                     </div>
                 </div>
                 <div class="stat-box">
+                    <div class="stat-box-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
                     <div class="stat-box-label">Avg. Revenue/Booking</div>
                     <div class="stat-box-value-wrapper">
                         <div class="stat-box-value">KES 19,291</div>
@@ -635,13 +867,13 @@
             <div class="chart-container">
                 <h2>Revenue by Category</h2>
                 <canvas id="categoryBarChart"></canvas>
-            </div>
+                    </div>
 
             <!-- Product Performance Chart -->
             <div class="chart-container">
                 <h2>Top Products Performance</h2>
                 <canvas id="productPerformanceChart"></canvas>
-            </div>
+                </div>
 
             <!-- Product Sales Section -->
             <div class="chart-container">
@@ -652,8 +884,8 @@
                             <button class="sales-view-btn active" data-view="grid" style="padding: 0.5rem 1rem; border: none; background: rgba(212, 165, 116, 0.1); border-radius: 6px; cursor: pointer; font-weight: 600; color: var(--secondary-color); transition: all 0.3s ease;">Grid</button>
                             <button class="sales-view-btn" data-view="list" style="padding: 0.5rem 1rem; border: none; background: transparent; border-radius: 6px; cursor: pointer; font-weight: 600; color: var(--text-light); transition: all 0.3s ease;">List</button>
                         </div>
+                        </div>
                     </div>
-                </div>
                 <div id="productSalesTable" style="margin-top: 1.5rem;">
                     <!-- Product sales will be populated by JavaScript -->
                 </div>
@@ -691,10 +923,10 @@
             if (!communityLoggedIn && !oldAuth) {
                 console.log('Not authenticated, redirecting to community portal...');
                 window.location.replace('community.html');
-                return;
-            }
-            
-            console.log('Authentication successful, dashboard loaded');
+                    return;
+                }
+                
+                console.log('Authentication successful, dashboard loaded');
         })();
 
         // Wait for DOM to be fully loaded before initializing charts
@@ -1503,20 +1735,20 @@
             
             // View toggle functionality
             document.querySelectorAll('.sales-view-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
+            btn.addEventListener('click', function() {
                     document.querySelectorAll('.sales-view-btn').forEach(b => {
                         b.classList.remove('active');
                         b.style.background = 'transparent';
                         b.style.color = 'var(--text-light)';
                     });
-                    this.classList.add('active');
+                this.classList.add('active');
                     this.style.background = 'rgba(212, 165, 116, 0.1)';
                     this.style.color = 'var(--secondary-color)';
                     currentView = this.dataset.view;
                     loadProductSales(currentView);
-                });
             });
-            
+        });
+
             // Load product sales on page load
             loadProductSales(currentView);
 

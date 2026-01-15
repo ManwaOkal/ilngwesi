@@ -172,6 +172,7 @@ form, input, textarea, select {
     margin-top: -2px;
 }
 
+/* Navigation menu - visible on large screens by default */
 .nav-menu {
     display: flex;
     list-style: none;
@@ -196,6 +197,7 @@ form, input, textarea, select {
     position: relative;
     display: inline-block;
     white-space: nowrap;
+    cursor: pointer;
 }
 
 .nav-menu a:not(.btn-primary):not(.btn-secondary)::after {
@@ -2383,7 +2385,7 @@ textarea::placeholder {
         padding: 0 20px;
     }
 
-    /* Navigation */
+    /* Mobile navigation - hamburger menu */
     .nav-menu {
         position: fixed;
         top: 70px;
@@ -2425,6 +2427,7 @@ textarea::placeholder {
         border-bottom: 1px solid rgba(212, 165, 116, 0.1);
         font-size: 1rem;
         transition: all 0.2s ease;
+        width: 100%;
     }
 
     .nav-menu a:active {
@@ -2435,6 +2438,8 @@ textarea::placeholder {
     .mobile-menu-toggle {
         display: flex;
     }
+
+    /* Navigation menu items are hidden on mobile, shown via hamburger toggle */
 
     /* Hero Section */
     .hero {
@@ -2982,8 +2987,10 @@ textarea::placeholder {
     }
 }
 
-/* Large screens - Enhanced Navigation */
+/* Large screens - Navigation handled inline in index.html */
+
 @media (min-width: 1024px) {
+    /* Keep hamburger menu on all screen sizes */
     .nav-menu {
         gap: 0.75rem;
     }

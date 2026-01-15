@@ -76,7 +76,17 @@
         .community-card-icon {
             font-size: 3.5rem;
             margin-bottom: 1.5rem;
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+        }
+
+        .community-card-icon svg {
+            width: 64px;
+            height: 64px;
+            stroke: currentColor;
+            fill: none;
         }
 
         .community-card h2 {
@@ -303,7 +313,6 @@
             </div>
             <ul class="nav-menu">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="community.html" class="btn-secondary">Community Login</a></li>
             </ul>
             <button class="mobile-menu-toggle" aria-label="Toggle menu">
                 <span></span>
@@ -346,14 +355,26 @@
 
                 <div class="community-cards">
                     <a href="dashboard.html" class="community-card">
-                        <span class="community-card-icon">📊</span>
+                        <span class="community-card-icon">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                        </span>
                         <h2>Revenue Dashboard</h2>
                         <p>View booking statistics, revenue breakdown, and community tourism analytics. Monitor bookings and track financial performance.</p>
                         <span class="community-card-link">View Dashboard →</span>
                     </a>
 
                     <a href="merchant-dashboard.html" class="community-card">
-                        <span class="community-card-icon">🛍️</span>
+                        <span class="community-card-icon">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                <path d="M16 10a4 4 0 0 1-8 0"></path>
+                            </svg>
+                        </span>
                         <h2>Merchant Portal</h2>
                         <p>Manage marketplace products, add new items, and track your sales. Access the merchant dashboard to update your product listings.</p>
                         <span class="community-card-link">Merchant Login →</span>

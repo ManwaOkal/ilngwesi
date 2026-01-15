@@ -35,14 +35,23 @@
             font-weight: 600;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
-            padding: 0.625rem 1rem;
+            padding: 0.625rem;
             border-radius: 8px;
             background: rgba(212, 165, 116, 0.1);
             color: var(--primary-color);
             transition: all 0.3s ease;
             white-space: nowrap;
             position: relative;
+            min-width: 44px;
+            min-height: 44px;
+        }
+
+        .marketplace-nav .cart-icon-link svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
         }
 
         .marketplace-nav .cart-icon-link:hover {
@@ -577,8 +586,9 @@
                 border-top: 2px solid rgba(212, 165, 116, 0.2);
             }
 
-            .marketplace-nav .nav-menu.active {
-                display: flex;
+            /* Mobile menu toggle removed - nav menu hidden on mobile since we have bottom nav */
+            .marketplace-nav .nav-menu {
+                display: none;
             }
 
             .marketplace-nav .nav-menu li {
@@ -592,22 +602,10 @@
                 width: 100%;
             }
 
-            .marketplace-nav .mobile-menu-toggle {
+            /* Hamburger menu removed - cart icon now in its place */
+            .marketplace-nav .cart-icon-link {
                 display: flex;
-                flex-direction: column;
-                gap: 4px;
-                background: transparent;
-                border: none;
-                cursor: pointer;
-                padding: 0.5rem;
-            }
-
-            .marketplace-nav .mobile-menu-toggle span {
-                width: 25px;
-                height: 3px;
-                background: var(--secondary-color);
-                border-radius: 2px;
-                transition: all 0.3s ease;
+                margin-left: auto;
             }
         }
 
@@ -637,6 +635,11 @@
 
             .filter-btn:active {
                 transform: scale(0.95);
+            }
+
+            /* Hide category filter section on mobile since we have bottom nav */
+            .marketplace-filters {
+                display: none !important;
             }
 
             .marketplace-footer .footer-content {
@@ -708,18 +711,15 @@
                 <li><a href="marketplace.html#clothing">Clothing</a></li>
                 <li><a href="marketplace.html#home">Home Decor</a></li>
                 <li><a href="marketplace.html#art">Art</a></li>
-                <li>
-                    <a href="cart.html" class="cart-icon-link" style="position: relative;">
-                        🛒 Cart
-                        <span id="cartBadge" class="cart-badge" style="display: none;">0</span>
-                    </a>
-                </li>
             </ul>
-            <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+            <a href="cart.html" class="cart-icon-link" style="position: relative;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <span id="cartBadge" class="cart-badge" style="display: none;">0</span>
+            </a>
         </div>
     </nav>
 
@@ -801,12 +801,13 @@
 
     <!-- App-like Bottom Navigation (Mobile Only) -->
     <nav class="app-bottom-nav" id="appBottomNav">
-        <a href="index.html" class="app-bottom-nav-item" data-page="home">
+        <a href="marketplace.html" class="app-bottom-nav-item active" data-page="marketplace">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
             </svg>
-            <span>Home</span>
+            <span>All</span>
         </a>
         <a href="marketplace.html#jewelry" class="app-bottom-nav-item" data-page="jewelry">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -814,14 +815,6 @@
                 <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
             </svg>
             <span>Jewelry</span>
-        </a>
-        <a href="marketplace.html" class="app-bottom-nav-item active" data-page="marketplace">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <path d="M16 10a4 4 0 0 1-8 0"></path>
-            </svg>
-            <span>Shop</span>
         </a>
         <a href="marketplace.html#bags" class="app-bottom-nav-item" data-page="bags">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -834,14 +827,27 @@
             </svg>
             <span>Bags</span>
         </a>
-        <a href="cart.html" class="app-bottom-nav-item" data-page="cart" style="position: relative;">
+        <a href="marketplace.html#clothing" class="app-bottom-nav-item" data-page="clothing">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="9" cy="21" r="1"></circle>
-                <circle cx="20" cy="21" r="1"></circle>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                <line x1="7" y1="7" x2="7.01" y2="7"></line>
             </svg>
-            <span>Cart</span>
-            <span id="bottomNavCartBadge" style="position: absolute; top: 0.25rem; right: 0.75rem; background: var(--primary-color); color: white; border-radius: 50%; width: 18px; height: 18px; display: none; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700;">0</span>
+            <span>Clothing</span>
+        </a>
+        <a href="marketplace.html#home" class="app-bottom-nav-item" data-page="home">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Decor</span>
+        </a>
+        <a href="marketplace.html#art" class="app-bottom-nav-item" data-page="art">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+            </svg>
+            <span>Art</span>
         </a>
     </nav>
 
@@ -1337,41 +1343,7 @@
         renderProducts();
         
         // Initialize mobile menu toggle
-        const mobileToggle = document.querySelector('.mobile-menu-toggle');
-        const navMenu = document.querySelector('.nav-menu');
-        
-        if (mobileToggle && navMenu) {
-            mobileToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                navMenu.classList.toggle('active');
-                
-                // Animate hamburger icon
-                const spans = mobileToggle.querySelectorAll('span');
-                if (navMenu.classList.contains('active')) {
-                    spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                    spans[1].style.opacity = '0';
-                    spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    spans[0].style.transform = 'none';
-                    spans[1].style.opacity = '1';
-                    spans[2].style.transform = 'none';
-                    document.body.style.overflow = '';
-                }
-            });
-            
-            // Close menu when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('active')) {
-                    navMenu.classList.remove('active');
-                    const spans = mobileToggle.querySelectorAll('span');
-                    spans[0].style.transform = 'none';
-                    spans[1].style.opacity = '1';
-                    spans[2].style.transform = 'none';
-                    document.body.style.overflow = '';
-                }
-            });
-        }
+        // Hamburger menu removed - cart icon now in its place
 
         // App-like bottom navigation functionality for marketplace
         (function() {
@@ -1387,27 +1359,33 @@
                     item.classList.remove('active');
                 });
                 
-                if (path.includes('cart') || path.includes('checkout') || path.includes('product')) {
-                    const cartItem = bottomNav.querySelector('[data-page="cart"]');
-                    if (cartItem) cartItem.classList.add('active');
-                } else if (hash === '#jewelry') {
+                if (hash === '#jewelry') {
                     const jewelryItem = bottomNav.querySelector('[data-page="jewelry"]');
                     if (jewelryItem) jewelryItem.classList.add('active');
                 } else if (hash === '#bags') {
                     const bagsItem = bottomNav.querySelector('[data-page="bags"]');
                     if (bagsItem) bagsItem.classList.add('active');
-                } else if (path.includes('marketplace') || path.includes('index')) {
-                    const shopItem = bottomNav.querySelector('[data-page="marketplace"]');
-                    if (shopItem) shopItem.classList.add('active');
-                } else {
+                } else if (hash === '#clothing') {
+                    const clothingItem = bottomNav.querySelector('[data-page="clothing"]');
+                    if (clothingItem) clothingItem.classList.add('active');
+                } else if (hash === '#home') {
                     const homeItem = bottomNav.querySelector('[data-page="home"]');
                     if (homeItem) homeItem.classList.add('active');
+                } else if (hash === '#art') {
+                    const artItem = bottomNav.querySelector('[data-page="art"]');
+                    if (artItem) artItem.classList.add('active');
+                } else if (path.includes('marketplace')) {
+                    const allItem = bottomNav.querySelector('[data-page="marketplace"]');
+                    if (allItem) allItem.classList.add('active');
+                } else {
+                    const allItem = bottomNav.querySelector('[data-page="marketplace"]');
+                    if (allItem) allItem.classList.add('active');
                 }
             }
             
-            // Update cart badge in bottom nav
-            function updateBottomNavCart() {
-                const badge = document.getElementById('bottomNavCartBadge');
+            // Update cart badge in top nav (cart moved from bottom nav)
+            function updateTopNavCart() {
+                const badge = document.getElementById('cartBadge');
                 if (badge && typeof cart !== 'undefined') {
                     const count = cart.getItemCount();
                     if (count > 0) {
@@ -1438,7 +1416,7 @@
             window.addEventListener('hashchange', updateActiveNav);
             window.addEventListener('load', function() {
                 updateActiveNav();
-                updateBottomNavCart();
+                updateTopNavCart();
             });
             
             // Update cart badge when cart changes
@@ -1446,8 +1424,10 @@
                 const originalUpdate = cart.updateCartUI;
                 cart.updateCartUI = function() {
                     originalUpdate.call(this);
-                    updateBottomNavCart();
+                    updateTopNavCart();
                 };
+                // Also update on initial load
+                updateTopNavCart();
             }
         })();
     </script>
