@@ -612,6 +612,8 @@
 
     <script src="cart.js"></script>
     <script>
+        // Set copyright year dynamically
+        document.getElementById('copyrightYear').textContent = new Date().getFullYear();
         // Ensure cart is available
         if (typeof cart === 'undefined') {
             console.error('Cart failed to initialize');
