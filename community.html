@@ -227,6 +227,55 @@
         }
 
         @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: flex !important;
+                flex-direction: column;
+                gap: 4px;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 0.5rem;
+                z-index: 1001;
+            }
+
+            .mobile-menu-toggle span {
+                width: 25px;
+                height: 3px;
+                background: var(--secondary-color);
+                border-radius: 2px;
+                transition: all 0.3s ease;
+                display: block;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                display: none;
+                z-index: 999;
+                border-top: 2px solid rgba(212, 165, 116, 0.2);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-menu li {
+                width: 100%;
+            }
+
+            .nav-menu a {
+                display: block;
+                padding: 0.75rem 0;
+                border-bottom: 1px solid rgba(212, 165, 116, 0.1);
+                width: 100%;
+            }
+
             .community-header h1 {
                 font-size: 2rem;
             }
@@ -387,6 +436,41 @@
     <script>
         // Set copyright year dynamically
         document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+        
+        // Initialize mobile menu toggle
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (mobileToggle && navMenu) {
+            mobileToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                navMenu.classList.toggle('active');
+                
+                const spans = mobileToggle.querySelectorAll('span');
+                if (navMenu.classList.contains('active')) {
+                    spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                    spans[1].style.opacity = '0';
+                    spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    const spans = mobileToggle.querySelectorAll('span');
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+        }
     </script>
 </body>
 </html>
