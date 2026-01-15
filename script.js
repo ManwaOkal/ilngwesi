@@ -46,8 +46,7 @@ function initializeNavigation() {
 
     // Mobile menu toggle
     if (mobileToggle && navMenu) {
-        mobileToggle.addEventListener('click', function(e) {
-            e.stopPropagation();
+        function toggleMobileMenu() {
             navMenu.classList.toggle('active');
             
             // Animate hamburger icon
@@ -56,33 +55,47 @@ function initializeNavigation() {
                 spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
                 spans[1].style.opacity = '0';
                 spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                // Prevent body scroll when menu is open
+                document.body.style.overflow = 'hidden';
             } else {
                 spans[0].style.transform = 'none';
                 spans[1].style.opacity = '1';
                 spans[2].style.transform = 'none';
+                document.body.style.overflow = '';
             }
+        }
+
+        mobileToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleMobileMenu();
         });
 
         // Close menu when clicking outside
         document.addEventListener('click', function(e) {
-            if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target)) {
+            if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('active')) {
                 closeMobileMenu();
                 const spans = mobileToggle.querySelectorAll('span');
                 spans[0].style.transform = 'none';
                 spans[1].style.opacity = '1';
                 spans[2].style.transform = 'none';
+                document.body.style.overflow = '';
             }
         });
 
         // Close menu on window resize if it becomes desktop size
+        let resizeTimer;
         window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
-                closeMobileMenu();
-                const spans = mobileToggle.querySelectorAll('span');
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            }
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                if (window.innerWidth > 768) {
+                    closeMobileMenu();
+                    const spans = mobileToggle.querySelectorAll('span');
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                    document.body.style.overflow = '';
+                }
+            }, 250);
         });
     }
 
@@ -247,8 +260,17 @@ function initializeBookingForm() {
     if (cardNumberInput) {
         cardNumberInput.addEventListener('input', function(e) {
             let value = e.target.value.replace(/\s/g, '');
+            // Limit to 16 digits
+            value = value.substring(0, 16);
             let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
             e.target.value = formattedValue;
+        });
+
+        // Prevent non-numeric input
+        cardNumberInput.addEventListener('keypress', function(e) {
+            if (!/[0-9\s]/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                e.preventDefault();
+            }
         });
     }
 
@@ -257,10 +279,25 @@ function initializeBookingForm() {
     if (cardExpiryInput) {
         cardExpiryInput.addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
+            // Limit to 4 digits
+            value = value.substring(0, 4);
             if (value.length >= 2) {
                 value = value.substring(0, 2) + '/' + value.substring(2, 4);
             }
             e.target.value = value;
+        });
+
+        // Validate month
+        cardExpiryInput.addEventListener('blur', function(e) {
+            const value = e.target.value;
+            if (value.length >= 2) {
+                const month = parseInt(value.substring(0, 2));
+                if (month < 1 || month > 12) {
+                    e.target.setCustomValidity('Please enter a valid month (01-12)');
+                } else {
+                    e.target.setCustomValidity('');
+                }
+            }
         });
     }
 
@@ -268,8 +305,15 @@ function initializeBookingForm() {
     const cardCVCInput = document.getElementById('cardCVC');
     if (cardCVCInput) {
         cardCVCInput.addEventListener('input', function(e) {
-            e.target.value = e.target.value.replace(/\D/g, '');
+            e.target.value = e.target.value.replace(/\D/g, '').substring(0, 4);
         });
+    }
+
+    // Set minimum date to today for arrival date
+    const arrivalDateInput = document.getElementById('arrivalDate');
+    if (arrivalDateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        arrivalDateInput.setAttribute('min', today);
     }
 
     // Form submission
