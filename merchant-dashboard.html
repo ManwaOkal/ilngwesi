@@ -803,40 +803,7 @@
         }
 
         // Initialize mobile menu toggle
-        const mobileToggle = document.querySelector('.mobile-menu-toggle');
-        const navMenu = document.querySelector('.nav-menu');
-        
-        if (mobileToggle && navMenu) {
-            mobileToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                navMenu.classList.toggle('active');
-                
-                // Animate hamburger icon
-                const spans = mobileToggle.querySelectorAll('span');
-                if (navMenu.classList.contains('active')) {
-                    spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                    spans[1].style.opacity = '0';
-                    spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    spans[0].style.transform = 'none';
-                    spans[1].style.opacity = '1';
-                    spans[2].style.transform = 'none';
-                    document.body.style.overflow = '';
-                }
-            });
-            
-            document.addEventListener('click', function(e) {
-                if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('active')) {
-                    navMenu.classList.remove('active');
-                    const spans = mobileToggle.querySelectorAll('span');
-                    spans[0].style.transform = 'none';
-                    spans[1].style.opacity = '1';
-                    spans[2].style.transform = 'none';
-                    document.body.style.overflow = '';
-                }
-            });
-        }
+        // Mobile menu toggle removed - cart icon now in its place
     </script>
     <script src="cart.js"></script>
     <script src="script.js"></script>
