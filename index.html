@@ -2,12 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no">
     <meta name="description" content="Book authentic community tourism experiences at Il Ngwesi Conservancy. Owned and run by the Maasai community.">
     <meta name="theme-color" content="#d4a574">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Il Ngwesi">
+    <meta name="format-detection" content="telephone=no">
     <title>Community Tourism Relay - Il Ngwesi Conservancy</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -247,7 +251,7 @@
                     </div>
                 </div>
             </div>
-            <div style="text-align: center; margin-top: 2rem;">
+            <div style="text-align: center; margin-top: 2rem; display: flex; justify-content: center; align-items: center; width: 100%;">
                 <button id="completeSelectionBtn" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2.5rem; opacity: 0.5; cursor: not-allowed;" disabled>Complete Selection →</button>
             </div>
         </div>
@@ -467,6 +471,31 @@
         </div>
     </footer>
 
+    <!-- App-like Bottom Navigation (Mobile Only) -->
+    <nav class="app-bottom-nav" id="appBottomNav">
+        <a href="index.html" class="app-bottom-nav-item active" data-page="home">
+            <span>🏠</span>
+            <span>Home</span>
+        </a>
+        <a href="#services" class="app-bottom-nav-item" data-page="services">
+            <span>🎯</span>
+            <span>Services</span>
+        </a>
+        <a href="marketplace.html" class="app-bottom-nav-item" data-page="marketplace">
+            <span>🛍️</span>
+            <span>Shop</span>
+        </a>
+        <a href="#booking" class="app-bottom-nav-item" data-page="booking">
+            <span>📅</span>
+            <span>Book</span>
+        </a>
+        <a href="cart.html" class="app-bottom-nav-item" data-page="cart" style="position: relative;">
+            <span>🛒</span>
+            <span>Cart</span>
+            <span id="bottomNavCartBadge" style="position: absolute; top: 0.25rem; right: 0.75rem; background: var(--primary-color); color: white; border-radius: 50%; width: 18px; height: 18px; display: none; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700;">0</span>
+        </a>
+    </nav>
+
     <!-- Booking Success Modal -->
     <div id="bookingModal" class="modal">
         <div class="modal-content">
@@ -485,6 +514,89 @@
     <script>
         // Set copyright year dynamically
         document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+        
+        // Ensure booking modal is hidden on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const bookingModal = document.getElementById('bookingModal');
+            if (bookingModal) {
+                bookingModal.style.display = 'none';
+            }
+        });
+        
+        // App-like bottom navigation functionality
+        (function() {
+            const bottomNav = document.getElementById('appBottomNav');
+            if (!bottomNav) return;
+            
+            // Update active state based on current page/section
+            function updateActiveNav() {
+                const hash = window.location.hash;
+                const path = window.location.pathname;
+                
+                bottomNav.querySelectorAll('.app-bottom-nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                if (path.includes('marketplace') || path.includes('product') || path.includes('cart') || path.includes('checkout')) {
+                    const shopItem = bottomNav.querySelector('[data-page="marketplace"]');
+                    if (shopItem) shopItem.classList.add('active');
+                } else if (hash === '#services') {
+                    const servicesItem = bottomNav.querySelector('[data-page="services"]');
+                    if (servicesItem) servicesItem.classList.add('active');
+                } else if (hash === '#booking') {
+                    const bookingItem = bottomNav.querySelector('[data-page="booking"]');
+                    if (bookingItem) bookingItem.classList.add('active');
+                } else {
+                    const homeItem = bottomNav.querySelector('[data-page="home"]');
+                    if (homeItem) homeItem.classList.add('active');
+                }
+            }
+            
+            // Update cart badge in bottom nav
+            function updateBottomNavCart() {
+                const badge = document.getElementById('bottomNavCartBadge');
+                if (badge && typeof cart !== 'undefined') {
+                    const count = cart.getItemCount();
+                    if (count > 0) {
+                        badge.textContent = count;
+                        badge.style.display = 'flex';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                }
+            }
+            
+            // Smooth scroll for hash links
+            bottomNav.querySelectorAll('a[href^="#"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        const target = document.querySelector(href);
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            updateActiveNav();
+                        }
+                    }
+                });
+            });
+            
+            // Update on hash change
+            window.addEventListener('hashchange', updateActiveNav);
+            window.addEventListener('load', function() {
+                updateActiveNav();
+                updateBottomNavCart();
+            });
+            
+            // Update cart badge when cart changes
+            if (typeof cart !== 'undefined') {
+                const originalUpdate = cart.updateCartUI;
+                cart.updateCartUI = function() {
+                    originalUpdate.call(this);
+                    updateBottomNavCart();
+                };
+            }
+        })();
     </script>
 </body>
 </html>

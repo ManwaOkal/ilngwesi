@@ -33,6 +33,10 @@ html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%; /* Prevent font scaling in iOS */
     font-size: 16px; /* Base font size */
+    /* App-like feel */
+    -webkit-tap-highlight-color: transparent;
+    height: 100%;
+    overflow-x: hidden;
 }
 
 body {
@@ -43,6 +47,28 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-width: 320px; /* Prevent horizontal scroll on small devices */
+    /* App-like feel */
+    -webkit-tap-highlight-color: transparent;
+    touch-action: pan-y;
+    overscroll-behavior: none;
+    height: 100%;
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    /* Override body fixed positioning for mobile app feel */
+    body {
+        position: relative;
+        height: auto;
+        min-height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    html {
+        height: auto;
+        overflow-x: hidden;
+    }
 }
 
 /* Prevent horizontal overflow */
@@ -304,6 +330,15 @@ form, input, textarea, select {
     color: white;
 }
 
+.hero-content .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+}
+
 .hero-title {
     font-size: 3.5rem;
     font-weight: 700;
@@ -311,6 +346,9 @@ form, input, textarea, select {
     text-shadow: 2px 2px 8px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.3);
     animation: fadeInUp 1s ease-out;
     line-height: 1.2;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @keyframes fadeInUp {
@@ -398,11 +436,13 @@ form, input, textarea, select {
     display: flex;
     gap: 1rem;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
     width: 100%;
     max-width: 100%;
     padding: 0 1rem;
     animation: fadeInUp 1s ease-out 0.4s both;
+    margin: 0 auto;
 }
 
 /* Buttons */
@@ -448,7 +488,16 @@ form, input, textarea, select {
 }
 
 .btn-primary:active {
-    transform: translateY(-1px);
+    transform: translateY(-1px) scale(0.98);
+}
+
+@media (max-width: 768px) {
+    .btn-primary:active,
+    .btn-secondary:active,
+    .btn:active {
+        transform: scale(0.96);
+        transition: transform 0.1s ease;
+    }
 }
 
 .btn-secondary {
@@ -789,6 +838,9 @@ form, input, textarea, select {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    display: block;
+    margin: 2rem auto 0;
+    text-align: center;
 }
 
 #completeSelectionBtn:not(:disabled):hover {
@@ -798,6 +850,29 @@ form, input, textarea, select {
 
 #completeSelectionBtn:not(:disabled):active {
     transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    #completeSelectionBtn {
+        width: 100%;
+        max-width: 300px;
+        margin: 2rem auto 0;
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    #completeSelectionBtn {
+        max-width: 280px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 360px) {
+    #completeSelectionBtn {
+        max-width: 260px;
+        width: 100%;
+    }
 }
 
 .service-image {
@@ -1047,6 +1122,46 @@ form, input, textarea, select {
 /* Gallery */
 .gallery {
     background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.gallery-see-more {
+    text-align: center;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.gallery-see-more button {
+    display: block;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .gallery-see-more {
+        width: 100%;
+        padding: 0 1rem;
+    }
+
+    .gallery-see-more button {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-see-more button {
+        max-width: 280px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 360px) {
+    .gallery-see-more button {
+        max-width: 260px;
+        width: 100%;
+    }
 }
 
 .gallery-grid {
@@ -2071,7 +2186,7 @@ textarea::placeholder {
 
 /* Modal */
 .modal {
-    display: none;
+    display: none !important;
     position: fixed;
     z-index: 2000;
     left: 0;
@@ -2080,6 +2195,27 @@ textarea::placeholder {
     height: 100%;
     background: rgba(0,0,0,0.7);
     animation: fadeIn 0.3s;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.modal.show,
+.modal[style*="display: block"] {
+    display: block !important;
+}
+
+@media (max-width: 768px) {
+    .modal {
+        background-color: rgba(0,0,0,0.6);
+        padding: 0;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    .modal.show {
+        display: flex;
+    }
 }
 
 .modal-content {
@@ -2089,11 +2225,36 @@ textarea::placeholder {
     border-radius: 10px;
     max-width: 600px;
     width: 90%;
-    max-width: calc(100vw - 40px);
     position: relative;
     animation: slideDown 0.3s;
     overflow-y: auto;
     max-height: 90vh;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        margin: 0;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 20px 20px 0 0;
+        max-height: 90vh;
+        overflow-y: auto;
+        animation: slideUpMobile 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+        box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+    }
+
+    @keyframes slideUpMobile {
+        from {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
 }
 
 .modal-close {
@@ -2228,12 +2389,26 @@ textarea::placeholder {
         top: 70px;
         left: 0;
         right: 0;
-        background: white;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         flex-direction: column;
         padding: 1rem;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         display: none;
         z-index: 999;
+        animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .nav-menu.active {
@@ -2246,8 +2421,15 @@ textarea::placeholder {
 
     .nav-menu a {
         display: block;
-        padding: 0.75rem 0;
-        border-bottom: 1px solid var(--border-color);
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(212, 165, 116, 0.1);
+        font-size: 1rem;
+        transition: all 0.2s ease;
+    }
+
+    .nav-menu a:active {
+        background: rgba(212, 165, 116, 0.1);
+        transform: translateX(4px);
     }
 
     .mobile-menu-toggle {
@@ -2256,34 +2438,48 @@ textarea::placeholder {
 
     /* Hero Section */
     .hero {
-        min-height: 500px;
+        min-height: calc(100vh - 70px);
+        min-height: calc(100vh - 70px - env(safe-area-inset-top, 0px));
         margin-top: 70px;
+        margin-bottom: 0;
+        width: 100%;
     }
 
     .hero-title {
         font-size: 2.5rem;
         padding: 0 1rem;
+        text-align: center;
     }
 
     .hero-subtitle {
         font-size: 1.1rem;
         padding: 0 1rem;
+        text-align: center;
     }
 
     .hero-buttons {
         flex-direction: column;
         width: 100%;
         padding: 0 1rem;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        margin: 0 auto;
     }
 
     .hero-buttons .btn {
         width: 100%;
         max-width: 300px;
+        margin: 0.5rem auto;
+        display: block;
+        text-align: center;
     }
 
     /* Sections */
     .section {
-        padding: 3rem 0;
+        padding: 2.5rem 0;
+        /* App-like section spacing */
+        scroll-margin-top: 80px;
     }
 
     .section-title {
@@ -2388,7 +2584,7 @@ textarea::placeholder {
 
     /* Modal */
     .modal-content {
-        margin: 20% auto;
+        margin: 15% auto;
         padding: 1.5rem;
         max-width: 90%;
     }
@@ -2398,6 +2594,17 @@ textarea::placeholder {
 @media (max-width: 600px) {
     .hero-title {
         font-size: 2rem;
+    }
+
+    .hero-buttons {
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+
+    .hero-buttons .btn {
+        margin: 0.5rem auto;
+        max-width: 280px;
     }
 
     .hero-subtitle {
@@ -2452,6 +2659,19 @@ textarea::placeholder {
     .hero-title {
         font-size: 1.75rem;
         line-height: 1.2;
+    }
+
+    .hero-buttons {
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        padding: 0 0.75rem;
+    }
+
+    .hero-buttons .btn {
+        margin: 0.5rem auto;
+        max-width: 260px;
+        width: 100%;
     }
 
     .hero-subtitle {
@@ -2628,7 +2848,7 @@ textarea::placeholder {
 
     /* Modal */
     .modal-content {
-        margin: 10% auto;
+        margin: 5% auto;
         padding: 1.25rem;
         max-width: 95%;
     }
@@ -2679,6 +2899,19 @@ textarea::placeholder {
     .hero-subtitle {
         font-size: 0.85rem;
         padding: 0 0.5rem;
+    }
+
+    .hero-buttons {
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        padding: 0 0.5rem;
+    }
+
+    .hero-buttons .btn {
+        margin: 0.5rem auto;
+        max-width: 240px;
+        width: 100%;
     }
 
     .section-title {
@@ -2884,6 +3117,239 @@ textarea::placeholder {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+    }
+}
+
+/* App-like Mobile Bottom Navigation */
+@media (max-width: 768px) {
+    .app-bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 1px solid rgba(212, 165, 116, 0.2);
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0.5rem 0;
+        padding-bottom: env(safe-area-inset-bottom, 0.5rem);
+    }
+
+    .app-bottom-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem 1rem;
+        text-decoration: none;
+        color: var(--text-light);
+        font-size: 0.75rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        min-width: 60px;
+        gap: 0.25rem;
+    }
+
+    .app-bottom-nav-item.active {
+        color: var(--primary-color);
+    }
+
+    .app-bottom-nav-item span:first-child {
+        font-size: 1.5rem;
+    }
+
+    .app-bottom-nav-item span:last-child {
+        font-size: 0.7rem;
+    }
+
+    .app-bottom-nav-item:active {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+
+    /* Add padding to body to account for bottom nav */
+    body {
+        padding-bottom: 70px;
+    }
+
+    /* Ensure footer doesn't overlap bottom nav */
+    .footer {
+        margin-bottom: 70px;
+    }
+
+    /* App-like smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* App-like card shadows and interactions */
+    .service-card,
+    .step-card,
+    .product-card {
+        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .service-card:active,
+    .step-card:active,
+    .product-card:active {
+        transform: scale(0.97);
+        transition: transform 0.1s ease;
+    }
+
+    /* App-like service card interactions */
+    .service-card.selectable-service:active {
+        transform: scale(0.97);
+        border-color: var(--primary-color);
+    }
+
+    /* App-like button feedback */
+    .btn:active {
+        transform: scale(0.96);
+    }
+
+    /* Remove text selection on mobile for app-like feel */
+    * {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    /* Allow text selection in inputs and textareas */
+    input,
+    textarea,
+    [contenteditable] {
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
+    }
+
+    /* App-like modal animations - handled in modal styles above */
+
+    /* App-like section transitions */
+    .section {
+        animation: fadeInUp 0.4s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Better touch targets */
+    .btn,
+    .nav-menu a,
+    .service-card,
+    button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* App-like navbar */
+    .navbar {
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        background: rgba(255, 255, 255, 0.95);
+        border-bottom: none;
+        box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    }
+
+    /* Hide footer on mobile for app-like feel - already handled above */
+
+    /* App-like form inputs */
+    input,
+    textarea,
+    select {
+        font-size: 16px !important; /* Prevent zoom on iOS */
+        -webkit-appearance: none;
+        appearance: none;
+    }
+
+    /* App-like smooth scrolling */
+    * {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* App-like loading states */
+    .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    /* Better touch feedback for links */
+    a:active {
+        opacity: 0.7;
+    }
+
+    /* App-like pull-to-refresh feel (visual feedback) */
+    .section:first-of-type {
+        padding-top: 2rem;
+    }
+
+    /* App-like full-width hero on mobile */
+    .hero {
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+    }
+
+    /* App-like card spacing */
+    .service-card,
+    .step-card {
+        margin-bottom: 1rem;
+    }
+
+    /* App-like input focus */
+    input:focus,
+    textarea:focus,
+    select:focus {
+        transform: scale(1.01);
+        transition: transform 0.2s ease;
+    }
+
+    /* App-like page transitions */
+    body {
+        animation: fadeIn 0.3s ease-in;
+    }
+
+    /* App-like scrollbar (iOS style) */
+    ::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(212, 165, 116, 0.3);
+        border-radius: 2px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(212, 165, 116, 0.5);
+    }
+
+    /* App-like safe area support */
+    .app-bottom-nav {
+        padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+    }
+
+    /* App-like smooth momentum scrolling */
+    * {
+        -webkit-overflow-scrolling: touch;
     }
 }
 

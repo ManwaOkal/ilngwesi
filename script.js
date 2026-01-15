@@ -258,7 +258,7 @@ function initializeGallery() {
     // Create "See More" button
     const seeMoreBtn = document.createElement('div');
     seeMoreBtn.className = 'gallery-see-more';
-    seeMoreBtn.style.cssText = 'text-align: center; margin-top: 2rem;';
+    seeMoreBtn.style.cssText = 'text-align: center; margin-top: 2rem; display: flex; justify-content: center; align-items: center; width: 100%;';
     seeMoreBtn.innerHTML = '<button class="btn btn-primary" id="gallerySeeMoreBtn">See More</button>';
     galleryGrid.parentElement.appendChild(seeMoreBtn);
 
@@ -780,8 +780,12 @@ function initializeBookingForm() {
 
             if (response.ok) {
                 // Show success modal
-                document.getElementById('bookingCode').textContent = result.booking_code;
-                document.getElementById('bookingModal').style.display = 'block';
+                const bookingModal = document.getElementById('bookingModal');
+                if (bookingModal) {
+                    document.getElementById('bookingCode').textContent = result.booking_code;
+                    bookingModal.classList.add('show');
+                    bookingModal.style.display = 'block';
+                }
                 
                 // Reset form
                 form.reset();
@@ -802,17 +806,32 @@ function initializeBookingForm() {
 // Modal
 function initializeModal() {
     const modal = document.getElementById('bookingModal');
+    if (!modal) return;
+    
+    // Ensure modal is hidden on page load
+    modal.style.display = 'none';
+    
     const closeBtn = document.querySelector('.modal-close');
 
     if (closeBtn) {
         closeBtn.addEventListener('click', function() {
             modal.style.display = 'none';
+            modal.classList.remove('show');
         });
     }
 
     window.addEventListener('click', function(e) {
         if (e.target === modal) {
             modal.style.display = 'none';
+            modal.classList.remove('show');
+        }
+    });
+    
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && (modal.style.display === 'block' || modal.classList.contains('show'))) {
+            modal.style.display = 'none';
+            modal.classList.remove('show');
         }
     });
 }
