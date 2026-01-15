@@ -522,7 +522,6 @@
             <ul class="nav-menu">
                 <li><a href="community.html">Community Portal</a></li>
                 <li><a href="index.html">Back to Website</a></li>
-                <li><a href="#" id="logoutBtn" style="color: #dc2626;">Logout</a></li>
             </ul>
         </div>
     </nav>
@@ -1490,15 +1489,6 @@
             // Load product sales on page load
             loadProductSales(currentView);
 
-            // Logout functionality
-            document.getElementById('logoutBtn').addEventListener('click', function(e) {
-                e.preventDefault();
-                if (confirm('Are you sure you want to logout?')) {
-                    localStorage.removeItem('communityAuthenticated');
-                    localStorage.removeItem('communityLoginTime');
-                    window.location.href = 'login.html';
-                }
-            });
         }); // End of DOMContentLoaded
     </script>
 
