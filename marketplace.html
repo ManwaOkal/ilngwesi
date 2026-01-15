@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description" content="Maasai Marketplace - Authentic Handmade Products from Il Ngwesi Community">
+    <meta name="theme-color" content="#d4a574">
+    <title>Marketplace - Il Ngwesi Conservancy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .marketplace-hero {
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.1) 0%, rgba(44, 85, 48, 0.05) 100%);
+            padding: 4rem 0 3rem;
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .marketplace-hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .marketplace-hero p {
+            font-size: 1.25rem;
+            color: #6b7280;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .marketplace-filters {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 2rem auto;
+            max-width: 1200px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            border: 1px solid rgba(212, 165, 116, 0.15);
+        }
+
+        .filter-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-label {
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 0.75rem;
+            font-size: 0.9375rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.625rem 1.5rem;
+            border: 2px solid rgba(212, 165, 116, 0.3);
+            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #4b5563;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.25);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 16px rgba(212, 165, 116, 0.4);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            border: 1px solid rgba(212, 165, 116, 0.2);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+            border-color: var(--primary-color);
+        }
+
+        .product-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            background: #f3f4f6;
+            display: block;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(212, 165, 116, 0.1);
+            color: var(--primary-color);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        .product-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .product-description {
+            color: #6b7280;
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-add-cart {
+            flex: 1;
+            padding: 0.875rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9375rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 16px rgba(212, 165, 116, 0.3);
+        }
+
+        .btn-add-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(212, 165, 116, 0.4);
+        }
+
+        .btn-view {
+            padding: 0.875rem 1.25rem;
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .no-products {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #6b7280;
+        }
+
+        @media (max-width: 768px) {
+            .marketplace-hero h1 {
+                font-size: 2rem;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+
+            .marketplace-filters {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>Il Ngwesi</h1>
+                <span class="tagline">People of Wildlife</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="marketplace.html" class="btn-primary">Marketplace</a></li>
+                <li><a href="index.html#gallery">Gallery</a></li>
+                <li><a href="index.html#reviews">Reviews</a></li>
+                <li><a href="index.html#booking" class="btn-primary">Book Now</a></li>
+                <li><a href="login.html" class="btn-secondary">Community Login</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Marketplace Hero -->
+    <section class="marketplace-hero">
+        <div class="container">
+            <h1>Maasai Marketplace</h1>
+            <p>Authentic handmade products crafted by the Il Ngwesi community. Every purchase supports local artisans and conservation efforts.</p>
+            <div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: rgba(212, 165, 116, 0.1); border-left: 4px solid var(--primary-color); border-radius: 8px; display: inline-block;">
+                <p style="margin: 0; font-size: 0.9375rem; color: var(--secondary-color); font-weight: 600;">
+                    📦 Delivery available only within Kenya
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filters -->
+    <div class="container">
+        <div class="marketplace-filters">
+            <div class="filter-section">
+                <div class="filter-label">Category</div>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-category="all">All Products</button>
+                    <button class="filter-btn" data-category="jewelry">Jewelry</button>
+                    <button class="filter-btn" data-category="bags">Bags</button>
+                    <button class="filter-btn" data-category="clothing">Clothing</button>
+                    <button class="filter-btn" data-category="home">Home Decor</button>
+                    <button class="filter-btn" data-category="art">Art & Collectibles</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will be populated by JavaScript -->
+        </div>
+
+        <div class="no-products" id="noProducts" style="display: none;">
+            <h3>No products found</h3>
+            <p>Try selecting a different category</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Il Ngwesi Conservancy</h3>
+                    <p>People of Wildlife</p>
+                    <p>Community-owned and operated tourism</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: info@ilngwesi.com</p>
+                    <p>Phone: +254 (0) 741 770 540</p>
+                    <p>Tourism Steward: Available 7AM-7PM</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Location</h4>
+                    <p>Il Ngwesi Group Ranch</p>
+                    <p>Laikipia County, Kenya</p>
+                    <p>Via Lewa Wildlife Conservancy</p>
+                </div>
+                <div class="footer-section">
+                    <h4>System</h4>
+                    <p>Powered by Community Tourism Relay</p>
+                    <p>Low-tech, community-owned booking system</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Il Ngwesi Conservancy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Product data based on Maasai collection - using actual scraped images
+        const products = [
+            {
+                id: 1,
+                name: "Decorative Maasai Gourd",
+                category: "home",
+                price: 5500,
+                image: "products/Decorative_Maasai_Gourd_n7jkLBVdPq.jpg",
+                description: "A unique piece that carries the echoes of tradition and the spirit of artistry. Handcrafted by local artisans."
+            },
+            {
+                id: 2,
+                name: "Maasai Red Black Slippers",
+                category: "clothing",
+                price: 3700,
+                image: "products/red_black_slippers_IVicECwcFj.jpg",
+                description: "Slip-on design with convenient style. Perfect for casual wear, featuring traditional Maasai patterns."
+            },
+            {
+                id: 3,
+                name: "Maasai Shuka - Checked Designs",
+                category: "clothing",
+                price: 2600,
+                image: "products/shuka_-_Checked_Designs_deTQrOs1Q3.jpg",
+                description: "Light and warm, long-lasting traditional Maasai blanket. Perfect for home or travel."
+            },
+            {
+                id: 4,
+                name: "Maasai Gladiator Sandals",
+                category: "clothing",
+                price: 4800,
+                image: "products/Sandals_Gladiator_Maasai_Sandals_Gladiator.jpg",
+                description: "Perfect for both casual and semi-formal occasions. Handcrafted leather with traditional beading."
+            },
+            {
+                id: 5,
+                name: "Thick Maasai Beaded Bangle",
+                category: "jewelry",
+                price: 3100,
+                image: "products/A_multicolored_Maasai_beaded_bangle_with_a_vibrant_geometric_pattern,_featuring_a_variety_of_colored_67yTG7Yip1.jpg",
+                description: "A versatile accessory featuring vibrant geometric patterns with a variety of colored Maasai beads."
+            },
+            {
+                id: 6,
+                name: "Maasai Coloring Book",
+                category: "art",
+                price: 3000,
+                image: "products/Color_with_Kilel:_A_Coloring_Journey_through_Maasai_Culture_and_Traditions_BserLvoEol.jpg",
+                description: "Educational coloring book featuring Maasai culture and traditions. Great for children and adults."
+            },
+            {
+                id: 7,
+                name: "Handmade Maasai Beaded Pet Collar",
+                category: "home",
+                price: 3800,
+                image: "products/Handmade_Maasai_Beaded_Leather_Pet_Collars_|_Wide_Dog_collars_25_096362c6-f87e-4f62-9c4d-0aab323704a0.png",
+                description: "Unique and stylish accessory for your pet. Wide dog collar with traditional Maasai beading."
+            },
+            {
+                id: 8,
+                name: "Maasai Grazer Painting",
+                category: "art",
+                price: 17800,
+                image: "products/grazer_headed_home_DAY3-728.jpg",
+                description: "Beautiful oil painting on canvas depicting Maasai grazer. Handcrafted by local artists."
+            },
+            {
+                id: 9,
+                name: "Maasai Village Painting",
+                category: "art",
+                price: 13200,
+                image: "products/Village_BT_-_219.jpg",
+                description: "Stunning oil painting of a Maasai village. Traditional scene captured by skilled artists."
+            },
+            {
+                id: 10,
+                name: "African Landscape - Grazing",
+                category: "art",
+                price: 19000,
+                image: "products/grazing_BT_-_96.jpg",
+                description: "Beautiful landscape painting showing animals grazing. Maasai-inspired artwork."
+            },
+            {
+                id: 11,
+                name: "Maasai Warrior Painting",
+                category: "art",
+                price: 19000,
+                image: "products/warrior_BT_-_166.jpg",
+                description: "Powerful portrait of a Maasai warrior. Oil on canvas, handcrafted by local artists."
+            },
+            {
+                id: 12,
+                name: "Borana Girl Painting",
+                category: "art",
+                price: 15900,
+                image: "products/Borana_Girl_DAY3-695.jpg",
+                description: "Beautiful portrait of a Borana/Maasai tribe lady. Oil on canvas artwork."
+            },
+            {
+                id: 13,
+                name: "Hornblower Painting",
+                category: "art",
+                price: 22000,
+                image: "products/Hornblower_BT_-_191_7ca88bde-53dc-469b-8829-fc38996d6b89.jpg",
+                description: "Traditional Maasai messenger painting. Oil on canvas, authentic cultural artwork."
+            },
+            {
+                id: 14,
+                name: "Moran Painting",
+                category: "art",
+                price: 16300,
+                image: "products/Moran_BT_-_85.jpg",
+                description: "Portrait of a Maasai Moran (warrior). Oil on canvas, traditional cultural art."
+            },
+            {
+                id: 15,
+                name: "Mother Love Painting",
+                category: "art",
+                price: 17000,
+                image: "products/Mother_love_BT_-_151.jpg",
+                description: "Touching painting depicting motherly love in Maasai culture. Oil on canvas."
+            },
+            {
+                id: 16,
+                name: "Turkana Woman Painting",
+                category: "art",
+                price: 12400,
+                image: "products/Turkana_woman_BT_-_112.jpg",
+                description: "Beautiful portrait of a Turkana woman. Traditional East African artwork."
+            },
+            {
+                id: 17,
+                name: "Beaded Maasai Rungu",
+                category: "art",
+                price: 8500,
+                image: "products/beaded_maasai_rungu_pvS5RH43t0.jpg",
+                description: "Traditional beaded Maasai rungu (club). Authentic ceremonial accessory."
+            },
+            {
+                id: 18,
+                name: "African Maasai Earrings",
+                category: "jewelry",
+                price: 1800,
+                image: "products/African_maasai_earrings_rXi03ht1eJ.jpg",
+                description: "Colorful beaded earrings with traditional Maasai designs. Handcrafted with care."
+            },
+            {
+                id: 19,
+                name: "Red Maasai Cork Sandals",
+                category: "clothing",
+                price: 4800,
+                image: "products/Red_Maasai_Cork_Sandals|_African_Beaded_Sandals_Maasaibeadsred1.jpg",
+                description: "Comfortable cork sandals with red Maasai beading. Handcrafted quality."
+            },
+            {
+                id: 20,
+                name: "Yellow Maasai Cork Sandals",
+                category: "clothing",
+                price: 4800,
+                image: "products/Yellow_Maasai_Cork_Sandals_|_African_Beaded_Sandals_maasaibeadsYellow2.jpg",
+                description: "Vibrant yellow cork sandals with traditional Maasai beading patterns."
+            },
+            {
+                id: 21,
+                name: "White Maasai Cork Sandals",
+                category: "clothing",
+                price: 4800,
+                image: "products/White_Maasai_Cork_Sandals_|_African_Beaded_Sandals_HRU-WhITE_1.jpg",
+                description: "Elegant white cork sandals with Maasai beading. Perfect for any occasion."
+            },
+            {
+                id: 22,
+                name: "Maasai Shuka - Big Boxes Design",
+                category: "clothing",
+                price: 3200,
+                image: "products/shuka_-__Big_Boxes_Design_2_5dfcc3c2-b126-4f95-9f32-072e922100cb.png",
+                description: "Traditional Maasai shuka with big boxes pattern. Warm and durable."
+            },
+            {
+                id: 23,
+                name: "Maasai Shuka - Stripes Design",
+                category: "clothing",
+                price: 3200,
+                image: "products/shuka_-_Stripes_Design_27_13d8f289-37e7-4699-a2d8-5b499eef4e6d.png",
+                description: "Beautiful striped Maasai shuka blanket. Traditional patterns and colors."
+            },
+            {
+                id: 24,
+                name: "Maasai Beaded Dog Collar & Leash Set",
+                category: "home",
+                price: 4500,
+                image: "products/Handmade_Maasai_Beaded_Leather_Dog_Collars_&_Leash_Set_1_1bcc826f-ab61-4137-82ef-f569ec0128c2.png",
+                description: "Complete set with beaded leather dog collar and matching leash. Handcrafted."
+            },
+            {
+                id: 25,
+                name: "Beaded Leather Dog Leash",
+                category: "home",
+                price: 2200,
+                image: "products/Beaded_Leather_Dog_Leash_11_0fe6d71c-7aeb-45a1-aaa3-cd2a21a6652a.png",
+                description: "Durable beaded leather leash with traditional Maasai patterns."
+            },
+            {
+                id: 26,
+                name: "Rafiki Gift Package - Maasai Shawl",
+                category: "home",
+                price: 18000,
+                image: "products/Rafiki_Gift_Package-_Maasai_shawl_|Unique,_Ethical_and_Sustainable_Corporate_Gift_28_148698b4-7817-4d48-98c8-9869ca8f3c06.png",
+                description: "Unique corporate gift package featuring Maasai shawl. Ethical and sustainable."
+            },
+            {
+                id: 27,
+                name: "Picnic Blanket - Maasai Fleece",
+                category: "home",
+                price: 4500,
+                image: "products/Picnic_Blanket_|_Maasai_Fleece_Blanket_1D9A4778.jpg",
+                description: "Warm and comfortable fleece blanket with Maasai patterns. Perfect for outdoor use."
+            },
+            {
+                id: 28,
+                name: "Antique Maasai Fly Whisk",
+                category: "art",
+                price: 8500,
+                image: "products/Antique_Maasai_Fly_Whisk_1_1_242a4694-ab9c-4f10-a2ae-49dc89281a8b.png",
+                description: "Authentic antique Maasai fly whisk. Traditional ceremonial item."
+            },
+            {
+                id: 29,
+                name: "Hand-Beaded Dog Collar & Leash - Maasai Colors",
+                category: "home",
+                price: 4200,
+                image: "products/Hand-Beaded_Leather_Dog_Collar_&_Leash-Maasai_Colors_23_94d7da83-e63b-4095-98ba-1356cf0ac49f.png",
+                description: "Beautifully beaded dog collar and leash in traditional Maasai colors."
+            },
+            {
+                id: 30,
+                name: "Beaded Maasai Rungu - Traditional Accessory",
+                category: "art",
+                price: 9500,
+                image: "products/Beaded_Maasai_Rungu_|_Traditional_Beaded_Accessory_for_Events_&_Ceremonies_|_Authentic_African_Décor_2_8b8fcf6f-993d-4bff-91aa-2de72071f410.png",
+                description: "Traditional beaded Maasai rungu for events and ceremonies. Authentic African décor."
+            },
+            {
+                id: 31,
+                name: "Handmade Beaded Lanyard - Maasai Beadwork",
+                category: "jewelry",
+                price: 1500,
+                image: "products/Handmade_Beaded_Lanyard_|_Maasai_Beadwork_|_ID_Badge_Holder_|_Customizable_12_717384f9-8de4-4f71-9eca-8a5e5e8363cd.png",
+                description: "Customizable beaded lanyard with Maasai beadwork. Perfect for ID badges."
+            },
+            {
+                id: 32,
+                name: "Mini Candle Stands with Maasai Beadwork",
+                category: "home",
+                price: 3500,
+                image: "products/Mini_Candle_stands_with_Maasai_Beadwork_wQRbw9h0Ja.png",
+                description: "Beautiful mini candle stands decorated with traditional Maasai beadwork."
+            },
+            {
+                id: 33,
+                name: "Wooden Candle Stands with Maasai Beads",
+                category: "home",
+                price: 5500,
+                image: "products/Wooden_Candle_Stands_with_Maasai_Beads_T5qrcesbs6.png",
+                description: "Handcrafted wooden candle stands with Maasai beading. Elegant home décor."
+            },
+            {
+                id: 34,
+                name: "Beaded Lanyard - Box Style",
+                category: "jewelry",
+                price: 1500,
+                image: "products/Handmade_Beaded_Lanyard_|_Maasai_Beadwork_|_ID_Badge_Holder_|_Customizable|_Box_style_1_9e8af7be-4a95-49de-9439-55f8c9863420.png",
+                description: "Box-style beaded lanyard with Maasai beadwork. Customizable ID badge holder."
+            },
+            {
+                id: 35,
+                name: "Kenya Flag Beaded Lanyard",
+                category: "jewelry",
+                price: 1800,
+                image: "products/Handmade_Kenya_Beaded_Lanyard_|_Maasai_Beadwork_|_ID_Badge_Holder_|_Customizable|_Flag_Beaded_Lanyar_8_21580be6-36a0-4545-aef7-d515214d0ec5.png",
+                description: "Patriotic beaded lanyard featuring Kenya flag colors with Maasai beadwork."
+            },
+            {
+                id: 36,
+                name: "Christmas Maasai Shawl - Red & Green",
+                category: "clothing",
+                price: 3800,
+                image: "products/Christmas_Maasai_Shawl_|_Red_&_Green_|_Traditional_African_Patterns_|_Festive_Holiday_Wrap_1_2b946717-35e6-4179-a88d-8b7f1bc6d7eb.png",
+                description: "Festive holiday shawl with traditional African patterns. Red and green colors."
+            },
+            {
+                id: 37,
+                name: "Christmas Maasai Shuka",
+                category: "clothing",
+                price: 3200,
+                image: "products/Christmas_Maasai_Shuka_|_Green_&_Red_Cotton_Blanket_|_Traditional_African_Wrap_|_Festive_Throw_4_dbbc87bc-7599-4994-b367-a7e2fc89acc3.png",
+                description: "Festive green and red cotton blanket. Traditional African wrap for holidays."
+            },
+            {
+                id: 38,
+                name: "African Angel Christmas Ornaments - Set of 3",
+                category: "home",
+                price: 4500,
+                image: "products/African_Angel_Christmas_Tree_Ornaments_|_Maasai_Shuka_&_Kikoi_|_Set_of_3_|_Handmade_Banana_Leaves_Tr_19_fee5f68d-74b9-45a9-868c-5640551bcb5f.png",
+                description: "Set of 3 handmade Christmas tree ornaments with Maasai shuka and kikoi patterns."
+            },
+            {
+                id: 39,
+                name: "Soapstone Coasters with Maasai Beadwork - Set of 6",
+                category: "home",
+                price: 4200,
+                image: "products/Soapstone_Coasters_with_Maasai_Beadwork_|_Set_of_6_|_Natural_Stone_|_Kenyan_Hand-Carved_21_a5519206-eee6-458d-926c-fcaa12f6d883.png",
+                description: "Set of 6 natural soapstone coasters with Maasai beadwork. Kenyan hand-carved."
+            },
+            {
+                id: 40,
+                name: "Beaded Christmas Decor Hearts - Set of 3",
+                category: "home",
+                price: 2800,
+                image: "products/Beaded_Christmas_Decor_Hearts_|_Set_of_3_|_Maasai_Beadwork_|_Festive_Ornaments_82_782f4493-a2ca-4f88-beee-d99d260a7ac3.png",
+                description: "Set of 3 festive heart ornaments with Maasai beadwork. Perfect holiday décor."
+            },
+            {
+                id: 41,
+                name: "Soapstone Star Candle Holder",
+                category: "home",
+                price: 3800,
+                image: "products/Soapstone_Star_Candle_Holder_with_Maasai_Beadwork_|_Natural_Stone_|_Kenyan_Hand-Carved_16_7d958f3b-a376-4c75-8bb0-4fcc24fc67d0.png",
+                description: "Natural soapstone star-shaped candle holder with Maasai beadwork. Kenyan hand-carved."
+            },
+            {
+                id: 42,
+                name: "Soapstone Animal Candle Holder",
+                category: "home",
+                price: 4500,
+                image: "products/Soapstone_Animal_Candle_Holder_with_Maasai_Beadwork_|_Kenyan_Hand-Carved_23_51b38ee0-dc5c-42cd-a8d1-e4df7cde892e.png",
+                description: "Beautiful animal-shaped soapstone candle holder with Maasai beadwork. Hand-carved in Kenya."
+            },
+            {
+                id: 43,
+                name: "Beaded Reindeer Christmas Ornaments",
+                category: "home",
+                price: 3200,
+                image: "products/Beaded_Reindeer_Christmas_Ornaments_|_Maasai_Beadwork_|_Festive_Holiday_Décor_58_5d543208-c03e-4151-a0ed-309eb92e7deb.png",
+                description: "Festive reindeer ornaments with Maasai beadwork. Perfect holiday décor piece."
+            }
+        ];
+
+        // Render products
+        function renderProducts(filterCategory = 'all') {
+            const productsGrid = document.getElementById('productsGrid');
+            const noProducts = document.getElementById('noProducts');
+            
+            productsGrid.innerHTML = '';
+            
+            const filteredProducts = filterCategory === 'all' 
+                ? products 
+                : products.filter(p => p.category === filterCategory);
+            
+            if (filteredProducts.length === 0) {
+                noProducts.style.display = 'block';
+                return;
+            }
+            
+            noProducts.style.display = 'none';
+            
+            filteredProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.dataset.category = product.category;
+                
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div style="display: none; width: 100%; height: 280px; background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); align-items: center; justify-content: center; color: #9ca3af; font-weight: 600;">Image not available</div>
+                    <div class="product-info">
+                        <span class="product-category">${product.category}</span>
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-price">KES ${product.price.toLocaleString()}</div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart(${product.id})">Add to Cart</button>
+                            <button class="btn-view" onclick="viewProduct(${product.id})">View</button>
+                        </div>
+                    </div>
+                `;
+                
+                productsGrid.appendChild(productCard);
+            });
+        }
+
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const category = this.dataset.category;
+                renderProducts(category);
+            });
+        });
+
+        // Cart and product view functions
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                alert(`Added "${product.name}" to cart! (KES ${product.price.toLocaleString()})`);
+                // In a real implementation, this would add to a cart system
+            }
+        }
+
+        function viewProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                // In a real implementation, this would open a product detail modal/page
+                alert(`Viewing: ${product.name}\n\n${product.description}\n\nPrice: KES ${product.price.toLocaleString()}`);
+            }
+        }
+
+        // Initialize
+        renderProducts();
+    </script>
+</body>
+</html>

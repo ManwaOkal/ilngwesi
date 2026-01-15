@@ -117,10 +117,18 @@ form, input, textarea, select {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1.5rem;
+}
+
+.nav-brand {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    flex-shrink: 0;
 }
 
 .nav-brand h1 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     color: var(--secondary-color);
     margin-bottom: 0;
     font-weight: 800;
@@ -132,9 +140,10 @@ form, input, textarea, select {
 }
 
 .tagline {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--text-light);
     font-weight: 300;
+    margin-top: -2px;
 }
 
 .nav-menu {
@@ -142,6 +151,8 @@ form, input, textarea, select {
     list-style: none;
     gap: 0.5rem;
     align-items: center;
+    flex-wrap: nowrap;
+    flex-shrink: 1;
 }
 
 .nav-menu li {
@@ -152,12 +163,13 @@ form, input, textarea, select {
     text-decoration: none;
     color: var(--text-dark);
     font-weight: 600;
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
     padding: 0.625rem 1.25rem;
     border-radius: 8px;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     display: inline-block;
+    white-space: nowrap;
 }
 
 .nav-menu a:not(.btn-primary):not(.btn-secondary)::after {
@@ -188,9 +200,10 @@ form, input, textarea, select {
     padding: 0.625rem 1.5rem;
     border-radius: 8px;
     font-weight: 600;
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    white-space: nowrap;
 }
 
 .nav-menu .btn-primary:hover {
@@ -2547,17 +2560,17 @@ textarea::placeholder {
 
     .nav-menu a:not(.btn-primary):not(.btn-secondary) {
         padding: 0.75rem 1.5rem;
-        font-size: 1rem;
+        font-size: 0.9375rem;
     }
 
     .nav-menu .btn-primary,
     .nav-menu .btn-secondary {
         padding: 0.75rem 2rem;
-        font-size: 1rem;
+        font-size: 0.9375rem;
     }
 
     .nav-brand h1 {
-        font-size: 2rem;
+        font-size: 1.75rem;
     }
 }
 
@@ -2581,11 +2594,13 @@ textarea::placeholder {
 
     .nav-menu a:not(.btn-primary):not(.btn-secondary) {
         padding: 0.875rem 1.75rem;
+        font-size: 1rem;
     }
 
     .nav-menu .btn-primary,
     .nav-menu .btn-secondary {
         padding: 0.875rem 2.25rem;
+        font-size: 1rem;
     }
 }
 
