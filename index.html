@@ -462,7 +462,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Il Ngwesi Conservancy. All rights reserved.</p>
+                <p>&copy; <span id="copyrightYear"></span> Il Ngwesi Conservancy. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -482,6 +482,10 @@
 
     <script src="cart.js"></script>
     <script src="script.js"></script>
+    <script>
+        // Set copyright year dynamically
+        document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>
 

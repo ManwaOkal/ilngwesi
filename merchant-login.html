@@ -295,7 +295,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Maasai Marketplace - Il Ngwesi Conservancy. All rights reserved.</p>
+                <p>&copy; <span id="copyrightYear"></span> Maasai Marketplace - Il Ngwesi Conservancy. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -366,5 +366,9 @@
     </script>
     <script src="cart.js"></script>
     <script src="script.js"></script>
+    <script>
+        // Set copyright year dynamically
+        document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>

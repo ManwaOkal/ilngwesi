@@ -1477,6 +1477,12 @@
                 }
             });
         }); // End of DOMContentLoaded
+        
+        // Set copyright year dynamically
+        const copyrightYear = document.getElementById('copyrightYear');
+        if (copyrightYear) {
+            copyrightYear.textContent = new Date().getFullYear();
+        }
     </script>
 
     <!-- Footer -->
@@ -1507,7 +1513,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Il Ngwesi Conservancy. All rights reserved.</p>
+                <p>&copy; <span id="copyrightYear"></span> Il Ngwesi Conservancy. All rights reserved.</p>
             </div>
         </div>
     </footer>
