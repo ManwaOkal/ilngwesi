@@ -31,6 +31,7 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* Account for fixed navbar when scrolling to hash links */
     -webkit-text-size-adjust: 100%; /* Prevent font scaling in iOS */
     font-size: 16px; /* Base font size */
     /* App-like feel */
@@ -521,6 +522,12 @@ form, input, textarea, select {
 /* Sections */
 .section {
     padding: 3rem 0;
+    scroll-margin-top: 80px; /* Account for fixed navbar when scrolling to hash links */
+}
+
+/* Ensure all sections with IDs have scroll margin */
+section[id] {
+    scroll-margin-top: 80px;
 }
 
 .section-title {
@@ -2483,8 +2490,7 @@ textarea::placeholder {
     /* Sections */
     .section {
         padding: 2.5rem 0;
-        /* App-like section spacing */
-        scroll-margin-top: 80px;
+        scroll-margin-top: 80px; /* Account for fixed navbar */
     }
 
     .section-title {
