@@ -26,59 +26,148 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeModal();
     initializeMarketplace();
     initializeReviews();
-    initializeShopNavLoading();
+    initializeCrossPageNavLoading();
 });
 
-/**
- * Full page loads to marketplace.html can feel slow on mobile networks.
- * After the user taps "Shop" / marketplace links, show loading state and prevent double navigation.
- */
-function initializeShopNavLoading() {
-    const path = (window.location.pathname || '').toLowerCase();
-    if (path.includes('marketplace')) return;
+/** Basenames that typically mean a full page load or heavy JS work on this site. */
+const HEAVY_PAGE_NAMES = new Set([
+    'index.html',
+    'marketplace.html',
+    'dashboard.html',
+    'merchant-dashboard.html',
+    'merchant-login.html',
+    'community.html',
+    'login.html',
+    'cart.html',
+    'checkout.html',
+    'product.html',
+    'gallery.html',
+]);
 
-    document.querySelectorAll('a[href^="marketplace.html"]').forEach(function(link) {
-        link.addEventListener('click', function(e) {
+/**
+ * Full navigations to other HTML pages can feel slow on mobile networks.
+ * After the user taps a link, show loading state and prevent double navigation.
+ */
+function initializeCrossPageNavLoading() {
+    document.addEventListener(
+        'click',
+        function (e) {
+            const link = e.target.closest('a[href]');
+            if (!link) return;
             if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
-            if (link.classList.contains('shop-nav-loading')) {
+            if (link.classList.contains('page-nav-loading')) {
                 e.preventDefault();
+                e.stopPropagation();
+                return;
+            }
+            if (link.getAttribute('target') === '_blank') return;
+            if (link.hasAttribute('download')) return;
+
+            const rawHref = link.getAttribute('href');
+            if (!rawHref || rawHref.trim() === '' || rawHref.startsWith('javascript:') || rawHref.startsWith('mailto:') || rawHref.startsWith('tel:')) {
                 return;
             }
 
-            const href = link.getAttribute('href');
-            if (!href) return;
+            let dest;
+            try {
+                dest = new URL(rawHref, window.location.href);
+            } catch (err) {
+                return;
+            }
+
+            if (dest.origin !== window.location.origin) return;
+
+            const here = new URL(window.location.href);
+            if (dest.pathname === here.pathname && dest.search === here.search) {
+                return;
+            }
+
+            let file = dest.pathname.split('/').pop() || '';
+            if (!file || dest.pathname.endsWith('/')) {
+                file = 'index.html';
+            }
+            if (!HEAVY_PAGE_NAMES.has(file.toLowerCase())) {
+                return;
+            }
 
             e.preventDefault();
+            e.stopPropagation();
 
-            link.classList.add('shop-nav-loading');
+            link.classList.add('page-nav-loading');
             link.setAttribute('aria-busy', 'true');
 
             const bottomNav = link.closest('.app-bottom-nav');
             if (bottomNav) {
-                bottomNav.classList.add('shop-nav-blocked');
-                bottomNav.querySelectorAll('a.app-bottom-nav-item').forEach(function(a) {
+                bottomNav.classList.add('page-nav-blocked');
+                bottomNav.querySelectorAll('a.app-bottom-nav-item').forEach(function (a) {
                     a.setAttribute('aria-disabled', 'true');
                 });
             } else {
                 link.style.pointerEvents = 'none';
             }
 
-            const labelSpan = link.querySelector('span');
-            if (labelSpan) {
-                if (!labelSpan.dataset.shopLabelOriginal) {
-                    labelSpan.dataset.shopLabelOriginal = labelSpan.textContent;
-                }
-                labelSpan.textContent = 'Loading...';
-            } else {
-                if (!link.dataset.shopLabelOriginal) {
-                    link.dataset.shopLabelOriginal = link.textContent;
-                }
-                link.textContent = 'Loading...';
+            const cardsWrap = link.closest('.community-cards');
+            if (cardsWrap) {
+                cardsWrap.classList.add('page-nav-cards-blocked');
+                cardsWrap.querySelectorAll('a.community-card').forEach(function (a) {
+                    a.setAttribute('aria-disabled', 'true');
+                    if (a !== link) {
+                        a.style.pointerEvents = 'none';
+                    }
+                });
             }
 
-            window.location.href = href;
-        });
-    });
+            applyCrossPageLoadingLabel(link);
+
+            window.location.href = dest.href;
+        },
+        true
+    );
+}
+
+function applyCrossPageLoadingLabel(link) {
+    const cta = link.querySelector('.community-card-link');
+    if (cta) {
+        if (!cta.dataset.navLabelOriginal) {
+            cta.dataset.navLabelOriginal = cta.textContent;
+        }
+        cta.textContent = 'Loading...';
+        return;
+    }
+
+    if (link.classList.contains('app-bottom-nav-item')) {
+        const spans = link.querySelectorAll(':scope > span');
+        const label = spans[spans.length - 1];
+        if (label) {
+            if (!label.dataset.navLabelOriginal) {
+                label.dataset.navLabelOriginal = label.textContent;
+            }
+            label.textContent = 'Loading...';
+            return;
+        }
+    }
+
+    const onlyText =
+        !link.querySelector('svg') &&
+        !link.querySelector('img') &&
+        link.children.length === 0 &&
+        link.textContent.trim();
+
+    if (onlyText) {
+        if (!link.dataset.navLabelOriginal) {
+            link.dataset.navLabelOriginal = link.textContent;
+        }
+        link.textContent = 'Loading...';
+        return;
+    }
+
+    let fallback = link.querySelector('.page-nav-loading-fallback');
+    if (!fallback) {
+        fallback = document.createElement('span');
+        fallback.className = 'page-nav-loading-fallback';
+        fallback.textContent = 'Loading...';
+        link.appendChild(fallback);
+    }
 }
 
 // Navigation
