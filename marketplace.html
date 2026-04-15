@@ -59,6 +59,78 @@
             transform: translateY(-2px);
         }
 
+        .marketplace-bottom-nav .app-bottom-nav-item.home-nav-link {
+            position: relative;
+            margin-right: 0.375rem;
+            padding-right: 0.75rem;
+        }
+
+        .marketplace-bottom-nav .app-bottom-nav-item.home-nav-link::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 18%;
+            bottom: 18%;
+            width: 1px;
+            background: rgba(44, 85, 48, 0.3);
+        }
+
+        /* Full-page loading state while the shop grid builds */
+        .marketplace-loading-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10050;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(248, 246, 242, 0.94);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+        }
+
+        .marketplace-loading-overlay.is-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .marketplace-loading-inner {
+            text-align: center;
+            padding: 1.5rem;
+            max-width: 280px;
+        }
+
+        .marketplace-loading-spinner {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1rem;
+            border: 3px solid rgba(212, 165, 116, 0.25);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: marketplace-spin 0.75s linear infinite;
+        }
+
+        .marketplace-loading-inner p {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        @keyframes marketplace-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .marketplace-loading-spinner {
+                animation-duration: 1.5s;
+            }
+            .marketplace-loading-overlay {
+                transition: none;
+            }
+        }
+
         .marketplace-nav .cart-badge {
             position: absolute;
             top: -6px;
@@ -691,6 +763,13 @@
     </style>
 </head>
 <body>
+    <div id="marketplaceLoadingOverlay" class="marketplace-loading-overlay" role="status" aria-live="polite" aria-busy="true">
+        <div class="marketplace-loading-inner">
+            <div class="marketplace-loading-spinner" aria-hidden="true"></div>
+            <p>Loading shop…</p>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar marketplace-nav">
         <div class="container">
@@ -723,9 +802,15 @@
     <section class="marketplace-hero">
         <div class="container">
             <p style="padding-top: 1rem;">Authentic handmade products supporting Il Ngwesi community and conservation.</p>
-            <div style="margin-top: 1.5rem; padding: 0.875rem 1.25rem; background: rgba(212, 165, 116, 0.1); border-left: 4px solid var(--primary-color); border-radius: 8px; display: inline-block;">
-                <p style="margin: 0; padding: 0; font-size: 0.9375rem; color: var(--secondary-color); font-weight: 600; line-height: 1.4;">
-                    📦 Delivery strictly within Kenya only
+            <div style="margin: 1.5rem auto 0; padding: 1rem 1.25rem; background: linear-gradient(135deg, rgba(212, 165, 116, 0.14) 0%, rgba(220, 53, 69, 0.08) 100%); border: 1px solid rgba(212, 165, 116, 0.35); border-left: 4px solid var(--primary-color); border-radius: 10px; display: block; max-width: 760px; text-align: left;">
+                <p style="margin: 0 0 0.5rem 0; padding: 0; font-size: 0.95rem; color: var(--secondary-color); font-weight: 700; line-height: 1.4;">
+                    Important Demo Notices
+                </p>
+                <p style="margin: 0 0 0.35rem 0; padding: 0; font-size: 0.9375rem; color: var(--secondary-color); font-weight: 600; line-height: 1.4;">
+                    📦 Delivery is strictly within Kenya only.
+                </p>
+                <p style="margin: 0; padding: 0; font-size: 0.9375rem; color: #7f1d1d; font-weight: 600; line-height: 1.4;">
+                    Demo note: we do not own rights to the images shown here; this marketplace page is for demonstration purposes only.
                 </p>
             </div>
         </div>
@@ -802,6 +887,13 @@
 
     <!-- App-like Bottom Navigation (Mobile Only) -->
     <nav class="app-bottom-nav marketplace-bottom-nav" id="appBottomNav">
+        <a href="index.html" class="app-bottom-nav-item home-nav-link" data-page="home">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9.5L12 3l9 6.5"></path>
+                <path d="M5 10v10h14V10"></path>
+            </svg>
+            <span>Home</span>
+        </a>
         <a href="marketplace.html" class="app-bottom-nav-item active" data-page="marketplace">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -1217,6 +1309,20 @@
         // Store products in localStorage
         localStorage.setItem('marketplaceProducts', JSON.stringify(products));
 
+        let shopLoadingOverlayHidden = false;
+
+        function hideShopLoadingOverlay() {
+            const overlay = document.getElementById('marketplaceLoadingOverlay');
+            if (!overlay || shopLoadingOverlayHidden) return;
+            shopLoadingOverlayHidden = true;
+            overlay.classList.add('is-hidden');
+            overlay.setAttribute('aria-busy', 'false');
+            overlay.setAttribute('aria-hidden', 'true');
+        }
+
+        // Safety: never leave the page stuck behind the loader if something goes wrong
+        setTimeout(hideShopLoadingOverlay, 15000);
+
         // Render products
         function renderProducts(filterCategory = 'all') {
             const productsGrid = document.getElementById('productsGrid');
@@ -1230,6 +1336,9 @@
             
             if (filteredProducts.length === 0) {
                 noProducts.style.display = 'block';
+                requestAnimationFrame(function() {
+                    requestAnimationFrame(hideShopLoadingOverlay);
+                });
                 return;
             }
             
@@ -1256,6 +1365,10 @@
                 `;
                 
                 productsGrid.appendChild(productCard);
+            });
+
+            requestAnimationFrame(function() {
+                requestAnimationFrame(hideShopLoadingOverlay);
             });
         }
 
@@ -1288,7 +1401,8 @@
             }
         });
 
-        // Check hash on page load
+        // Check hash on page load (avoid double render: hash wins over default "all")
+        let initialRenderFromHash = false;
         if (window.location.hash) {
             const hash = window.location.hash.substring(1);
             if (hash && ['jewelry', 'bags', 'clothing', 'home', 'art'].includes(hash)) {
@@ -1297,6 +1411,7 @@
                 if (btn) {
                     btn.classList.add('active');
                     renderProducts(hash);
+                    initialRenderFromHash = true;
                 }
             }
         }
@@ -1343,7 +1458,9 @@
         }
 
         // Initialize
-        renderProducts();
+        if (!initialRenderFromHash) {
+            renderProducts();
+        }
         
         // Initialize mobile menu toggle
         // Hamburger menu removed - cart icon now in its place

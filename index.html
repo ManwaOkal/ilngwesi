@@ -538,6 +538,14 @@
                         e.preventDefault();
                         const target = document.querySelector(href);
                         if (target) {
+                            // Keep active state in sync immediately on tap/click.
+                            bottomNav.querySelectorAll('.app-bottom-nav-item').forEach(item => item.classList.remove('active'));
+                            this.classList.add('active');
+
+                            // Persist section state so reload/back-forward keeps the correct active item.
+                            if (window.location.hash !== href) {
+                                history.replaceState(null, '', href);
+                            }
                             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                             updateActiveNav();
                         }
