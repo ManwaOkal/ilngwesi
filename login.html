@@ -67,6 +67,18 @@
             margin-top: 2rem;
         }
 
+        .demo-note {
+            background: rgba(212, 165, 116, 0.12);
+            border-left: 4px solid var(--primary-color);
+            color: var(--secondary-color);
+            padding: 0.875rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
         .form-group {
             margin-bottom: 1.75rem;
         }
@@ -167,6 +179,9 @@
             <div class="error-message" id="errorMessage"></div>
 
             <form class="login-form" id="loginForm">
+                <div class="demo-note">
+                    Demo note: any username and password will work.
+                </div>
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" required autocomplete="username">
@@ -187,12 +202,6 @@
     </div>
 
     <script>
-        // Simple authentication - in production, this would connect to a backend
-        const COMMUNITY_CREDENTIALS = {
-            username: 'community',
-            password: 'ilngwesi2024' // Change this to a secure password
-        };
-
         // Check if already logged in
         if (localStorage.getItem('communityAuthenticated') === 'true') {
             window.location.href = 'dashboard.html';
@@ -207,8 +216,8 @@
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
 
-            // Simple authentication check
-            if (username === COMMUNITY_CREDENTIALS.username && password === COMMUNITY_CREDENTIALS.password) {
+            // Demo authentication: accept any non-empty username/password
+            if (username && password) {
                 // Set authentication flag
                 localStorage.setItem('communityAuthenticated', 'true');
                 localStorage.setItem('communityLoginTime', new Date().toISOString());
@@ -222,7 +231,7 @@
                 }, 100);
             } else {
                 // Show error
-                errorMessage.textContent = 'Invalid username or password. Please try again.';
+                errorMessage.textContent = 'Please enter both username and password.';
                 errorMessage.classList.add('show');
                 
                 // Clear password field
