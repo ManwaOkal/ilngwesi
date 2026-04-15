@@ -33,6 +33,14 @@ function initializeNavigation() {
     // Get all navigation links (both desktop and mobile)
     const navMenu = document.querySelector('.nav-menu');
     const mobileToggle = document.querySelector('.mobile-menu-toggle');
+
+    function resetToggleIcon(toggleEl) {
+        if (!toggleEl) return;
+        const spans = toggleEl.querySelectorAll('span');
+        if (spans[0]) spans[0].style.transform = 'none';
+        if (spans[1]) spans[1].style.opacity = '1';
+        if (spans[2]) spans[2].style.transform = 'none';
+    }
     
     // Initialize mobile menu toggle for all pages (including marketplace)
     if (mobileToggle && navMenu) {
@@ -40,17 +48,16 @@ function initializeNavigation() {
             navMenu.classList.toggle('active');
             
             // Animate hamburger icon
-            const spans = mobileToggle.querySelectorAll('span');
+            const currentToggle = document.querySelector('.mobile-menu-toggle');
+            const spans = currentToggle ? currentToggle.querySelectorAll('span') : [];
             if (navMenu.classList.contains('active')) {
-                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                if (spans[0]) spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                if (spans[1]) spans[1].style.opacity = '0';
+                if (spans[2]) spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
                 // Prevent body scroll when menu is open
                 document.body.style.overflow = 'hidden';
             } else {
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
+                resetToggleIcon(currentToggle);
                 document.body.style.overflow = '';
             }
         }
@@ -70,10 +77,23 @@ function initializeNavigation() {
             const currentToggle = document.querySelector('.mobile-menu-toggle');
             if (currentNavMenu && currentToggle && !currentNavMenu.contains(e.target) && !currentToggle.contains(e.target) && currentNavMenu.classList.contains('active')) {
                 currentNavMenu.classList.remove('active');
-                const spans = currentToggle.querySelectorAll('span');
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
+                resetToggleIcon(currentToggle);
+                document.body.style.overflow = '';
+            }
+        });
+
+        // If viewport switches out of mobile mode, ensure any scroll lock is cleared.
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                resetToggleIcon(document.querySelector('.mobile-menu-toggle'));
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Defensive unlock for BFCache restores where inline overflow can persist.
+        window.addEventListener('pageshow', function() {
+            if (!navMenu.classList.contains('active')) {
                 document.body.style.overflow = '';
             }
         });
@@ -83,14 +103,17 @@ function initializeNavigation() {
     function closeMobileMenu() {
         if (navMenu) {
             navMenu.classList.remove('active');
-            if (mobileToggle) {
-                const spans = mobileToggle.querySelectorAll('span');
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-                document.body.style.overflow = '';
+            const currentToggle = document.querySelector('.mobile-menu-toggle');
+            if (currentToggle) {
+                resetToggleIcon(currentToggle);
             }
+            document.body.style.overflow = '';
         }
+    }
+
+    // Marketplace and some pages omit the hamburger; clear any stale inline overflow from other routes / BFCache.
+    if (!mobileToggle) {
+        document.body.style.overflow = '';
     }
 
     // Handle navigation link clicks - close menu on mobile, let browser handle hash links naturally
@@ -101,13 +124,8 @@ function initializeNavigation() {
                 // Close menu on mobile after clicking any nav link
                 if (window.innerWidth <= 768) {
                     closeMobileMenu();
-                    if (mobileToggle) {
-                        const spans = mobileToggle.querySelectorAll('span');
-                        spans[0].style.transform = 'none';
-                        spans[1].style.opacity = '1';
-                        spans[2].style.transform = 'none';
-                        document.body.style.overflow = '';
-                    }
+                    resetToggleIcon(document.querySelector('.mobile-menu-toggle'));
+                    document.body.style.overflow = '';
                 }
                 // Let browser handle the link naturally - no preventDefault, no JavaScript scrolling
             }

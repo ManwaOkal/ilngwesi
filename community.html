@@ -463,6 +463,14 @@
         // Initialize mobile menu toggle
         const mobileToggle = document.querySelector('.mobile-menu-toggle');
         const navMenu = document.querySelector('.nav-menu');
+
+        function resetToggleIcon(toggleEl) {
+            if (!toggleEl) return;
+            const spans = toggleEl.querySelectorAll('span');
+            if (spans[0]) spans[0].style.transform = 'none';
+            if (spans[1]) spans[1].style.opacity = '1';
+            if (spans[2]) spans[2].style.transform = 'none';
+        }
         
         if (mobileToggle && navMenu) {
             mobileToggle.addEventListener('click', function(e) {
@@ -471,14 +479,12 @@
                 
                 const spans = mobileToggle.querySelectorAll('span');
                 if (navMenu.classList.contains('active')) {
-                    spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                    spans[1].style.opacity = '0';
-                    spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                    if (spans[0]) spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                    if (spans[1]) spans[1].style.opacity = '0';
+                    if (spans[2]) spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
                     document.body.style.overflow = 'hidden';
                 } else {
-                    spans[0].style.transform = 'none';
-                    spans[1].style.opacity = '1';
-                    spans[2].style.transform = 'none';
+                    resetToggleIcon(mobileToggle);
                     document.body.style.overflow = '';
                 }
             });
@@ -486,10 +492,21 @@
             document.addEventListener('click', function(e) {
                 if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('active')) {
                     navMenu.classList.remove('active');
-                    const spans = mobileToggle.querySelectorAll('span');
-                    spans[0].style.transform = 'none';
-                    spans[1].style.opacity = '1';
-                    spans[2].style.transform = 'none';
+                    resetToggleIcon(mobileToggle);
+                    document.body.style.overflow = '';
+                }
+            });
+
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    resetToggleIcon(mobileToggle);
+                    document.body.style.overflow = '';
+                }
+            });
+
+            window.addEventListener('pageshow', function() {
+                if (!navMenu.classList.contains('active')) {
                     document.body.style.overflow = '';
                 }
             });
