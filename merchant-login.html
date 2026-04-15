@@ -65,6 +65,18 @@
             font-size: 0.95rem;
         }
 
+        .demo-note {
+            background: rgba(212, 165, 116, 0.12);
+            border-left: 4px solid var(--primary-color);
+            color: var(--secondary-color);
+            padding: 0.875rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
         .merchant-login-form {
             display: flex;
             flex-direction: column;
@@ -128,6 +140,7 @@
             border-left: 4px solid #dc3545;
             font-size: 0.9rem;
             display: none;
+            margin-bottom: 1rem;
         }
 
         .login-error.show {
@@ -190,7 +203,6 @@
                 width: 100%;
             }
 
-            /* Hamburger menu removed - cart icon now in its place */
             .marketplace-nav .mobile-menu-toggle {
                 display: none !important;
             }
@@ -201,7 +213,6 @@
             }
         }
 
-        /* Merchant footer styling - white text */
         .marketplace-footer {
             background: var(--secondary-color) !important;
         }
@@ -224,7 +235,6 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="navbar marketplace-nav">
         <div class="container">
             <div class="nav-brand">
@@ -260,19 +270,23 @@
         <div class="merchant-login-card">
             <div class="merchant-login-header">
                 <h1>Merchant Portal</h1>
-                <p>Login to manage your products</p>
+                <p>Community shop login</p>
             </div>
 
-            <div class="login-error" id="loginError">
-                Please enter your name to continue.
-            </div>
+            <div class="login-error" id="loginError"></div>
 
-            <form class="merchant-login-form" id="merchantLoginForm" onsubmit="handleMerchantLogin(event)">
-                <div class="form-group">
-                    <label for="merchantName">Name</label>
-                    <input type="text" id="merchantName" name="merchantName" placeholder="Enter your name" required autocomplete="name">
+            <form class="merchant-login-form" id="merchantLoginForm">
+                <div class="demo-note">
+                    Demo: any login works. Edits limited to assigned listings.
                 </div>
-
+                <div class="form-group">
+                    <label for="merchantUsername">Username</label>
+                    <input type="text" id="merchantUsername" name="merchantUsername" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="merchantPassword">Password</label>
+                    <input type="password" id="merchantPassword" name="merchantPassword" required autocomplete="current-password">
+                </div>
                 <button type="submit" class="btn-login">Login</button>
             </form>
 
@@ -282,7 +296,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer marketplace-footer">
         <div class="container">
             <div class="footer-content">
@@ -317,15 +330,31 @@
         </div>
     </footer>
 
-    <script>
-        // Automatically redirect to merchant dashboard - no login required
-        window.location.href = 'merchant-dashboard.html';
-    </script>
     <script src="cart.js"></script>
     <script src="script.js"></script>
     <script>
-        // Set copyright year dynamically
+        if (sessionStorage.getItem('merchantAuthenticated') === 'true') {
+            window.location.replace('merchant-dashboard.html');
+        }
+
         document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+
+        document.getElementById('merchantLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('merchantUsername').value.trim();
+            const password = document.getElementById('merchantPassword').value;
+            const loginError = document.getElementById('loginError');
+
+            if (!username || !password) {
+                loginError.textContent = 'Please enter both username and password.';
+                loginError.classList.add('show');
+                return;
+            }
+
+            sessionStorage.setItem('merchantAuthenticated', 'true');
+            sessionStorage.setItem('merchantUsername', username);
+            window.location.href = 'merchant-dashboard.html';
+        });
     </script>
 </body>
 </html>

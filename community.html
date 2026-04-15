@@ -248,6 +248,68 @@
             display: block;
         }
 
+        .portal-section {
+            margin-bottom: 3rem;
+        }
+
+        .portal-section:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .portal-section-header {
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid rgba(212, 165, 116, 0.25);
+        }
+
+        .portal-section-header h2 {
+            font-size: 1.35rem;
+            color: var(--secondary-color);
+            margin: 0 0 0.5rem 0;
+            font-weight: 700;
+        }
+
+        .portal-section-header p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--text-light);
+            line-height: 1.5;
+            max-width: 720px;
+        }
+
+        .portal-section.merchant-section .portal-section-header {
+            border-bottom-color: rgba(44, 85, 48, 0.25);
+        }
+
+        .role-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--secondary-color);
+            background: rgba(44, 85, 48, 0.1);
+            border: 1px solid rgba(44, 85, 48, 0.25);
+            padding: 0.35rem 0.65rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .community-card.merchant-card {
+            border-style: dashed;
+            border-color: rgba(44, 85, 48, 0.35);
+            background: linear-gradient(180deg, rgba(44, 85, 48, 0.04) 0%, #ffffff 100%);
+        }
+
+        .community-card.merchant-card:hover {
+            border-color: var(--secondary-color);
+        }
+
+        .community-card.merchant-card .community-card-link {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #0d3a12 100%);
+            box-shadow: 0 4px 16px rgba(44, 85, 48, 0.25);
+        }
+
         @media (max-width: 768px) {
             .mobile-menu-toggle {
                 display: flex !important;
@@ -339,7 +401,7 @@
             <!-- Login Form -->
             <div id="loginFormContainer" class="login-form-container">
                 <h2>Community Portal Login</h2>
-                <p>Enter your credentials to access community tools</p>
+                <p>Sign in to continue.</p>
                 
                 <div class="error-message" id="errorMessage"></div>
                 
@@ -365,35 +427,50 @@
             <div id="portalContent" class="portal-content">
                 <div class="community-header">
                     <h1>Community Portal</h1>
-                    <p>Access community management tools, revenue dashboard, and merchant services</p>
+                    <p>Revenue overview and shop listing updates.</p>
                 </div>
 
-                <div class="community-cards">
-                    <a href="dashboard.html" class="community-card">
-                        <span class="community-card-icon">
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="18" y1="20" x2="18" y2="10"></line>
-                                <line x1="12" y1="20" x2="12" y2="4"></line>
-                                <line x1="6" y1="20" x2="6" y2="14"></line>
-                            </svg>
-                        </span>
-                        <h2>Revenue Dashboard</h2>
-                        <p>View booking statistics, revenue breakdown, and community tourism analytics. Monitor bookings and track financial performance.</p>
-                        <span class="community-card-link">View Dashboard →</span>
-                    </a>
+                <div class="portal-section">
+                    <div class="portal-section-header">
+                        <h2>Community</h2>
+                        <p>Bookings and revenue overview.</p>
+                    </div>
+                    <div class="community-cards" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); max-width: 520px; margin-left: auto; margin-right: auto;">
+                        <a href="dashboard.html" class="community-card">
+                            <span class="community-card-icon">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                                </svg>
+                            </span>
+                            <h2>Revenue Dashboard</h2>
+                            <p>Tourism bookings and income.</p>
+                            <span class="community-card-link">Open dashboard →</span>
+                        </a>
+                    </div>
+                </div>
 
-                    <a href="merchant-dashboard.html" class="community-card">
-                        <span class="community-card-icon">
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                                <line x1="3" y1="6" x2="21" y2="6"></line>
-                                <path d="M16 10a4 4 0 0 1-8 0"></path>
-                            </svg>
-                        </span>
-                        <h2>Merchant Portal</h2>
-                        <p>Manage marketplace products, add new items, and track your sales. Access the merchant dashboard to update your product listings.</p>
-                        <span class="community-card-link">Merchant Login →</span>
-                    </a>
+                <div class="portal-section merchant-section">
+                    <div class="portal-section-header">
+                        <h2>Shop listings</h2>
+                        <p>Community role for updating the online shop.</p>
+                    </div>
+                    <div class="community-cards" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); max-width: 520px; margin-left: auto; margin-right: auto;">
+                        <a href="merchant-login.html" class="community-card merchant-card">
+                            <span class="role-badge">Shop admin</span>
+                            <span class="community-card-icon">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                                </svg>
+                            </span>
+                            <h2>Merchant Portal</h2>
+                            <p>Sign in to edit listings.</p>
+                            <span class="community-card-link">Sign in →</span>
+                        </a>
+                    </div>
                 </div>
 
                 <div class="back-link">

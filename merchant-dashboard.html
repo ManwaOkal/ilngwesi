@@ -478,6 +478,49 @@
             color: white !important;
             opacity: 0.8;
         }
+
+        .merchant-info-banner {
+            background: rgba(212, 165, 116, 0.12);
+            border: 1px solid rgba(212, 165, 116, 0.35);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .merchant-info-banner strong {
+            display: block;
+            margin-bottom: 0.35rem;
+        }
+
+        #editProductPanel {
+            margin-bottom: 1.5rem;
+        }
+
+        .edit-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .btn-cancel-edit {
+            padding: 1rem 1.5rem;
+            background: transparent;
+            color: var(--text-dark);
+            border: 2px solid rgba(212, 165, 116, 0.4);
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel-edit:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
     </style>
 </head>
 <body>
@@ -519,75 +562,68 @@
                 <div class="merchant-header-content">
                     <div>
                         <h1>Merchant Dashboard</h1>
-                        <p>Manage your products on Maasai Marketplace</p>
+                        <p id="merchantWelcomeLine">Shop listings</p>
                     </div>
-                    <button class="btn-logout" onclick="handleLogout()">Logout</button>
+                    <button type="button" class="btn-logout" onclick="handleLogout()">Logout</button>
                 </div>
             </div>
 
-            <div class="merchant-tabs">
-                <button class="merchant-tab active" onclick="switchTab('add', this)">Add Product</button>
-                <button class="merchant-tab" onclick="switchTab('manage', this)">Manage Products</button>
+            <div class="merchant-info-banner" role="status">
+                <strong>Demo</strong>
+                Edit IDs 1–3 only. Add/delete disabled.
             </div>
 
-            <div id="addProductTab" class="merchant-tab-content active">
-                <div class="product-form-card">
-                    <h2>Add New Product</h2>
-                    <div class="success-message" id="successMessage">
-                        ✓ Product added successfully!
+            <div id="editProductPanel" class="product-form-card" style="display: none;">
+                <h2>Edit listing</h2>
+                <div class="success-message" id="editSuccessMessage">✓ Changes saved</div>
+                <form class="product-form" id="editProductForm" onsubmit="handleSaveEdit(event)">
+                    <input type="hidden" id="editProductId" value="">
+                    <div class="form-group">
+                        <label for="editProductName">Product name *</label>
+                        <input type="text" id="editProductName" required>
                     </div>
-                    <form class="product-form" id="addProductForm" onsubmit="handleAddProduct(event)">
+                    <div class="form-row-2">
                         <div class="form-group">
-                            <label for="productName">Product Name *</label>
-                            <input type="text" id="productName" name="productName" required>
+                            <label for="editProductCategory">Category *</label>
+                            <select id="editProductCategory" required>
+                                <option value="jewelry">Jewelry</option>
+                                <option value="bags">Bags</option>
+                                <option value="clothing">Clothing</option>
+                                <option value="home">Home Decor</option>
+                                <option value="art">Art & Collectibles</option>
+                            </select>
                         </div>
-
-                        <div class="form-row-2">
-                            <div class="form-group">
-                                <label for="productCategory">Category *</label>
-                                <select id="productCategory" name="productCategory" required>
-                                    <option value="">Select Category</option>
-                                    <option value="jewelry">Jewelry</option>
-                                    <option value="bags">Bags</option>
-                                    <option value="clothing">Clothing</option>
-                                    <option value="home">Home Decor</option>
-                                    <option value="art">Art & Collectibles</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="productPrice">Price (KES) *</label>
-                                <input type="number" id="productPrice" name="productPrice" min="0" step="100" required>
-                            </div>
-                        </div>
-
                         <div class="form-group">
-                            <label for="productDescription">Description *</label>
-                            <textarea id="productDescription" name="productDescription" required></textarea>
+                            <label for="editProductPrice">Price (KES) *</label>
+                            <input type="number" id="editProductPrice" min="0" step="100" required>
                         </div>
-
-                        <div class="form-group">
-                            <label for="productImage">Product Image *</label>
-                            <div class="image-upload-area" onclick="document.getElementById('productImageInput').click()">
-                                <input type="file" id="productImageInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)" required>
-                                <div id="imageUploadText">
-                                    <p>📷 Click to upload image</p>
-                                    <p style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem;">or drag and drop</p>
-                                </div>
-                                <img id="imagePreview" class="image-preview" alt="Preview">
+                    </div>
+                    <div class="form-group">
+                        <label for="editProductDescription">Description *</label>
+                        <textarea id="editProductDescription" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editProductImageInput">Replace image (optional)</label>
+                        <div class="image-upload-area" onclick="document.getElementById('editProductImageInput').click()">
+                            <input type="file" id="editProductImageInput" accept="image/*" style="display: none;" onchange="handleEditImageUpload(event)">
+                            <div id="editImageUploadText">
+                                <p>📷 Click to upload a new image</p>
+                                <p style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem;">Leave empty to keep the current image</p>
                             </div>
+                            <img id="editImagePreview" class="image-preview" alt="Preview">
                         </div>
-
-                        <button type="submit" class="btn-submit-product">Add Product</button>
-                    </form>
-                </div>
+                    </div>
+                    <div class="edit-actions">
+                        <button type="submit" class="btn-submit-product">Save changes</button>
+                        <button type="button" class="btn-cancel-edit" onclick="cancelEdit()">Cancel</button>
+                    </div>
+                </form>
             </div>
 
-            <div id="manageProductsTab" class="merchant-tab-content">
-                <div class="products-list-card">
-                    <h2>Your Products</h2>
-                    <div id="productsList">
-                        <!-- Products will be populated by JavaScript -->
-                    </div>
+            <div class="products-list-card">
+                <h2>Your assigned listings</h2>
+                <div id="productsList">
+                    <!-- Products will be populated by JavaScript -->
                 </div>
             </div>
         </div>
@@ -629,181 +665,224 @@
     </footer>
 
     <script>
-        // No authentication required - merchant dashboard is open access
-        function handleLogout() {
-            sessionStorage.removeItem('merchantLoggedIn');
-            sessionStorage.removeItem('merchantName');
-            window.location.href = 'community.html';
-        }
+        (function () {
+            if (sessionStorage.getItem('merchantAuthenticated') !== 'true') {
+                window.location.replace('merchant-login.html');
+                return;
+            }
 
-        function switchTab(tabName, buttonElement) {
-            // Update tab buttons
-            document.querySelectorAll('.merchant-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Activate the clicked button
-            if (buttonElement) {
-                buttonElement.classList.add('active');
-            } else {
-                // Fallback: find button by tab name
-                document.querySelectorAll('.merchant-tab').forEach(tab => {
-                    if ((tabName === 'add' && tab.textContent.trim().includes('Add Product')) ||
-                        (tabName === 'manage' && tab.textContent.trim().includes('Manage Products'))) {
-                        tab.classList.add('active');
+            var MERCHANT_EDITABLE_IDS = [1, 2, 3];
+            var editPendingImageDataUrl = null;
+
+            var welcome = document.getElementById('merchantWelcomeLine');
+            var name = sessionStorage.getItem('merchantUsername');
+            if (welcome && name) {
+                welcome.textContent = 'Signed in as ' + name + '.';
+            }
+
+            function getMarketplaceProducts() {
+                return JSON.parse(localStorage.getItem('marketplaceProducts') || '[]');
+            }
+
+            function saveMarketplaceProducts(products) {
+                localStorage.setItem('marketplaceProducts', JSON.stringify(products));
+            }
+
+            function ensureMerchantEditableProducts() {
+                var products = getMarketplaceProducts();
+                var byId = {};
+                products.forEach(function (p) {
+                    byId[p.id] = p;
+                });
+                var placeholder = [
+                    { id: 1, name: 'Decorative Maasai Gourd', category: 'home', price: 5500, description: 'A unique piece that carries the echoes of tradition and the spirit of artistry. Handcrafted by local artisans.', image: 'products/Decorative_Maasai_Gourd_n7jkLBVdPq.jpg' },
+                    { id: 2, name: 'Maasai Red Black Slippers', category: 'clothing', price: 3700, description: 'Slip-on design with convenient style. Perfect for casual wear, featuring traditional Maasai patterns.', image: 'products/red_black_slippers_IVicECwcFj.jpg' },
+                    { id: 3, name: 'Maasai Shuka - Checked Designs', category: 'clothing', price: 2600, description: 'Light and warm, long-lasting traditional Maasai blanket. Perfect for home or travel.', image: 'products/shuka_-_Checked_Designs_deTQrOs1Q3.jpg' }
+                ];
+                MERCHANT_EDITABLE_IDS.forEach(function (id) {
+                    if (!byId[id]) {
+                        var seed = placeholder.find(function (x) { return x.id === id; });
+                        if (seed) {
+                            byId[id] = seed;
+                        }
                     }
                 });
+                var merged = Object.keys(byId).map(function (k) {
+                    return byId[k];
+                });
+                merged.sort(function (a, b) {
+                    return a.id - b.id;
+                });
+                saveMarketplaceProducts(merged);
             }
 
-            // Update tab content
-            document.querySelectorAll('.merchant-tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
+            window.handleLogout = function () {
+                sessionStorage.removeItem('merchantAuthenticated');
+                sessionStorage.removeItem('merchantUsername');
+                sessionStorage.removeItem('merchantLoggedIn');
+                sessionStorage.removeItem('merchantName');
+                window.location.href = 'merchant-login.html';
+            };
 
-            if (tabName === 'add') {
-                document.getElementById('addProductTab').classList.add('active');
-            } else if (tabName === 'manage') {
-                document.getElementById('manageProductsTab').classList.add('active');
-                if (typeof loadProducts === 'function') {
-                    loadProducts();
-                }
-            }
-        }
-
-        function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const preview = document.getElementById('imagePreview');
-                    const uploadArea = document.querySelector('.image-upload-area');
-                    const uploadText = document.getElementById('imageUploadText');
-                    
-                    preview.src = e.target.result;
+            window.handleEditImageUpload = function (event) {
+                var file = event.target.files[0];
+                if (!file) return;
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    editPendingImageDataUrl = e.target.result;
+                    var preview = document.getElementById('editImagePreview');
+                    var uploadArea = document.querySelector('#editProductPanel .image-upload-area');
+                    var uploadText = document.getElementById('editImageUploadText');
+                    preview.src = editPendingImageDataUrl;
                     preview.classList.add('show');
                     uploadArea.classList.add('has-image');
                     uploadText.style.display = 'none';
                 };
                 reader.readAsDataURL(file);
-            }
-        }
-
-        function handleAddProduct(event) {
-            event.preventDefault();
-
-            const formData = {
-                name: document.getElementById('productName').value,
-                category: document.getElementById('productCategory').value,
-                price: parseFloat(document.getElementById('productPrice').value),
-                description: document.getElementById('productDescription').value,
-                image: document.getElementById('imagePreview').src || ''
             };
 
-            // Get existing products from localStorage
-            const existingProducts = JSON.parse(localStorage.getItem('marketplaceProducts') || '[]');
-            
-            // Generate new ID
-            const newId = existingProducts.length > 0 
-                ? Math.max(...existingProducts.map(p => p.id)) + 1 
-                : 1;
-
-            // Add new product
-            const newProduct = {
-                id: newId,
-                ...formData,
-                image: formData.image || 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 200 200%27%3E%3Crect fill=%27%23f3f4f6%27 width=%27200%27 height=%27200%27/%3E%3Ctext fill=%27%239ca3af%27 font-family=%27sans-serif%27 font-size=%2714%27 x=%2750%25%27 y=%2750%25%27 text-anchor=%27middle%27 dy=%27.3em%27%3ENo Image%3C/text%3E%3C/svg%3E'
+            window.cancelEdit = function () {
+                document.getElementById('editProductPanel').style.display = 'none';
+                document.getElementById('editSuccessMessage').classList.remove('show');
+                editPendingImageDataUrl = null;
+                var editInput = document.getElementById('editProductImageInput');
+                if (editInput) editInput.value = '';
+                var preview = document.getElementById('editImagePreview');
+                if (preview) {
+                    preview.classList.remove('show');
+                    preview.src = '';
+                }
+                var uploadArea = document.querySelector('#editProductPanel .image-upload-area');
+                if (uploadArea) uploadArea.classList.remove('has-image');
+                var uploadText = document.getElementById('editImageUploadText');
+                if (uploadText) uploadText.style.display = 'block';
             };
 
-            existingProducts.push(newProduct);
-            localStorage.setItem('marketplaceProducts', JSON.stringify(existingProducts));
+            window.editProduct = function (productId) {
+                if (MERCHANT_EDITABLE_IDS.indexOf(productId) === -1) return;
+                var products = getMarketplaceProducts();
+                var product = products.find(function (p) {
+                    return p.id === productId;
+                });
+                if (!product) return;
 
-            // Show success message
-            const successMsg = document.getElementById('successMessage');
-            successMsg.classList.add('show');
-            setTimeout(() => {
-                successMsg.classList.remove('show');
-            }, 3000);
+                document.getElementById('editProductId').value = String(productId);
+                document.getElementById('editProductName').value = product.name;
+                document.getElementById('editProductCategory').value = product.category;
+                document.getElementById('editProductPrice').value = product.price;
+                document.getElementById('editProductDescription').value = product.description || '';
 
-            // Reset form
-            document.getElementById('addProductForm').reset();
-            document.getElementById('imagePreview').classList.remove('show');
-            document.getElementById('imagePreview').src = '';
-            document.querySelector('.image-upload-area').classList.remove('has-image');
-            document.getElementById('imageUploadText').style.display = 'block';
-        }
+                editPendingImageDataUrl = null;
+                var editInput = document.getElementById('editProductImageInput');
+                if (editInput) editInput.value = '';
+                var preview = document.getElementById('editImagePreview');
+                if (product.image) {
+                    preview.src = product.image;
+                    preview.classList.add('show');
+                    document.querySelector('#editProductPanel .image-upload-area').classList.add('has-image');
+                    document.getElementById('editImageUploadText').style.display = 'none';
+                } else {
+                    preview.classList.remove('show');
+                    preview.src = '';
+                    document.querySelector('#editProductPanel .image-upload-area').classList.remove('has-image');
+                    document.getElementById('editImageUploadText').style.display = 'block';
+                }
 
-        function loadProducts() {
-            const products = JSON.parse(localStorage.getItem('marketplaceProducts') || '[]');
-            const productsList = document.getElementById('productsList');
+                document.getElementById('editProductPanel').style.display = 'block';
+                document.getElementById('editSuccessMessage').classList.remove('show');
+                document.getElementById('editProductPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            };
 
-            if (products.length === 0) {
-                productsList.innerHTML = '<p style="text-align: center; color: var(--text-light); padding: 2rem;">No products yet. Add your first product!</p>';
-                return;
-            }
+            window.handleSaveEdit = function (event) {
+                event.preventDefault();
+                var id = parseInt(document.getElementById('editProductId').value, 10);
+                if (MERCHANT_EDITABLE_IDS.indexOf(id) === -1) return;
 
-            // Create table
-            let tableHTML = `
-                <div style="overflow-x: auto;">
-                    <table class="products-table">
-                        <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th>Price</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-            `;
+                var products = getMarketplaceProducts();
+                var idx = products.findIndex(function (p) {
+                    return p.id === id;
+                });
+                if (idx === -1) return;
 
-            products.forEach(product => {
-                tableHTML += `
-                    <tr>
-                        <td>
-                            <img src="${product.image}" alt="${product.name}" class="product-image-small" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 200 200%27%3E%3Crect fill=%27%23f3f4f6%27 width=%27200%27 height=%27200%27/%3E%3Ctext fill=%27%239ca3af%27 font-family=%27sans-serif%27 font-size=%2714%27 x=%2750%25%27 y=%2750%25%27 text-anchor=%27middle%27 dy=%27.3em%27%3ENo Image%3C/text%3E%3C/svg%3E'">
-                        </td>
-                        <td><strong>${product.name}</strong></td>
-                        <td><span style="text-transform: capitalize;">${product.category}</span></td>
-                        <td>KES ${product.price.toLocaleString()}</td>
-                        <td>
-                            <button class="btn-edit" onclick="editProduct(${product.id})">Edit</button>
-                            <button class="btn-delete" onclick="deleteProduct(${product.id})">Delete</button>
-                        </td>
-                    </tr>
-                `;
-            });
+                var updated = {
+                    id: id,
+                    name: document.getElementById('editProductName').value.trim(),
+                    category: document.getElementById('editProductCategory').value,
+                    price: parseFloat(document.getElementById('editProductPrice').value),
+                    description: document.getElementById('editProductDescription').value.trim(),
+                    image: editPendingImageDataUrl || products[idx].image
+                };
 
-            tableHTML += `
-                        </tbody>
-                    </table>
-                </div>
-            `;
+                products[idx] = updated;
+                saveMarketplaceProducts(products);
 
-            productsList.innerHTML = tableHTML;
-        }
+                var editSuccessMessage = document.getElementById('editSuccessMessage');
+                editSuccessMessage.classList.add('show');
+                setTimeout(function () {
+                    editSuccessMessage.classList.remove('show');
+                }, 2500);
 
-        function deleteProduct(productId) {
-            if (confirm('Are you sure you want to delete this product?')) {
-                const products = JSON.parse(localStorage.getItem('marketplaceProducts') || '[]');
-                const filtered = products.filter(p => p.id !== productId);
-                localStorage.setItem('marketplaceProducts', JSON.stringify(filtered));
+                cancelEdit();
                 loadProducts();
-            }
-        }
+            };
 
-        function editProduct(productId) {
-            // For now, just show an alert. Can be enhanced later
-            alert('Edit functionality coming soon! For now, please delete and re-add the product.');
-        }
+            window.loadProducts = function () {
+                ensureMerchantEditableProducts();
+                var products = getMarketplaceProducts();
+                var productsList = document.getElementById('productsList');
 
-        // Load products on page load if on manage tab
-        if (document.getElementById('manageProductsTab').classList.contains('active')) {
+                var merchantProducts = products.filter(function (p) {
+                    return MERCHANT_EDITABLE_IDS.indexOf(p.id) !== -1;
+                });
+
+                if (merchantProducts.length === 0) {
+                    productsList.innerHTML = '<p style="text-align: center; color: var(--text-light); padding: 2rem;">No assigned listings found. Open the Shop once to load the catalog, then return here.</p>';
+                    return;
+                }
+
+                var tableHTML =
+                    '<div style="overflow-x: auto;">' +
+                    '<table class="products-table">' +
+                    '<thead><tr>' +
+                    '<th>ID</th><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Actions</th>' +
+                    '</tr></thead><tbody>';
+
+                merchantProducts.forEach(function (product) {
+                    var esc = function (s) {
+                        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+                    };
+                    var img = esc(product.image || '');
+                    var nm = esc(product.name);
+                    tableHTML +=
+                        '<tr>' +
+                        '<td>' + product.id + '</td>' +
+                        '<td><img src="' +
+                        img +
+                        '" alt="' +
+                        nm +
+                        '" class="product-image-small" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 200 200%27%3E%3Crect fill=%27%23f3f4f6%27 width=%27200%27 height=%27200%27/%3E%3Ctext fill=%27%239ca3af%27 font-family=%27sans-serif%27 font-size=%2714%27 x=%2750%25%27 y=%2750%25%27 text-anchor=%27middle%27 dy=%27.3em%27%3ENo Image%3C/text%3E%3C/svg%3E\'"></td>' +
+                        '<td><strong>' +
+                        nm +
+                        '</strong></td>' +
+                        '<td><span style="text-transform: capitalize;">' +
+                        esc(product.category) +
+                        '</span></td>' +
+                        '<td>KES ' +
+                        product.price.toLocaleString() +
+                        '</td>' +
+                        '<td><button type="button" class="btn-edit" onclick="editProduct(' +
+                        product.id +
+                        ')">Edit</button></td>' +
+                        '</tr>';
+                });
+
+                tableHTML += '</tbody></table></div>';
+                productsList.innerHTML = tableHTML;
+            };
+
+            ensureMerchantEditableProducts();
             loadProducts();
-        }
-
-        // Initialize mobile menu toggle
-        // Mobile menu toggle removed - cart icon now in its place
+        })();
     </script>
     <script src="cart.js"></script>
     <script src="script.js"></script>
