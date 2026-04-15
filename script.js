@@ -390,7 +390,7 @@ function initializeGallery() {
 
     let currentImageIndex = 0;
     const images = [];
-    const initialDisplayCount = 6; // Show first 6 images
+    const initialDisplayCount = 3; // Show first 3 images
     let allImagesVisible = false;
 
     // Create "See More" button
