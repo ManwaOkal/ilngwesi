@@ -1,4 +1,52 @@
 /* Reset and Base Styles */
+@font-face {
+    font-family: 'Freight Sans';
+    src: url('assets/fonts/FreightSansProBook-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Freight Sans';
+    src: url('assets/fonts/FreightSansProMedium-Regular.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Freight Sans';
+    src: url('assets/fonts/FreightSansProBold-Regular.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Utopia';
+    src: url('assets/fonts/UtopiaStd-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Utopia';
+    src: url('assets/fonts/UtopiaStd-Italic.otf') format('opentype');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Utopia';
+    src: url('assets/fonts/UtopiaStd-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -27,6 +75,8 @@
     --shadow-xl: 0 20px 40px rgba(0,0,0,0.2);
     --gradient-primary: linear-gradient(135deg, #d4a574 0%, #b8935f 100%);
     --gradient-secondary: linear-gradient(135deg, #13501b 0%, #0d3a12 100%);
+    --font-body: 'Freight Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-heading: 'Utopia', Georgia, 'Times New Roman', serif;
 }
 
 html {
@@ -43,7 +93,7 @@ html {
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: var(--font-body);
     color: var(--text-dark);
     line-height: 1.6;
     overflow-x: hidden;
@@ -57,6 +107,11 @@ body {
     min-height: 100%;
     height: auto;
     position: relative;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.01em;
 }
 
 @media (max-width: 768px) {
@@ -2029,12 +2084,90 @@ textarea::placeholder {
 }
 
 .services-checkboxes .checkbox-label input[type="checkbox"] {
-    margin-top: 0.18rem;
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: 0.1rem;
+    width: 22px;
+    height: 22px;
+    border: 2px solid rgba(44, 85, 48, 0.35);
+    border-radius: 6px;
+    background: #fff;
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.services-checkboxes .checkbox-label input[type="checkbox"]::before {
+    content: "";
+    width: 11px;
+    height: 11px;
+    transform: scale(0);
+    transform-origin: center;
+    transition: transform 0.15s ease-in-out;
+    clip-path: polygon(14% 44%, 0 60%, 44% 100%, 100% 24%, 84% 10%, 43% 62%);
+    background: var(--secondary-color);
+}
+
+.services-checkboxes .checkbox-label input[type="checkbox"]:hover {
+    border-color: var(--primary-color);
+}
+
+.services-checkboxes .checkbox-label input[type="checkbox"]:checked {
+    border-color: var(--primary-color);
+    background: rgba(212, 165, 116, 0.15);
+}
+
+.services-checkboxes .checkbox-label input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
+
+.services-checkboxes .checkbox-label input[type="checkbox"]:focus-visible {
+    outline: 2px solid rgba(212, 165, 116, 0.45);
+    outline-offset: 2px;
 }
 
 .services-checkboxes .checkbox-label span {
     font-size: 0.92rem;
     line-height: 1.45;
+}
+
+.services-options-grid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+}
+
+.services-options-grid .checkbox-label {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    align-items: center;
+    column-gap: 0.9rem;
+    padding: 1rem 1rem;
+}
+
+.services-options-grid .checkbox-label > span {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.9rem;
+}
+
+.services-options-grid .service-option-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    line-height: 1.35;
+}
+
+.services-options-grid .service-option-price {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    background: rgba(44, 85, 48, 0.08);
+    border: 1px solid rgba(44, 85, 48, 0.18);
+    border-radius: 999px;
+    padding: 0.3rem 0.55rem;
+    white-space: nowrap;
 }
 
 .services-checkboxes .checkbox-label:has(input[type="checkbox"]:checked),
@@ -2048,6 +2181,12 @@ textarea::placeholder {
 @media (max-width: 768px) {
     .services-checkboxes .checkbox-label {
         padding: 0.85rem 0.9rem;
+    }
+
+    .services-options-grid .checkbox-label > span {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.45rem;
     }
 }
 
@@ -4017,6 +4156,106 @@ footer,
     .shop-scroll-top-btn {
         right: 0.9rem;
         bottom: 5.6rem;
+    }
+}
+
+/* Homepage visual cleanup (keep hero untouched) */
+.homepage .section {
+    padding: 4.5rem 0;
+}
+
+.homepage .section .container {
+    max-width: 1160px;
+}
+
+.homepage .section-title {
+    font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+    margin-bottom: 0.9rem;
+    letter-spacing: -0.025em;
+}
+
+.homepage .section-subtitle {
+    max-width: 720px;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #5e6c63;
+    margin-bottom: 2.6rem;
+}
+
+.homepage .about {
+    background: linear-gradient(180deg, #f8fbf8 0%, #ffffff 100%);
+}
+
+.homepage .about-content {
+    gap: 3rem;
+}
+
+.homepage .about-text p {
+    color: #49564d;
+    line-height: 1.8;
+}
+
+.homepage .feature-item {
+    margin-bottom: 1rem;
+    padding: 0.95rem 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(44, 85, 48, 0.12);
+    background: rgba(255, 255, 255, 0.88);
+}
+
+.homepage .services {
+    background: #ffffff;
+}
+
+.homepage .services-grid {
+    gap: 1.35rem;
+}
+
+.homepage .service-card.selectable-service {
+    border: 1px solid rgba(44, 85, 48, 0.16);
+    border-radius: 14px;
+    box-shadow: 0 3px 14px rgba(44, 85, 48, 0.08);
+}
+
+.homepage .service-card.selectable-service:hover {
+    border-style: solid;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(44, 85, 48, 0.13);
+}
+
+.homepage .service-content h3 {
+    font-size: 1.15rem;
+}
+
+.homepage .service-content p {
+    color: #5c6a61;
+}
+
+.homepage .booking {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbf8 100%);
+}
+
+.homepage .reviews {
+    background: #ffffff;
+}
+
+.homepage .review-card {
+    border-radius: 12px;
+    border: 1px solid rgba(44, 85, 48, 0.12);
+    box-shadow: 0 4px 14px rgba(44, 85, 48, 0.07);
+}
+
+@media (max-width: 768px) {
+    .homepage .section {
+        padding: 3.3rem 0;
+    }
+
+    .homepage .section-subtitle {
+        margin-bottom: 2rem;
+    }
+
+    .homepage .feature-item {
+        padding: 0.85rem 0.9rem;
     }
 }
 
