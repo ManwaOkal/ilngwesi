@@ -235,9 +235,12 @@
                 <h3>What Happens Next?</h3>
                 <p>Once payment is confirmed, you'll receive your booking code and final confirmation with arrival details.</p>
             </div>
+            <div class="demo-disabled-note" role="status">
+                Demo notice: Booking is disabled at this stage.
+            </div>
             
             <div class="booking-container">
-                <form id="bookingForm" class="booking-form">
+                <form id="bookingForm" class="booking-form" data-demo-disabled="true">
                     <div class="form-group">
                         <label for="touristName">Full Name *</label>
                         <input type="text" id="touristName" name="touristName" required>

@@ -1623,6 +1623,18 @@ textarea::placeholder {
     margin-bottom: 0.5rem;
 }
 
+.demo-disabled-note {
+    max-width: 800px;
+    margin: 0 auto 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    border: 1px solid rgba(212, 165, 116, 0.4);
+    background: rgba(212, 165, 116, 0.12);
+    color: var(--secondary-color);
+    font-weight: 600;
+    text-align: center;
+}
+
 .info-box {
     background: transparent;
     padding: 1.5rem 0;
@@ -1835,6 +1847,14 @@ textarea::placeholder {
 
 .btn-submit.loading .btn-loader {
     display: inline-block;
+}
+
+.booking-demo-disabled-button,
+.booking-demo-disabled-button:hover {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 /* Enhanced Form Styling */

@@ -587,6 +587,7 @@ function initializeServiceSelection() {
 function initializeBookingForm() {
     const form = document.getElementById('bookingForm');
     if (!form) return;
+    const bookingDemoDisabled = form.dataset.demoDisabled === 'true';
     
     const serviceCheckboxes = document.querySelectorAll('input[name="services"]');
     const numVisitorsInput = document.getElementById('numVisitors');
@@ -795,9 +796,23 @@ function initializeBookingForm() {
         observer.observe(el);
     });
 
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (bookingDemoDisabled && submitButton) {
+        submitButton.disabled = true;
+        submitButton.classList.add('booking-demo-disabled-button');
+        const submitLabel = submitButton.querySelector('.btn-text');
+        if (submitLabel) {
+            submitLabel.textContent = 'Booking Disabled for Demo';
+        }
+    }
+
     // Form submission
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
+        if (bookingDemoDisabled) {
+            alert('Booking is disabled on this demo. Please contact the team directly for real bookings.');
+            return;
+        }
 
         // Validate form
         if (!form.checkValidity()) {
@@ -855,7 +870,6 @@ function initializeBookingForm() {
         }
 
         // Show loading state
-        const submitButton = form.querySelector('button[type="submit"]');
         submitButton.classList.add('loading');
         submitButton.disabled = true;
 
