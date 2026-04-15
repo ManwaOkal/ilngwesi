@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeMarketplace();
     initializeReviews();
     initializeCrossPageNavLoading();
+    initializeShopScrollTopButton();
 });
 
 /** Basenames that typically mean a full page load or heavy JS work on this site. */
@@ -42,6 +43,13 @@ const HEAVY_PAGE_NAMES = new Set([
     'checkout.html',
     'product.html',
     'gallery.html',
+]);
+
+const SHOP_SCROLL_TOP_PAGES = new Set([
+    'marketplace.html',
+    'product.html',
+    'cart.html',
+    'checkout.html',
 ]);
 
 /**
@@ -123,6 +131,43 @@ function initializeCrossPageNavLoading() {
         },
         true
     );
+}
+
+function initializeShopScrollTopButton() {
+    let currentFile = (window.location.pathname || '').split('/').pop() || '';
+    if (!currentFile || window.location.pathname.endsWith('/')) {
+        currentFile = 'index.html';
+    }
+
+    if (!SHOP_SCROLL_TOP_PAGES.has(currentFile.toLowerCase())) {
+        return;
+    }
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'shop-scroll-top-btn';
+    button.setAttribute('aria-label', 'Scroll to top');
+    button.setAttribute('title', 'Scroll to top');
+    button.innerHTML = '<span aria-hidden="true">↑</span>';
+    document.body.appendChild(button);
+
+    function updateScrollTopVisibility() {
+        const isLongPage = document.documentElement.scrollHeight > window.innerHeight * 1.4;
+        const shouldShow = isLongPage && window.scrollY > 520;
+        button.classList.toggle('visible', shouldShow);
+    }
+
+    window.addEventListener('scroll', updateScrollTopVisibility, { passive: true });
+    window.addEventListener('resize', updateScrollTopVisibility);
+
+    button.addEventListener('click', function () {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    updateScrollTopVisibility();
 }
 
 function applyCrossPageLoadingLabel(link) {
@@ -798,11 +843,11 @@ function initializeBookingForm() {
 
     const submitButton = form.querySelector('button[type="submit"]');
     if (bookingDemoDisabled && submitButton) {
-        submitButton.disabled = true;
+        form.classList.add('booking-form-demo');
         submitButton.classList.add('booking-demo-disabled-button');
         const submitLabel = submitButton.querySelector('.btn-text');
         if (submitLabel) {
-            submitLabel.textContent = 'Booking Disabled for Demo';
+            submitLabel.textContent = 'Demo Mode: Submission Disabled';
         }
     }
 

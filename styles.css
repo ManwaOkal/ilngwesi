@@ -1600,7 +1600,11 @@ textarea::placeholder {
     padding: 1.75rem;
     border-radius: 12px;
     border: 2px solid rgba(212, 165, 116, 0.15);
-    margin-bottom: 2rem;
+    margin-bottom: 0;
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .booking-info h3 {
@@ -1623,16 +1627,30 @@ textarea::placeholder {
     margin-bottom: 0.5rem;
 }
 
-.demo-disabled-note {
+.booking-intro {
     max-width: 800px;
-    margin: 0 auto 1rem;
-    padding: 0.75rem 1rem;
-    border-radius: 10px;
-    border: 1px solid rgba(212, 165, 116, 0.4);
-    background: rgba(212, 165, 116, 0.12);
+    margin: 0 auto 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.demo-disabled-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0.9rem 1rem;
+    border-radius: 14px;
+    border: 1px solid rgba(212, 165, 116, 0.35);
+    border-left: 4px solid var(--primary-color);
+    background: linear-gradient(135deg, rgba(212, 165, 116, 0.2) 0%, rgba(212, 165, 116, 0.08) 100%);
     color: var(--secondary-color);
     font-weight: 600;
     text-align: center;
+    line-height: 1.45;
+    min-height: 56px;
+    box-shadow: 0 6px 18px rgba(44, 85, 48, 0.08);
 }
 
 .info-box {
@@ -1851,10 +1869,36 @@ textarea::placeholder {
 
 .booking-demo-disabled-button,
 .booking-demo-disabled-button:hover {
-    opacity: 0.65;
-    cursor: not-allowed;
+    opacity: 1;
+    cursor: pointer;
     transform: none;
-    box-shadow: none;
+    background: linear-gradient(135deg, #8c8c8c 0%, #6f6f6f 100%);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+.booking-form-demo {
+    border-color: rgba(212, 165, 116, 0.35);
+    box-shadow: 0 8px 28px rgba(44, 85, 48, 0.12);
+}
+
+.booking-form-demo::after {
+    content: "Demo Preview";
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: rgba(44, 85, 48, 0.1);
+    color: var(--secondary-color);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid rgba(44, 85, 48, 0.2);
+}
+
+.booking-form-demo .btn-submit .btn-loader {
+    display: none !important;
 }
 
 /* Enhanced Form Styling */
@@ -1956,6 +2000,55 @@ textarea::placeholder {
     line-height: 1.5;
     color: var(--text-dark);
     font-weight: 500;
+}
+
+/* Service selection cards (booking only) */
+.services-checkboxes {
+    background: transparent;
+    padding: 0;
+    border: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+}
+
+.services-checkboxes .checkbox-label {
+    border: 1px solid rgba(44, 85, 48, 0.16);
+    border-radius: 12px;
+    padding: 0.95rem 1rem;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(44, 85, 48, 0.06);
+    align-items: flex-start;
+    gap: 0.85rem;
+}
+
+.services-checkboxes .checkbox-label:hover {
+    border-color: rgba(212, 165, 116, 0.75);
+    background: #fffdf9;
+    box-shadow: 0 6px 18px rgba(212, 165, 116, 0.18);
+}
+
+.services-checkboxes .checkbox-label input[type="checkbox"] {
+    margin-top: 0.18rem;
+}
+
+.services-checkboxes .checkbox-label span {
+    font-size: 0.92rem;
+    line-height: 1.45;
+}
+
+.services-checkboxes .checkbox-label:has(input[type="checkbox"]:checked),
+.services-checkboxes .checkbox-label.checked {
+    border-color: var(--primary-color);
+    border-left-width: 4px;
+    background: linear-gradient(135deg, rgba(212, 165, 116, 0.16) 0%, rgba(212, 165, 116, 0.06) 100%);
+    box-shadow: 0 8px 18px rgba(212, 165, 116, 0.18);
+}
+
+@media (max-width: 768px) {
+    .services-checkboxes .checkbox-label {
+        padding: 0.85rem 0.9rem;
+    }
 }
 
 /* Enhanced Terms Checkbox */
@@ -3876,6 +3969,54 @@ a.community-card.page-nav-loading {
 
     .section {
         page-break-inside: avoid;
+    }
+}
+
+/* Site-wide request: remove footers from all pages */
+footer,
+.footer {
+    display: none !important;
+}
+
+.shop-scroll-top-btn {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 20px rgba(44, 85, 48, 0.28);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    z-index: 1001;
+}
+
+.shop-scroll-top-btn:hover {
+    background: var(--primary-color);
+}
+
+.shop-scroll-top-btn.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+    .shop-scroll-top-btn {
+        right: 0.9rem;
+        bottom: 5.6rem;
     }
 }
 
