@@ -3220,19 +3220,45 @@ textarea::placeholder {
     display: none;
 }
 
-/* Feedback while navigating to the shop (marketplace) — can be slow on mobile networks */
-a.shop-nav-loading {
+/* Feedback while navigating to another heavy page; can be slow on mobile networks */
+a.page-nav-loading {
     cursor: wait !important;
     pointer-events: none;
 }
 
-.app-bottom-nav.shop-nav-blocked a.app-bottom-nav-item:not(.shop-nav-loading) {
+.app-bottom-nav.page-nav-blocked a.app-bottom-nav-item:not(.page-nav-loading) {
     opacity: 0.45;
     pointer-events: none;
 }
 
-.app-bottom-nav a.app-bottom-nav-item.shop-nav-loading {
+.app-bottom-nav a.app-bottom-nav-item.page-nav-loading {
     opacity: 1;
+}
+
+.community-cards.page-nav-cards-blocked a.community-card:not(.page-nav-loading) {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+a.page-nav-loading .page-nav-loading-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.92);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--secondary-color);
+    z-index: 2;
+    border-radius: inherit;
+    text-align: center;
+    padding: 0.5rem;
+}
+
+a.community-card.page-nav-loading {
+    position: relative;
+    overflow: hidden;
 }
 
 /* App-like Mobile Bottom Navigation */
