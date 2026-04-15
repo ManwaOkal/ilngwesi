@@ -3220,6 +3220,21 @@ textarea::placeholder {
     display: none;
 }
 
+/* Feedback while navigating to the shop (marketplace) — can be slow on mobile networks */
+a.shop-nav-loading {
+    cursor: wait !important;
+    pointer-events: none;
+}
+
+.app-bottom-nav.shop-nav-blocked a.app-bottom-nav-item:not(.shop-nav-loading) {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+.app-bottom-nav a.app-bottom-nav-item.shop-nav-loading {
+    opacity: 1;
+}
+
 /* App-like Mobile Bottom Navigation */
 @media (max-width: 768px) {
     .app-bottom-nav {

@@ -26,7 +26,60 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeModal();
     initializeMarketplace();
     initializeReviews();
+    initializeShopNavLoading();
 });
+
+/**
+ * Full page loads to marketplace.html can feel slow on mobile networks.
+ * After the user taps "Shop" / marketplace links, show loading state and prevent double navigation.
+ */
+function initializeShopNavLoading() {
+    const path = (window.location.pathname || '').toLowerCase();
+    if (path.includes('marketplace')) return;
+
+    document.querySelectorAll('a[href^="marketplace.html"]').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+            if (link.classList.contains('shop-nav-loading')) {
+                e.preventDefault();
+                return;
+            }
+
+            const href = link.getAttribute('href');
+            if (!href) return;
+
+            e.preventDefault();
+
+            link.classList.add('shop-nav-loading');
+            link.setAttribute('aria-busy', 'true');
+
+            const bottomNav = link.closest('.app-bottom-nav');
+            if (bottomNav) {
+                bottomNav.classList.add('shop-nav-blocked');
+                bottomNav.querySelectorAll('a.app-bottom-nav-item').forEach(function(a) {
+                    a.setAttribute('aria-disabled', 'true');
+                });
+            } else {
+                link.style.pointerEvents = 'none';
+            }
+
+            const labelSpan = link.querySelector('span');
+            if (labelSpan) {
+                if (!labelSpan.dataset.shopLabelOriginal) {
+                    labelSpan.dataset.shopLabelOriginal = labelSpan.textContent;
+                }
+                labelSpan.textContent = 'Loading...';
+            } else {
+                if (!link.dataset.shopLabelOriginal) {
+                    link.dataset.shopLabelOriginal = link.textContent;
+                }
+                link.textContent = 'Loading...';
+            }
+
+            window.location.href = href;
+        });
+    });
+}
 
 // Navigation
 function initializeNavigation() {
